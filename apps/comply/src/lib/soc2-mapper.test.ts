@@ -8,10 +8,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   SOC2_CONTROLS,
-  mapPlatformToSoc2,
   getSoc2ReadinessScore,
   getSoc2Gaps,
-  type Soc2ControlMapping,
 } from './soc2-mapper'
 
 describe('SOC 2 Controls — data integrity', () => {

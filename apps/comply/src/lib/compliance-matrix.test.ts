@@ -8,10 +8,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   COMPLIANCE_MATRIX,
-  getComplianceMatrix,
   getComplianceCoverage,
   getComplianceGaps,
-  type ComplianceEntry,
 } from './compliance-matrix'
 
 describe('Compliance Matrix — data integrity', () => {

@@ -17,7 +17,7 @@ vi.mock('@taurus-ai/swarm-spawner', () => ({
         failureCount: 0,
         successRate: 1,
         totalDuration: 10,
-        results: req.tasks.map((t, i) => ({
+        results: req.tasks.map((_, i) => ({
           agentId: `mock-agent-${i}`,
           status: 'completed',
           output: { result: 'ok' },

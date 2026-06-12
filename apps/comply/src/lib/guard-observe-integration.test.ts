@@ -139,7 +139,7 @@ describe('guard → observe integration', () => {
 
   // All model rates are non-negative
   it('all MODEL_RATES have non-negative values', () => {
-    for (const [model, rates] of Object.entries(MODEL_RATES)) {
+    for (const [, rates] of Object.entries(MODEL_RATES)) {
       expect(rates.input).toBeGreaterThanOrEqual(0)
       expect(rates.output).toBeGreaterThanOrEqual(0)
     }
