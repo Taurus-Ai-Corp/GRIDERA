@@ -175,25 +175,6 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
 
-  packages/pqc-ca:
-    dependencies:
-      '@taurus/pqc-crypto':
-        specifier: workspace:*
-        version: link:../pqc-crypto
-    devDependencies:
-      '@taurus/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/node':
-        specifier: ^25.5.0
-        version: 25.5.0
-      typescript:
-        specifier: ^5.8.0
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.0
-        version: 3.2.4(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
-
   packages/pqc-crypto:
     dependencies:
       '@noble/hashes':
