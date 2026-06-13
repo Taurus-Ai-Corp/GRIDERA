@@ -11,7 +11,6 @@ import {
   mapPlatformToSoc2,
   getSoc2ReadinessScore,
   getSoc2Gaps,
-  type Soc2ControlMapping,
 } from './soc2-mapper'
 
 describe('SOC 2 Controls — data integrity', () => {
