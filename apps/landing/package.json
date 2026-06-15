@@ -11,20 +11,24 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@taurus/db": "workspace:*",
+    "@taurus/jurisdiction": "workspace:*",
+    "@taurus/pqc-crypto": "workspace:*",
+    "@taurus/pqc-engine": "workspace:*",
+    "@taurus/ui": "workspace:*",
     "next": "^16.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@taurus/ui": "workspace:*",
-    "@taurus/pqc-engine": "workspace:*",
-    "@taurus/pqc-crypto": "workspace:*",
-    "@taurus/jurisdiction": "workspace:*"
+    "resend": "^6.12.4",
+    "stripe": "^21.0.1",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@taurus/tsconfig": "workspace:*",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5.8.0",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0"
+    "typescript": "^5.8.0"
   }
 }
