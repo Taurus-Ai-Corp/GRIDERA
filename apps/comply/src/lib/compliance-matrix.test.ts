@@ -11,7 +11,6 @@ import {
   getComplianceMatrix,
   getComplianceCoverage,
   getComplianceGaps,
-  type ComplianceEntry,
 } from './compliance-matrix'
 
 describe('Compliance Matrix — data integrity', () => {
