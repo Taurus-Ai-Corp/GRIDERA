@@ -20,12 +20,14 @@ const nextConfig: NextConfig = {
   // proxying to the standalone guard API (separate Vercel project). Same-origin
   // for clients, so no CORS and within the CSP connect-src 'self'.
   async rewrites() {
-    return [
-      {
-        source: '/guard/v1/:path*',
-        destination: 'https://guard-beryl.vercel.app/guard/v1/:path*',
-      },
-    ]
+    return {
+      beforeFiles: [
+        {
+          source: '/guard/v1/:path*',
+          destination: 'https://guard-beryl.vercel.app/guard/v1/:path*',
+        },
+      ],
+    }
   },
   async headers() {
     return [
