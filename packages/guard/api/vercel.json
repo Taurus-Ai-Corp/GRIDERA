@@ -1,5 +1,5 @@
 {
-  "framework": "express",
+  "framework": null,
   "installCommand": "pnpm install",
   "buildCommand": "",
   "rewrites": [

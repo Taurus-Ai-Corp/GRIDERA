@@ -1,4 +1,8 @@
-import { build } from './src/server.js'
+// Import the self-contained tsup bundle (dist/index.js) rather than raw src.
+// The bundle inlines @taurus/db (whose tsc output uses extensionless ESM
+// imports that Node's loader can't resolve unbundled), avoiding
+// ERR_MODULE_NOT_FOUND at runtime. Real npm deps (fastify) stay external.
+import { build } from '../dist/index.js'
 
 const appPromise = build()
 
