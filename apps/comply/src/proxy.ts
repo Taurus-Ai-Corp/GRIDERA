@@ -8,6 +8,9 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks(.*)',
+  // GRIDERA|Guard executor is proxied to the standalone guard API, which does
+  // its own API-key auth. Clerk must not gate it.
+  '/guard/v1(.*)',
 ])
 
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)'])
