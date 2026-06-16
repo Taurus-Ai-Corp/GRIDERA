@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@taurus/db": "workspace:*",
     "@taurus/jurisdiction": "workspace:*",
     "@taurus/pqc-crypto": "workspace:*",
     "@taurus/pqc-engine": "workspace:*",

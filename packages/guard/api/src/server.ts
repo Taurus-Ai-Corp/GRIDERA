@@ -129,14 +129,11 @@ export async function start() {
   return app
 }
 
-// Run standalone if executed directly
+// Run standalone if executed directly (local dev only).
+// On Vercel the serverless entry is api/[[...path]].ts, which calls build()
+// and uses app.inject() — it must NOT bind a port. Do not add a
+// `process.env.VERCEL` auto-listen here: server.ts is imported by the
+// serverless handler, so any top-level listen() would fire on every cold start.
 if (typeof process !== 'undefined' && process.argv[1]?.includes('server')) {
   start().catch(console.error)
-}
-
-if (process.env.VERCEL) {
-  const port = Number(process.env.PORT ?? 3000)
-  build()
-    .then((app) => app.listen({ port, host: '0.0.0.0' }))
-    .catch(console.error)
 }

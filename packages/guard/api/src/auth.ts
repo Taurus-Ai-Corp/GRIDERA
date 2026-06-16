@@ -25,6 +25,7 @@
 
 import fp from 'fastify-plugin'
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { createDb, hashApiKey, findGuardKeyByHash, type Database } from '@taurus/db'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -56,12 +57,29 @@ interface AuthErrorPayload {
   timestamp: string
 }
 
+interface GuardKeyMeta {
+  email: string
+  tier: string
+  monthlyLimit: number
+}
+
+// Extend Fastify request type with guardKey metadata
+declare module 'fastify' {
+  interface FastifyRequest {
+    guardKey?: GuardKeyMeta
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 function nowISO(): string {
   return new Date().toISOString()
+}
+
+function getDatabaseUrl(): string | undefined {
+  return process.env.DATABASE_URL
 }
 
 /**
@@ -106,18 +124,33 @@ function isProtectedRoute(request: FastifyRequest): boolean {
 
 /**
  * Extract API key from request headers.
- * Supports both X-API-Key and Authorization: Bearer patterns.
+ * Supports both X-API-Key and Authorization: Bearer ***
  */
 function extractApiKey(request: FastifyRequest): string | undefined {
   // Check X-API-Key header first
   const xApiKey = request.headers['x-api-key'] as string | undefined
   if (xApiKey) return xApiKey.trim()
 
-  // Then check Authorization: Bearer <key>
+  // Then check Authorization: Bearer ***
   const auth = request.headers['authorization'] as string | undefined
   if (auth?.startsWith('Bearer ')) return auth.slice(7).trim()
 
   return undefined
+}
+
+async function authenticateWithDb(db: Database, apiKey: string): Promise<GuardKeyMeta | null> {
+  const hash = hashApiKey(apiKey)
+  const record = await findGuardKeyByHash(db, hash)
+
+  if (!record || !record.active) {
+    return null
+  }
+
+  return {
+    email: record.email,
+    tier: record.tier,
+    monthlyLimit: record.monthlyLimit,
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -129,15 +162,20 @@ function extractApiKey(request: FastifyRequest): string | undefined {
  *
  * Registers an onRequest hook that:
  * 1. Skips auth for public endpoints (health, pricing)
- * 2. Extracts X-API-Key or Authorization: Bearer from request headers
+ * 2. Extracts X-API-Key or Authorization: Bearer *** request headers
  * 3. Returns 401 if key is missing (AUTH_MISSING_KEY)
  * 4. Returns 401 if key is invalid (AUTH_INVALID_KEY)
  * 5. Adds X-RateLimit-Remaining header on all responses
+ * 6. Attaches request.guardKey metadata (email, tier, monthlyLimit) for valid DB keys
  *
  * Wrapped with fastify-plugin so the hook applies globally
  * (not scoped to the registration context).
  */
 export const apiKeyAuth = fp(async function apiKeyAuth(fastify: FastifyInstance) {
+  const databaseUrl = getDatabaseUrl()
+  const db = databaseUrl ? createDb(databaseUrl) : null
+  const fallbackKeys = db ? null : getValidKeys()
+
   fastify.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
     // Always set rate limit header
     reply.header('X-RateLimit-Remaining', RATE_LIMIT_REMAINING)
@@ -164,9 +202,23 @@ export const apiKeyAuth = fp(async function apiKeyAuth(fastify: FastifyInstance)
       return reply.code(401).send(payload)
     }
 
-    // Validate key
-    const validKeys = getValidKeys()
-    if (!validKeys.includes(apiKey)) {
+    // Authenticate via DB if available
+    if (db) {
+      const guardKey = await authenticateWithDb(db, apiKey)
+      if (!guardKey) {
+        const payload: AuthErrorPayload = {
+          error: 'Invalid API key',
+          code: 'AUTH_INVALID_KEY',
+          timestamp: nowISO(),
+        }
+        return reply.code(401).send(payload)
+      }
+      request.guardKey = guardKey
+      return
+    }
+
+    // Fallback to env-based static keys
+    if (fallbackKeys && !fallbackKeys.includes(apiKey)) {
       const payload: AuthErrorPayload = {
         error: 'Invalid API key',
         code: 'AUTH_INVALID_KEY',

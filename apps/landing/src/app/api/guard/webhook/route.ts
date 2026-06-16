@@ -1,46 +1,76 @@
 import { NextResponse } from 'next/server'
-import Stripe from 'stripe'
+import {
+  createDb,
+  createGuardKey,
+  activatePaidTier,
+  findGuardKeyByEmail,
+  findGuardKeyByCustomerId,
+  rotateGuardKeyHash,
+  revokeGuardKey,
+} from '@taurus/db'
 import { getStripe, getResend } from '@/lib/billing'
+import type Stripe from 'stripe'
 
-// In-memory store for MVP — replace with Neon DB in production
-interface GuardCustomer {
-  email: string
-  stripeCustomerId: string
-  subscriptionId: string
-  tier: 'sandbox' | 'smb' | 'enterprise'
-  apiKey: string
-  createdAt: string
+// Executor URL used in examples and emails.
+// TODO: guard.gridera.net is currently NXDOMAIN. Set NEXT_PUBLIC_GUARD_EXECUTOR_URL
+// in Vercel once DNS is fixed; otherwise requests will fail at runtime.
+function getExecutorUrl(): string {
+  return (
+    process.env['NEXT_PUBLIC_GUARD_EXECUTOR_URL'] ??
+    'https://guard.gridera.net/guard/v1/execute'
+  )
 }
 
-const customers = new Map<string, GuardCustomer>()
+function getDb() {
+  const databaseUrl = process.env['DATABASE_URL']
+  if (!databaseUrl) return null
+  return createDb(databaseUrl)
+}
 
-// Crypto-strong API key generator
+// Shared, short-lived in-memory cache used only for the success page lookup.
+// The webhook stores {apiKey, email, tier} keyed by Stripe session id; the lookup
+// route reads it so the success page can display the key once. TTL is enforced
+// in lookup with a 5-minute expiry. This is acceptable for the MVP but should be
+// replaced by an encrypted/signed token or Redis before scaling horizontally.
+export const checkoutSessionCache = new Map<
+  string,
+  { apiKey: string; email: string; tier: 'sandbox' | 'smb' | 'enterprise'; createdAt: number }
+>()
+
 function generateApiKey(): string {
   const bytes = new Uint8Array(32)
   crypto.getRandomValues(bytes)
   return 'grd_live_' + Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-// Email the customer their API key
-async function emailApiKey(customer: GuardCustomer): Promise<void> {
+async function emailApiKey({
+  email,
+  apiKey,
+  tier,
+}: {
+  email: string
+  apiKey: string
+  tier: 'sandbox' | 'smb' | 'enterprise'
+}): Promise<void> {
   const resend = getResend()
   if (!resend) {
     console.warn('[guard/webhook] Resend not configured — skipping email')
     return
   }
 
+  const executorUrl = getExecutorUrl()
   const html = `
     <!DOCTYPE html>
     <html>
     <body style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
       <h1 style="color: #00ff88;">Welcome to GRIDERA|Guard</h1>
-      <p>Your <strong>${customer.tier.toUpperCase()}</strong> subscription is active. Your API key is below.</p>
+      <p>Your <strong>${tier.toUpperCase()}</strong> subscription is active. Your API key is below.</p>
       <div style="background: #0a0a0a; padding: 16px; border-radius: 8px; margin: 24px 0; border: 1px solid #333;">
-        <code style="color: #00ff88; font-size: 14px; word-break: break-all;">${customer.apiKey}</code>
+        <code style="color: #00ff88; font-size: 14px; word-break: break-all;">${apiKey}</code>
       </div>
       <p><strong>Try it now:</strong></p>
-      <pre style="background: #151515; padding: 12px; border-radius: 6px; overflow-x: auto; color: #e0e0e0;"><code>curl -X POST https://guard.gridera.net/guard/v1/execute \\
-  -H "X-API-Key: ${customer.apiKey}" \\
+      <pre style="background: #151515; padding: 12px; border-radius: 6px; overflow-x: auto; color: #e0e0e0;"><code>curl -X POST ${executorUrl} \\
+  -H "X-API-Key: ${apiKey}" \\
   -H "Content-Type: application/json" \\
   -d '{"input":"What is 2+2?","context":"math question"}'</code></pre>
       <p style="color: #888; font-size: 12px;">Save this key — it's only shown once. Manage your subscription at any time from your dashboard.</p>
@@ -56,7 +86,7 @@ async function emailApiKey(customer: GuardCustomer): Promise<void> {
     },
     body: JSON.stringify({
       from: resend.from,
-      to: customer.email,
+      to: email,
       subject: 'Your GRIDERA|Guard API key',
       html,
     }),
@@ -71,10 +101,16 @@ export const config = {
 
 export async function POST(req: Request) {
   try {
+    const db = getDb()
     const stripe = getStripe()
     if (!stripe) {
       console.warn('[guard/webhook] Stripe not configured — ignoring webhook')
       return NextResponse.json({ received: true })
+    }
+
+    if (!db) {
+      console.error('[guard/webhook] DATABASE_URL not configured')
+      return NextResponse.json({ received: false, error: 'Database not configured' }, { status: 503 })
     }
 
     const webhookSecret = process.env['STRIPE_WEBHOOK_SECRET']
@@ -111,32 +147,61 @@ export async function POST(req: Request) {
         const email = session.metadata?.['email'] ?? session.customer_email ?? ''
         const tier = (session.metadata?.['tier'] ?? 'smb') as 'sandbox' | 'smb' | 'enterprise'
         const customerId = typeof session.customer === 'string' ? session.customer : session.customer?.id ?? ''
-        const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id ?? ''
-        const apiKey = generateApiKey()
+        const subscriptionId =
+          typeof session.subscription === 'string' ? session.subscription : session.subscription?.id ?? ''
 
-        const customer: GuardCustomer = {
-          email,
-          stripeCustomerId: customerId,
-          subscriptionId,
-          tier,
-          apiKey,
-          createdAt: new Date().toISOString(),
+        if (!email || !customerId || !subscriptionId) {
+          console.warn('[guard/webhook] Missing checkout metadata', { email, customerId, subscriptionId })
+          break
         }
-        customers.set(customerId, customer)
-        console.log(`[guard/webhook] Customer created: ${email} tier=${tier} key=${apiKey.slice(0, 16)}…`)
+
+        const normalizedEmail = email.trim().toLowerCase()
+        let apiKey: string
+
+        // If a sandbox record already exists for this email, promote it to paid.
+        // Otherwise create a fresh paid key.
+        const existing = await findGuardKeyByEmail(db, normalizedEmail)
+
+        if (existing) {
+          const paidTier = tier === 'sandbox' ? 'smb' : tier
+          await activatePaidTier(db, normalizedEmail, customerId, subscriptionId, paidTier)
+          apiKey = generateApiKey()
+          await rotateGuardKeyHash(db, existing.id, apiKey).catch((err) => {
+            console.error('[guard/webhook] Failed to rotate key hash for existing record:', err)
+          })
+        } else {
+          const result = await createGuardKey({
+            db,
+            email: normalizedEmail,
+            tier,
+            monthlyLimit: tier === 'enterprise' ? 0 : 100_000,
+            stripeCustomerId: customerId,
+            stripeSubscriptionId: subscriptionId,
+          })
+          apiKey = result.apiKey
+        }
+
+        checkoutSessionCache.set(session.id, {
+          apiKey,
+          email: normalizedEmail,
+          tier,
+          createdAt: Date.now(),
+        })
+
+        console.log(`[guard/webhook] Customer created/activated: ${normalizedEmail} tier=${tier} key=${apiKey.slice(0, 16)}…`)
 
         // Fire-and-forget email
-        void emailApiKey(customer)
+        void emailApiKey({ email: normalizedEmail, apiKey, tier })
         break
       }
 
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = typeof subscription.customer === 'string' ? subscription.customer : subscription.customer?.id ?? ''
-        const existing = customers.get(customerId)
-        if (existing) {
-          console.log(`[guard/webhook] Subscription cancelled: ${existing.email}`)
-          customers.delete(customerId)
+        const record = await findGuardKeyByCustomerId(db, customerId)
+        if (record) {
+          await revokeGuardKey(db, record.id)
+          console.log(`[guard/webhook] Subscription cancelled: ${record.email}`)
         }
         break
       }
@@ -150,17 +215,4 @@ export async function POST(req: Request) {
     console.error('[guard/webhook] Unexpected error:', err)
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
-}
-
-// Dev helper: lookup customer (REMOVE in production)
-export async function GET() {
-  return NextResponse.json({
-    count: customers.size,
-    customers: Array.from(customers.values()).map((c) => ({
-      email: c.email,
-      tier: c.tier,
-      createdAt: c.createdAt,
-      apiKeyPreview: c.apiKey.slice(0, 16) + '…',
-    })),
-  })
 }

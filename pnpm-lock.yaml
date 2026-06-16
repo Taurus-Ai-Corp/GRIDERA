@@ -90,6 +90,9 @@ importers:
 
   apps/landing:
     dependencies:
+      '@taurus/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@taurus/jurisdiction':
         specifier: workspace:*
         version: link:../../packages/jurisdiction
@@ -183,6 +186,9 @@ importers:
       '@fastify/cors':
         specifier: ^11.0.0
         version: 11.2.0
+      '@taurus/db':
+        specifier: workspace:*
+        version: link:../../db
       fastify:
         specifier: ^5.3.0
         version: 5.8.5
