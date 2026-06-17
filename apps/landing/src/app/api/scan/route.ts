@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { storeScanResult } from '@/lib/scan-store'
 
 export async function POST(req: Request) {
   try {
@@ -60,24 +61,31 @@ export async function POST(req: Request) {
       )
     }
 
-    return NextResponse.json(
-      {
-        scanId: stamp.hash.slice(0, 16),
-        domain: cleanDomain,
-        qrsScore,
-        algorithms: scanResult.algorithms,
-        certificates: scanResult.certificates,
-        recommendations,
-        tlsVersion: scanResult.tlsVersion,
-        scannedAt: scanResult.scannedAt,
-        error: scanResult.error,
-        pqcStamp: {
-          hash: stamp.hash,
-          signature: stamp.signature.slice(0, 128) + '...',
-          algorithm: stamp.algorithm,
-          timestamp: stamp.timestamp,
-        },
+    const scanId = stamp.hash.slice(0, 16)
+
+    const response = {
+      scanId,
+      domain: cleanDomain,
+      qrsScore,
+      algorithms: scanResult.algorithms,
+      certificates: scanResult.certificates,
+      recommendations,
+      tlsVersion: scanResult.tlsVersion,
+      scannedAt: scanResult.scannedAt,
+      error: scanResult.error,
+      pqcStamp: {
+        hash: stamp.hash,
+        signature: stamp.signature.slice(0, 128) + '...',
+        algorithm: stamp.algorithm,
+        timestamp: stamp.timestamp,
       },
+    }
+
+    // Persist so /comply?scan=<id> can load it later
+    storeScanResult({ ...response, createdAt: Date.now() })
+
+    return NextResponse.json(
+      response,
       {
         headers: {
           'X-PQC-Signature': stamp.signature.slice(0, 64),

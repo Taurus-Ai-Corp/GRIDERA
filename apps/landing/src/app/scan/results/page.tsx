@@ -210,12 +210,10 @@ export default function ScanResultsPage() {
               </div>
             </div>
             <a
-              href={`https://eu.q-grid.net/sign-up?domain=${encodeURIComponent(domain)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/comply?scan=${encodeURIComponent(scanId)}`}
               className="btn-primary shrink-0 self-start"
             >
-              Full Report →
+              Get Full QREP →
             </a>
           </div>
 
