@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Nav from '@/components/nav'
 import Footer from '@/components/footer'
 import { GUARD_TIERS } from '@/lib/guard-tiers'
@@ -9,17 +9,16 @@ export default function GuardPage() {
   const [email, setEmail] = useState('')
   const [tier, setTier] = useState<'sandbox' | 'smb' | 'enterprise'>('sandbox')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const formRef = useRef<HTMLDivElement>(null)
+  const [result, setResult] = useState<{ apiKey?: string; url?: string; error?: string } | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError(null)
+    setResult(null)
 
     try {
       if (tier === 'sandbox') {
-        // Free tier - direct signup, then redirect to success page with key.
+        // Free tier - direct signup
         const res = await fetch('/api/guard/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -27,7 +26,7 @@ export default function GuardPage() {
         })
         const data = await res.json()
         if (!res.ok) throw new Error(data.error ?? 'Signup failed')
-        window.location.href = data.redirectUrl ?? `/guard/success?key=${encodeURIComponent(data.apiKey)}`
+        setResult({ apiKey: data.apiKey })
       } else {
         // Paid tier - Stripe Checkout
         const res = await fetch('/api/guard/checkout', {
@@ -37,18 +36,14 @@ export default function GuardPage() {
         })
         const data = await res.json()
         if (!res.ok) throw new Error(data.error ?? 'Checkout failed')
+        // Redirect to Stripe
         window.location.href = data.url
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed')
+      setResult({ error: err instanceof Error ? err.message : 'Failed' })
     } finally {
       setLoading(false)
     }
-  }
-
-  const selectTier = (t: 'sandbox' | 'smb' | 'enterprise') => {
-    setTier(t)
-    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   return (
@@ -87,7 +82,14 @@ export default function GuardPage() {
               </div>
               <span className="ml-2 text-xs text-[#666] font-mono">terminal</span>
             </div>
-            <pre className="p-4 text-sm text-[#e0e0e0] overflow-x-auto"><code>{getCurlExample()}</code></pre>
+            <pre className="p-4 text-sm text-[#e0e0e0] overflow-x-auto"><code>{`curl -X POST https://guard.gridera.net/guard/v1/execute \\
+  -H "X-API-Key: YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "input": "What is 2+2?",
+    "context": "math question",
+    "policy": "eu-ai-act-annex-iii"
+  }'`}</code></pre>
           </div>
 
           {/* ─── Response Envelope (NEW in V2) ──────────────────────────── */}
@@ -171,7 +173,7 @@ export default function GuardPage() {
                     ))}
                   </ul>
                   <button
-                    onClick={() => selectTier(t)}
+                    onClick={() => setTier(t)}
                     className={`w-full h-10 text-sm font-semibold rounded-md transition-colors ${
                       tier === t
                         ? 'bg-[#00ff88] text-[#0a0a0a]'
@@ -186,18 +188,7 @@ export default function GuardPage() {
           </div>
 
           {/* ─── Signup Form ─────────────────────────────────────── */}
-          <div ref={formRef} className="max-w-md mx-auto mt-12">
-            <div className="text-center mb-4">
-              <div className="text-sm font-semibold text-[#e0e0e0]">
-                Selected plan: {GUARD_TIERS[tier].name}
-              </div>
-              <p className="text-xs text-[#888]">
-                {tier === 'sandbox'
-                  ? 'Enter your email to get your free API key instantly.'
-                  : 'Enter your email to start your 14-day trial.'}
-              </p>
-            </div>
-
+          <div className="max-w-md mx-auto mt-12">
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="email"
@@ -215,16 +206,22 @@ export default function GuardPage() {
                 {loading ? 'Working...' : tier === 'sandbox' ? 'Get Free API Key' : 'Start 14-day Trial'}
               </button>
               <p className="text-xs text-[#666] text-center">
-                {tier === 'sandbox'
-                  ? '1,000 verifications/month. No credit card. Real API key issued in 200ms.'
-                  : 'Cancel before day 15 and you won’t be charged. Key emailed after checkout.'}
+                1,000 verifications/month. No credit card. Real API key issued in 200ms.
               </p>
             </form>
 
-            {error && (
+            {result?.apiKey && (
+              <div className="mt-6 p-4 bg-[#0d0d0d] border border-[#00ff88]/30 rounded-md">
+                <div className="text-xs text-[#00ff88] mb-2 font-mono">YOUR API KEY</div>
+                <code className="text-xs text-[#e0e0e0] break-all">{result.apiKey}</code>
+                <p className="text-xs text-[#666] mt-2">Check your email for a copy.</p>
+              </div>
+            )}
+
+            {result?.error && (
               <div className="mt-6 p-4 bg-[#0d0d0d] border border-[#ff5f56]/30 rounded-md">
                 <div className="text-xs text-[#ff5f56] mb-1 font-mono">ERROR</div>
-                <p className="text-xs text-[#e0e0e0]">{error}</p>
+                <p className="text-xs text-[#e0e0e0]">{result.error}</p>
               </div>
             )}
           </div>
@@ -234,17 +231,4 @@ export default function GuardPage() {
       <Footer />
     </main>
   )
-}
-
-function getCurlExample(): string {
-  const executorUrl =
-    process.env['NEXT_PUBLIC_GUARD_EXECUTOR_URL'] ?? 'https://guard.gridera.net/guard/v1/execute'
-  return `curl -X POST ${executorUrl} \\
-  -H "X-API-Key: YOUR_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "input": "What is 2+2?",
-    "context": "math question",
-    "policy": "eu-ai-act-annex-iii"
-  }'`
 }

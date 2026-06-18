@@ -1,9 +1,0 @@
-{
-  "file_count": 23,
-  "hubs": [
-    {
-      "path": "agents/orchestrator.ts",
-      "importers": 3
-    }
-  ]
-}

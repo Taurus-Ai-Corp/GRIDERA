@@ -16,6 +16,19 @@ const nextConfig: NextConfig = {
     // walk up to the parent HEDERA workspace and pick up the wrong pnpm-workspace.yaml.
     root: path.resolve(__dirname, '../..'),
   },
+  // Expose the GRIDERA|Guard executor under eu.q-grid.net/guard/v1/* by
+  // proxying to the standalone guard API (separate Vercel project). Same-origin
+  // for clients, so no CORS and within the CSP connect-src 'self'.
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/guard/v1/:path*',
+          destination: 'https://guard-beryl.vercel.app/guard/v1/:path*',
+        },
+      ],
+    }
+  },
   async headers() {
     return [
       {

@@ -22,11 +22,13 @@ function getDb() {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
+    // Lookup is bound to the unguessable Stripe session id only. The email-based
+    // lookup was removed: it allowed unauthenticated user-enumeration (different
+    // response shape for known vs unknown emails) without proving ownership.
     const sessionId = searchParams.get('session_id')
-    const email = searchParams.get('email')?.trim().toLowerCase()
 
-    if (!sessionId && !email) {
-      return NextResponse.json({ error: 'Provide session_id or email' }, { status: 400 })
+    if (!sessionId) {
+      return NextResponse.json({ error: 'Provide session_id' }, { status: 400 })
     }
 
     // 1. Try the short-lived in-memory cache first so the success page can show the key.
@@ -52,17 +54,9 @@ export async function GET(req: Request) {
       )
     }
 
-    let record = null
-    if (sessionId) {
-      record = await db.query.guardKeys.findFirst({
-        where: (k, { eq }) => eq(k.stripeSubscriptionId, sessionId),
-      })
-    }
-    if (!record && email) {
-      record = await db.query.guardKeys.findFirst({
-        where: (k, { eq }) => eq(k.email, email),
-      })
-    }
+    const record = await db.query.guardKeys.findFirst({
+      where: (k, { eq }) => eq(k.stripeSubscriptionId, sessionId),
+    })
 
     if (!record) {
       return NextResponse.json({ found: false })
