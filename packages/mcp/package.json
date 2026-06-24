@@ -1,5 +1,5 @@
 {
-  "name": "@taurus/pqc-crypto",
+  "name": "@taurus/mcp",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,19 +14,18 @@
   "scripts": {
     "build": "tsc",
     "type-check": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@hiero-ledger/sdk": "^2.82.0",
     "@noble/hashes": "^1.7.0",
-    "@noble/post-quantum": "^0.2.1"
+    "@taurus/hedera": "workspace:*",
+    "@taurus/pqc-crypto": "workspace:*"
   },
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
     "@types/node": "^25.5.0",
-    "typescript": "^5.8.0",
-    "vitest": "^3.0.0"
+    "typescript": "^5.8.0"
   }
 }

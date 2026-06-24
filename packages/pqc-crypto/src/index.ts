@@ -25,3 +25,16 @@ export { generateOrgKeyPair, encryptSecretKey, decryptSecretKey } from './keys.j
 
 // Stamp (PQC stamping)
 export { createStamp } from './stamp.js';
+
+// Crypto Agility (dual-mode Ed25519 / ML-DSA framework)
+export type {
+  MigrationMode,
+  AlgorithmName,
+  MigrationRecord,
+  SignResult,
+  VerifyResult,
+  MigrationResult,
+  RotationResult,
+  AgilityStatus,
+} from './agility.js';
+export { CryptoAgility } from './agility.js';

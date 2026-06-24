@@ -3,23 +3,23 @@
     <img src="https://img.shields.io/badge/Hedera-HCS%20Audit%20Trail-00C389?style=for-the-badge&logo=hedera" alt="Hedera" />
       <img src="https://img.shields.io/badge/License-BSL%201.1-blue?style=for-the-badge" alt="License" />
         <img src="https://img.shields.io/badge/TypeScript-83.7%25-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript" />
-          <img src="https://img.shields.io/github/actions/workflow/status/Taurus-Ai-Corp/Quantum-Grid-Mesh/ci.yml?style=for-the-badge&label=CI" alt="CI Status" />
-</p>p>
+          <img src="https://img.shields.io/github/actions/workflow/status/Taurus-Ai-Corp/GRIDERA/ci.yml?style=for-the-badge&label=CI" alt="CI Status" />
+</p>
 
-<h1 align="center">Quantum Grid Mesh</h1>h1>
+<h1 align="center">GRIDERA</h1>
 
 <p align="center">
-  <strong>Multi-Geographic Post-Quantum Compliance Infrastructure</strong>strong><br/>
+  <strong>Post-Quantum Compliance Platform — Scan. Comply. Migrate.</strong><br/>
     Enterprise-grade PQC compliance platform with ML-DSA-65/ML-KEM-768 signing, Hedera HCS audit trails, and geo-routed regulatory compliance across NA, EU, IN, and UAE.
-</p>p>
+</p>
 
 <p align="center">
-  <a href="https://q-grid.net">Website</a>a> · <a href="https://q-grid.net/scan">Free PQC Scan</a>a> · <a href="#quick-start">Quick Start</a>a> · <a href="docs/API.md">API Docs</a>a> · <a href="#enterprise">Enterprise</a>a>
-</p>p>
+  <a href="https://eu.q-grid.net">Website</a> · <a href="https://eu.q-grid.net/scan">Free PQC Scan</a> · <a href="#quick-start">Quick Start</a> · <a href="docs/API.md">API Docs</a> · <a href="#enterprise">Enterprise</a>
+</p>
 
 ---
 
-## Why Quantum Grid
+## Why GRIDERA
 
 NIST finalized post-quantum cryptography standards (FIPS 203/204/205) in August 2024. The EU AI Act mandates compliance by August 2026. Every organization running TLS, signing code, or managing certificates must migrate — but most have zero visibility into their cryptographic posture.
 
