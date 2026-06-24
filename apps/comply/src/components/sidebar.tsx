@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { UserButton, useUser } from '@clerk/nextjs'
+import { useAuth } from '@/lib/auth-context'
 import {
   LayoutDashboard,
   Server,
@@ -16,6 +16,7 @@ import {
   BadgeCheck,
   Activity,
   Settings,
+  LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { JurisdictionBadge } from './jurisdiction-badge'
@@ -36,7 +37,7 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { user } = useUser()
+  const { user, signOut } = useAuth()
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-[260px] bg-white border-r border-graphite-ghost flex flex-col z-40">
@@ -98,12 +99,21 @@ export function Sidebar() {
 
       {/* User section */}
       <div className="px-4 py-4 border-t border-graphite-ghost flex items-center gap-3">
-        <UserButton />
-        {user && (
-          <span className="text-xs text-graphite-med truncate">
-            {user.primaryEmailAddress?.emailAddress}
+        <div className="h-8 w-8 rounded-full bg-accent-light flex items-center justify-center text-accent font-bold text-xs">
+          {user?.email?.[0]?.toUpperCase() ?? '?'}
+        </div>
+        <div className="flex-1 min-w-0">
+          <span className="text-xs text-graphite-med truncate block">
+            {user?.email ?? 'Not signed in'}
           </span>
-        )}
+        </div>
+        <button
+          onClick={() => signOut()}
+          className="text-graphite-faint hover:text-graphite-med transition-colors"
+          title="Sign out"
+        >
+          <LogOut className="h-4 w-4" />
+        </button>
       </div>
     </aside>
   )

@@ -1,4 +1,3 @@
-import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { and, eq } from 'drizzle-orm'
 import { assessments as assessmentsTable, systems as systemsTable } from '@taurus/db'
@@ -6,6 +5,7 @@ import { getDb } from '@/lib/db'
 import { assessmentsStore, type AssessmentRecord } from '@/lib/assessment-store'
 import { systemsStore } from '@/lib/systems-store'
 import { updateAssessmentSchema } from '@/lib/validation'
+import { getCurrentUser } from '@/lib/auth'
 
 function rowToAssessment(row: typeof assessmentsTable.$inferSelect): AssessmentRecord {
   const stored = (row.responses ?? {}) as Record<string, unknown>
@@ -40,19 +40,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params
+    const orgId = authUser.organizationId ?? authUser.id
 
     const db = getDb()
     if (!db) {
-      // Fallback: in-memory store
-      const assessments = assessmentsStore.get(userId) ?? []
+      const assessments = assessmentsStore.get(orgId) ?? []
       const assessment = assessments.find((a) => a.id === id)
       if (!assessment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const system = systems.find((s) => s.id === assessment.systemId)
       return NextResponse.json({ ...assessment, systemName: system?.name ?? 'Unknown System' })
     }
@@ -60,11 +60,10 @@ export async function GET(
     const [row] = await db
       .select()
       .from(assessmentsTable)
-      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, userId)))
+      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, orgId)))
 
     if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    // Enrich with system name
     const [system] = await db
       .select()
       .from(systemsTable)
@@ -85,10 +84,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params
+    const orgId = authUser.organizationId ?? authUser.id
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -103,8 +103,7 @@ export async function PUT(
 
     const db = getDb()
     if (!db) {
-      // Fallback: in-memory store
-      const assessments = assessmentsStore.get(userId) ?? []
+      const assessments = assessmentsStore.get(orgId) ?? []
       const idx = assessments.findIndex((a) => a.id === id)
       if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -120,22 +119,20 @@ export async function PUT(
       }
 
       assessments[idx] = updated
-      assessmentsStore.set(userId, assessments)
+      assessmentsStore.set(orgId, assessments)
       return NextResponse.json(updated)
     }
 
-    // Fetch existing to merge responses blob
     const [existing] = await db
       .select()
       .from(assessmentsTable)
-      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, userId)))
+      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, orgId)))
 
     if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
     const storedBlob = (existing.responses ?? {}) as Record<string, unknown>
     const existingMeta = (storedBlob['_meta'] ?? {}) as Record<string, unknown>
 
-    // Merge new values into the blob
     const newAnswers =
       parsed.data.responses !== undefined
         ? parsed.data.responses
@@ -154,7 +151,7 @@ export async function PUT(
     const [updated] = await db
       .update(assessmentsTable)
       .set({ responses: newBlob, status: newStatus })
-      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, userId)))
+      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, orgId)))
       .returning()
 
     if (!updated) return NextResponse.json({ error: 'Update failed' }, { status: 500 })

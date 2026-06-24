@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getStripe, PLANS } from '@/lib/stripe'
@@ -10,8 +10,8 @@ const checkoutSchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const stripe = getStripe()
     if (!stripe) {
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       ],
       success_url: `${appUrl}/dashboard?billing=success`,
       cancel_url: `${appUrl}/pricing`,
-      metadata: { userId, plan: planKey },
+      metadata: { userId: authUser.id, plan: planKey },
     })
 
     return NextResponse.json({ url: session.url })

@@ -4,8 +4,9 @@ import { organizations } from './organizations'
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
-  clerkId: text('clerk_id').unique().notNull(),
-  email: text('email').notNull(),
+  clerkId: text('clerk_id').unique(), // Optional for Clerk migration
+  email: text('email').notNull().unique(),
+  passwordHash: text('password_hash'), // bcrypt/argon2 hash for JWT auth
   organizationId: uuid('organization_id').references(() => organizations.id),
   jurisdiction: jurisdictionEnum('jurisdiction'),
   plan: planEnum('plan'),

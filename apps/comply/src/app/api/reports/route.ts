@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { randomUUID } from 'crypto'
@@ -17,13 +17,14 @@ import { createReportSchema } from '@/lib/validation'
 // GET /api/reports — list all reports for the current user
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const reports = reportsStore.get(userId) ?? []
+      const reports = reportsStore.get(orgId) ?? []
       return NextResponse.json(
         reports.map((r) => ({
           id: r.id,
@@ -40,7 +41,7 @@ export async function GET() {
     const rows = await db
       .select()
       .from(reportsTable)
-      .where(eq(reportsTable.organizationId, userId))
+      .where(eq(reportsTable.organizationId, orgId))
 
     return NextResponse.json(
       rows.map((r) => ({
@@ -62,8 +63,9 @@ export async function GET() {
 // POST /api/reports — generate a new report
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -81,13 +83,13 @@ export async function POST(req: Request) {
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const assessments = assessmentsStore.get(userId) ?? []
+      const assessments = assessmentsStore.get(orgId) ?? []
       const assessment = assessments.find((a) => a.id === assessmentId)
       if (!assessment) {
         return NextResponse.json({ error: 'Assessment not found' }, { status: 404 })
       }
 
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const system = systems.find((s) => s.id === assessment.systemId)
       if (!system) {
         return NextResponse.json({ error: 'System not found' }, { status: 404 })
@@ -170,7 +172,7 @@ export async function POST(req: Request) {
       const report = {
         id: reportId,
         assessmentId,
-        userId,
+        userId: orgId,
         content,
         mode: (cloudApiKey || sovereignEndpoint ? mode : 'template') as 'template' | 'cloud' | 'sovereign',
         model: resolvedModel,
@@ -181,11 +183,11 @@ export async function POST(req: Request) {
         createdAt: new Date().toISOString(),
       }
 
-      const existing = reportsStore.get(userId) ?? []
-      reportsStore.set(userId, [report, ...existing])
+      const existing = reportsStore.get(orgId) ?? []
+      reportsStore.set(orgId, [report, ...existing])
 
       void logAuditEvent({
-        userId,
+        userId: authUser.id,
         entityType: 'report',
         entityId: reportId,
         action: 'generated',
@@ -201,7 +203,7 @@ export async function POST(req: Request) {
       .from(assessmentsTable)
       .where(eq(assessmentsTable.id, assessmentId))
 
-    if (!assessmentRow || assessmentRow.organizationId !== userId) {
+    if (!assessmentRow || assessmentRow.organizationId !== orgId) {
       return NextResponse.json({ error: 'Assessment not found' }, { status: 404 })
     }
 
@@ -336,7 +338,7 @@ export async function POST(req: Request) {
       .insert(reportsTable)
       .values({
         assessmentId,
-        organizationId: userId,
+        organizationId: orgId,
         contentMarkdown: content,
         aiModel: resolvedModel,
         pqcHash,
@@ -349,7 +351,7 @@ export async function POST(req: Request) {
     }
 
     void logAuditEvent({
-      userId,
+      userId: authUser.id,
       entityType: 'report',
       entityId: row.id,
       action: 'generated',

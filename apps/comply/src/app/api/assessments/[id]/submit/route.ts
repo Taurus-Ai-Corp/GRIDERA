@@ -1,4 +1,3 @@
-import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { and, eq } from 'drizzle-orm'
 import { assessments as assessmentsTable } from '@taurus/db'
@@ -7,21 +6,22 @@ import { assessmentsStore } from '@/lib/assessment-store'
 import { scoreAssessment } from '@/lib/assessment-scorer'
 import { createStamp } from '@taurus/pqc-crypto'
 import { logAuditEvent } from '@/lib/audit-logger'
+import { getCurrentUser } from '@/lib/auth'
 
 export async function POST(
   _req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params
+    const orgId = authUser.organizationId ?? authUser.id
 
     const db = getDb()
     if (!db) {
-      // Fallback: in-memory store
-      const assessments = assessmentsStore.get(userId) ?? []
+      const assessments = assessmentsStore.get(orgId) ?? []
       const idx = assessments.findIndex((a) => a.id === id)
       if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -73,10 +73,10 @@ export async function POST(
         completedAt: new Date().toISOString(),
       }
       assessments[idx] = completed
-      assessmentsStore.set(userId, assessments)
+      assessmentsStore.set(orgId, assessments)
 
       void logAuditEvent({
-        userId,
+        userId: authUser.id,
         entityType: 'assessment',
         entityId: id,
         action: 'completed',
@@ -90,15 +90,13 @@ export async function POST(
     const [existing] = await db
       .select()
       .from(assessmentsTable)
-      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, userId)))
+      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, orgId)))
 
     if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-
     if (existing.status === 'completed') {
       return NextResponse.json({ error: 'Assessment already completed' }, { status: 400 })
     }
 
-    // Extract answers from blob
     const storedBlob = (existing.responses ?? {}) as Record<string, unknown>
     const answers = (storedBlob['answers'] ?? {}) as Record<string, string | boolean>
 
@@ -131,7 +129,6 @@ export async function POST(
       }
     }
 
-    // Pack scoring results into the responses blob _meta
     const updatedBlob = {
       ...storedBlob,
       _meta: {
@@ -154,7 +151,7 @@ export async function POST(
         pqcHash,
         pqcSignature,
       })
-      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, userId)))
+      .where(and(eq(assessmentsTable.id, id), eq(assessmentsTable.organizationId, orgId)))
       .returning()
 
     if (!updated) return NextResponse.json({ error: 'Update failed' }, { status: 500 })
@@ -179,7 +176,7 @@ export async function POST(
     }
 
     void logAuditEvent({
-      userId,
+      userId: authUser.id,
       entityType: 'assessment',
       entityId: id,
       action: 'completed',

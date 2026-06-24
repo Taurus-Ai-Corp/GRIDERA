@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import {
   generatePolicy,
@@ -14,8 +14,8 @@ import { logAuditEvent } from '@/lib/audit-logger'
 
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     return NextResponse.json({ types: POLICY_TYPES })
   } catch (error) {
@@ -32,8 +32,10 @@ const VALID_TYPES = new Set<string>(POLICY_TYPES.map((t) => t.id))
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Use authUser.id as fallback if no organization
+    const userId = authUser.id
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -79,7 +81,7 @@ export async function POST(req: Request) {
     const policy = generatePolicy(type as PolicyType, org as OrgContext)
 
     void logAuditEvent({
-      userId,
+      userId: authUser.id,
       entityType: 'report',
       entityId: `policy-${type}-${Date.now()}`,
       action: 'created',

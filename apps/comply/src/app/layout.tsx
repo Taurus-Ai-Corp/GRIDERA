@@ -1,30 +1,29 @@
 import type { Metadata } from 'next'
-import { ClerkProvider } from '@clerk/nextjs'
+import { Inter } from 'next/font/google'
+import { AuthProvider } from '@/lib/auth-context'
+import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
 
+const inter = Inter({ subsets: ['latin'] })
+
 export const metadata: Metadata = {
-  title: {
-    template: '%s | GRIDERA Comply',
-    default: 'GRIDERA Comply — Post-Quantum Compliance for EU AI Act',
-  },
-  description:
-    'GRIDERA Comply — EU AI Act compliance automation with blockchain audit trails and post-quantum cryptography. Sovereign AI report generation.',
+  title: 'GRIDERA | Comply — EU AI Act Compliance Platform',
+  description: 'Automated EU AI Act compliance assessment, risk scoring, and remediation tracking for high-risk AI systems.',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <ClerkProvider
-      appearance={{
-        variables: {
-          colorPrimary: '#008E8A',
-          borderRadius: '8px',
-          fontFamily: 'DM Sans, system-ui, sans-serif',
-        },
-      }}
-    >
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </body>
+    </html>
   )
 }

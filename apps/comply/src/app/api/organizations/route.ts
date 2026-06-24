@@ -1,8 +1,8 @@
-import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
 import { getDb } from '@/lib/db'
+import { getCurrentUser } from '@/lib/auth'
 import { logAuditEvent } from '@/lib/audit-logger'
 
 const createOrgSchema = z.object({
@@ -14,8 +14,8 @@ const createOrgSchema = z.object({
 // POST /api/organizations — create organization + link user to it
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -51,11 +51,11 @@ export async function POST(req: Request) {
     // Link user to organization
     await db.update(users)
       .set({ organizationId: org.id, jurisdiction })
-      .where(eq(users.clerkId, userId))
+      .where(eq(users.id, authUser.id))
 
     // Audit
     void logAuditEvent({
-      userId,
+      userId: authUser.id,
       entityType: 'organization',
       entityId: org.id,
       action: 'created',
@@ -72,8 +72,8 @@ export async function POST(req: Request) {
 // GET /api/organizations — get current user's organization
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const db = getDb()
     if (!db) {
@@ -84,7 +84,7 @@ export async function GET() {
 
     // Get user's org ID
     const user = await db.query.users.findFirst({
-      where: eq(users.clerkId, userId),
+      where: eq(users.id, authUser.id),
       columns: { organizationId: true },
     })
 

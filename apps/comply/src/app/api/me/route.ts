@@ -1,13 +1,13 @@
-import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { getDb } from '@/lib/db'
+import { getCurrentUser } from '@/lib/auth'
 
 // GET /api/me — return current user's plan and stripe status
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const db = getDb()
     if (!db) {
@@ -16,7 +16,7 @@ export async function GET() {
 
     const { users } = await import('@taurus/db')
     const row = await db.query.users.findFirst({
-      where: eq(users.clerkId, userId),
+      where: eq(users.id, authUser.id),
       columns: { plan: true, stripeCustomerId: true },
     })
 

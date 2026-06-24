@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Check, ChevronRight } from 'lucide-react'
 import type { Metadata } from 'next'
-import { PricingCTA } from './pricing-cta'
+import { PricingCta } from './pricing-cta'
 
 export const metadata: Metadata = {
   title: 'Pricing',

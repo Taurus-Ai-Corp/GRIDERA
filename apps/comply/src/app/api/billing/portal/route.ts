@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { getStripe } from '@/lib/stripe'
@@ -8,8 +8,8 @@ import { getDb } from '@/lib/db'
 // Looks up stripeCustomerId from the users table by Clerk ID.
 export async function POST() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const stripe = getStripe()
     if (!stripe) {
@@ -22,7 +22,7 @@ export async function POST() {
     if (db) {
       const { users } = await import('@taurus/db')
       const row = await db.query.users.findFirst({
-        where: eq(users.clerkId, userId),
+        where: eq(users.id, authUser.id),
         columns: { stripeCustomerId: true },
       })
       customerId = row?.stripeCustomerId ?? null

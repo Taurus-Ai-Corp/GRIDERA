@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { systems as systemsTable } from '@taurus/db'
@@ -10,21 +10,22 @@ import { createSystemSchema } from '@/lib/validation'
 
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       return NextResponse.json({ systems })
     }
 
-    // Neon DB: use userId as organizationId stand-in for MVP
+    // Neon DB: use orgId as organizationId
     const rows = await db
       .select()
       .from(systemsTable)
-      .where(eq(systemsTable.organizationId, userId))
+      .where(eq(systemsTable.organizationId, orgId))
 
     // Map DB rows to SystemRecord shape
     const systems: SystemRecord[] = rows.map((r) => ({
@@ -50,8 +51,9 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -85,12 +87,12 @@ export async function POST(req: Request) {
         createdAt: new Date().toISOString(),
       }
 
-      const existing = systemsStore.get(userId) ?? []
+      const existing = systemsStore.get(orgId) ?? []
       existing.push(system)
-      systemsStore.set(userId, existing)
+      systemsStore.set(orgId, existing)
 
       void logAuditEvent({
-        userId,
+        userId: authUser.id,
         entityType: 'system',
         entityId: system.id,
         action: 'created',
@@ -100,11 +102,11 @@ export async function POST(req: Request) {
       return NextResponse.json(system, { status: 201 })
     }
 
-    // Neon DB insert — userId used as organizationId for MVP
+    // Neon DB insert — orgId used as organizationId
     const [row] = await db
       .insert(systemsTable)
       .values({
-        organizationId: userId,
+        organizationId: orgId,
         name: name.trim(),
         description,
         riskLevel,
@@ -132,7 +134,7 @@ export async function POST(req: Request) {
     }
 
     void logAuditEvent({
-      userId,
+      userId: authUser.id,
       entityType: 'system',
       entityId: system.id,
       action: 'created',

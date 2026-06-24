@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import {
   mapPlatformToSoc2,
@@ -13,8 +13,8 @@ import {
  *   ?view=full|score|gaps  (default: full)
  */
 export async function GET(req: Request) {
-  const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authUser = await getCurrentUser()
+if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
   const view = searchParams.get('view') ?? 'full'

@@ -1,4 +1,3 @@
-import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { assessments as assessmentsTable, systems as systemsTable } from '@taurus/db'
@@ -6,12 +5,8 @@ import { getDb } from '@/lib/db'
 import { assessmentsStore, type AssessmentRecord } from '@/lib/assessment-store'
 import { systemsStore } from '@/lib/systems-store'
 import { createAssessmentSchema } from '@/lib/validation'
+import { getCurrentUser } from '@/lib/auth'
 
-/**
- * Map a DB assessment row back to AssessmentRecord shape.
- * Extra fields (currentSection, score, riskLevel, etc.) are packed
- * into the jsonb `responses` column under a `_meta` key.
- */
 function rowToAssessment(row: typeof assessmentsTable.$inferSelect): AssessmentRecord {
   const stored = (row.responses ?? {}) as Record<string, unknown>
   const meta = (stored['_meta'] ?? {}) as Record<string, unknown>
@@ -19,7 +14,7 @@ function rowToAssessment(row: typeof assessmentsTable.$inferSelect): AssessmentR
   return {
     id: row.id,
     systemId: row.systemId,
-    userId: row.organizationId, // MVP: userId === organizationId
+    userId: row.organizationId,
     status: (row.status as AssessmentRecord['status']) ?? 'draft',
     responses: (stored['answers'] as Record<string, string | boolean>) ?? {},
     currentSection: typeof meta['currentSection'] === 'number' ? meta['currentSection'] : 0,
@@ -42,14 +37,15 @@ function rowToAssessment(row: typeof assessmentsTable.$inferSelect): AssessmentR
 
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const db = getDb()
+    const orgId = authUser.organizationId ?? authUser.id
+
     if (!db) {
-      // Fallback: in-memory store
-      const assessments = assessmentsStore.get(userId) ?? []
-      const systems = systemsStore.get(userId) ?? []
+      const assessments = assessmentsStore.get(orgId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const enriched = assessments.map((a) => {
         const system = systems.find((s) => s.id === a.systemId)
         return { ...a, systemName: system?.name ?? 'Unknown System' }
@@ -60,16 +56,15 @@ export async function GET() {
     const rows = await db
       .select()
       .from(assessmentsTable)
-      .where(eq(assessmentsTable.organizationId, userId))
+      .where(eq(assessmentsTable.organizationId, orgId))
 
-    // Enrich with system names
     const systemIds = [...new Set(rows.map((r) => r.systemId))]
     const systemRows =
       systemIds.length > 0
         ? await db
             .select()
             .from(systemsTable)
-            .where(eq(systemsTable.organizationId, userId))
+            .where(eq(systemsTable.organizationId, orgId))
         : []
 
     const systemMap = new Map(systemRows.map((s) => [s.id, s.name]))
@@ -88,8 +83,8 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -104,11 +99,11 @@ export async function POST(req: Request) {
 
     const { systemId } = parsed.data
     const jurisdiction = (process.env['JURISDICTION'] ?? 'eu') as 'eu' | 'na' | 'in' | 'ae'
+    const orgId = authUser.organizationId ?? authUser.id
 
     const db = getDb()
     if (!db) {
-      // Fallback: in-memory store
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const system = systems.find((s) => s.id === systemId)
       if (!system) {
         return NextResponse.json({ error: 'System not found' }, { status: 404 })
@@ -117,31 +112,29 @@ export async function POST(req: Request) {
       const assessment: AssessmentRecord = {
         id: crypto.randomUUID(),
         systemId,
-        userId,
+        userId: orgId,
         status: 'draft',
         responses: {},
         currentSection: 0,
         createdAt: new Date().toISOString(),
       }
 
-      const existing = assessmentsStore.get(userId) ?? []
+      const existing = assessmentsStore.get(orgId) ?? []
       existing.push(assessment)
-      assessmentsStore.set(userId, existing)
+      assessmentsStore.set(orgId, existing)
 
       return NextResponse.json(assessment, { status: 201 })
     }
 
-    // Verify system belongs to user
     const [system] = await db
       .select()
       .from(systemsTable)
       .where(eq(systemsTable.id, systemId))
 
-    if (!system || system.organizationId !== userId) {
+    if (!system || system.organizationId !== orgId) {
       return NextResponse.json({ error: 'System not found' }, { status: 404 })
     }
 
-    // Initial responses blob — answers empty, _meta tracks extra fields
     const initialResponses = {
       answers: {},
       _meta: { currentSection: 0 },
@@ -151,7 +144,7 @@ export async function POST(req: Request) {
       .insert(assessmentsTable)
       .values({
         systemId,
-        organizationId: userId,
+        organizationId: orgId,
         jurisdiction,
         framework: 'eu-ai-act',
         status: 'draft',

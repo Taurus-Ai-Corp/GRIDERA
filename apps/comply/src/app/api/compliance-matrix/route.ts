@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import {
   getComplianceMatrix,
@@ -14,8 +14,8 @@ import {
  *   ?framework=GDPR|EU AI Act|DORA|NIS2|SOC 2|ENISA PQC  (filter by framework)
  */
 export async function GET(req: Request) {
-  const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authUser = await getCurrentUser()
+if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
   const view = searchParams.get('view') ?? 'full'

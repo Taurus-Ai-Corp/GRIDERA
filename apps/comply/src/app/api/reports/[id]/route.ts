@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { and, eq } from 'drizzle-orm'
 import { reports as reportsTable } from '@taurus/db'
@@ -11,15 +11,16 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const { id } = await params
 
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const reports = reportsStore.get(userId) ?? []
+      const reports = reportsStore.get(orgId) ?? []
       const report = reports.find((r) => r.id === id)
       if (!report) return NextResponse.json({ error: 'Not found' }, { status: 404 })
       return NextResponse.json(report)
@@ -28,7 +29,7 @@ export async function GET(
     const [row] = await db
       .select()
       .from(reportsTable)
-      .where(and(eq(reportsTable.id, id), eq(reportsTable.organizationId, userId)))
+      .where(and(eq(reportsTable.id, id), eq(reportsTable.organizationId, orgId)))
 
     if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 

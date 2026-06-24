@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@/lib/auth-context'
 import { CreditCard, Building2, Cpu, Check, ExternalLink, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PLANS, type PlanKey } from '@/lib/stripe'
@@ -16,7 +16,7 @@ const TABS: { id: Tab; label: string; icon: typeof CreditCard }[] = [
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<Tab>('plan')
-  const { user } = useUser()
+  const { user } = useAuth()
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-6">
@@ -253,7 +253,13 @@ function PlanTab() {
 // ─── Organization Tab ─────────────────────────────────────────────────────────
 
 interface OrganizationTabProps {
-  user: ReturnType<typeof useUser>['user']
+  user: {
+    id?: string
+    email?: string
+    fullName?: string
+    organizationId?: string
+    plan?: string
+  } | null
 }
 
 function OrganizationTab({ user }: OrganizationTabProps) {

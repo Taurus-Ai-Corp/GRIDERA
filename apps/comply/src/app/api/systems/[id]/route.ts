@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { and, eq } from 'drizzle-orm'
 import { systems as systemsTable } from '@taurus/db'
@@ -10,15 +10,16 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const { id } = await params
 
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const system = systems.find((s) => s.id === id)
       if (!system) return NextResponse.json({ error: 'Not found' }, { status: 404 })
       return NextResponse.json(system)
@@ -27,7 +28,7 @@ export async function GET(
     const [row] = await db
       .select()
       .from(systemsTable)
-      .where(and(eq(systemsTable.id, id), eq(systemsTable.organizationId, userId)))
+      .where(and(eq(systemsTable.id, id), eq(systemsTable.organizationId, orgId)))
 
     if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -55,26 +56,27 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const { id } = await params
 
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      const systems = systemsStore.get(userId) ?? []
+      const systems = systemsStore.get(orgId) ?? []
       const filtered = systems.filter((s) => s.id !== id)
       if (filtered.length === systems.length) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
-      systemsStore.set(userId, filtered)
+      systemsStore.set(orgId, filtered)
       return NextResponse.json({ success: true })
     }
 
     const deleted = await db
       .delete(systemsTable)
-      .where(and(eq(systemsTable.id, id), eq(systemsTable.organizationId, userId)))
+      .where(and(eq(systemsTable.id, id), eq(systemsTable.organizationId, orgId)))
       .returning()
 
     if (deleted.length === 0) {

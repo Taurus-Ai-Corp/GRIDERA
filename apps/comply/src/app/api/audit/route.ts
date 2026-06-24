@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { getCurrentUser } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { desc } from 'drizzle-orm'
 import { auditTrail as auditTrailTable } from '@taurus/db'
@@ -7,8 +7,9 @@ import { getAuditEvents } from '@/lib/audit-store'
 
 export async function GET(req: Request) {
   try {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authUser = await getCurrentUser()
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const orgId = authUser.organizationId ?? authUser.id
 
     const url = new URL(req.url)
     const entityType = url.searchParams.get('entityType') ?? undefined
@@ -16,7 +17,7 @@ export async function GET(req: Request) {
     const db = getDb()
     if (!db) {
       // Fallback: in-memory store
-      let events = getAuditEvents(userId)
+      let events = getAuditEvents(orgId)
       if (entityType) events = events.filter((e) => e.entityType === entityType)
       return NextResponse.json({ events: events.slice(0, 50) })
     }
@@ -33,7 +34,7 @@ export async function GET(req: Request) {
       .filter((r) => !entityType || r.entityType === entityType)
       .map((r) => ({
         id: r.id,
-        userId,
+        userId: authUser.id,
         entityType: r.entityType,
         entityId: r.entityId,
         action: r.action,

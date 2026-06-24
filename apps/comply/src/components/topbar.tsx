@@ -1,37 +1,24 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-import { UserButton } from '@clerk/nextjs'
-import { JurisdictionBadge } from './jurisdiction-badge'
-
-const PATH_LABELS: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/dashboard/systems': 'AI Systems',
-  '/dashboard/assessments': 'Assessments',
-  '/dashboard/reports': 'Reports',
-  '/dashboard/security': 'Security',
-  '/dashboard/audit': 'Audit Trail',
-  '/dashboard/education': 'Education',
-  '/dashboard/settings': 'Settings',
-}
+import { useAuth } from '@/lib/auth-context'
+import { Bell } from 'lucide-react'
 
 export function Topbar() {
-  const pathname = usePathname()
-  const pageTitle = PATH_LABELS[pathname] ?? 'Dashboard'
+  const { user } = useAuth()
 
   return (
-    <header className="h-14 bg-white border-b border-graphite-ghost flex items-center justify-between px-6 shrink-0">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm">
-        <span className="text-graphite-light">GRIDERA Comply</span>
-        <span className="text-graphite-ghost">/</span>
-        <span className="font-medium text-graphite">{pageTitle}</span>
+    <header className="h-14 border-b border-graphite-ghost bg-white flex items-center justify-between px-6 sticky top-0 z-30">
+      <div className="text-sm font-medium text-graphite-med">
+        {user?.email ?? 'Loading...'}
       </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-3">
-        <JurisdictionBadge jurisdiction="eu" size="sm" />
-        <UserButton />
+      <div className="flex items-center gap-4">
+        <button
+          className="relative text-graphite-faint hover:text-graphite-med transition-colors"
+          aria-label="Notifications"
+        >
+          <Bell className="h-5 w-5" />
+        </button>
       </div>
     </header>
   )
