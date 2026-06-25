@@ -1,1 +1,0 @@
-// Clerk middleware removed — JWT auth handled by src/middleware.ts
