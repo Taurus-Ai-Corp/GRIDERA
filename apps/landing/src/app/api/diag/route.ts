@@ -1,6 +1,6 @@
 /**
  * DIAGNOSTIC ROUTE - DELETE AFTER DEBUG
- * Returns production env state and checks for Clerk residue
+ * Returns production env state
  */
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -15,15 +15,20 @@ interface DiagResult {
     vercelEnv: string | null
     vercelRegion: string | null
     vercelUrl: string | null
+    buildId: string | null
   }
-  build: {
-    hasClerkInNodeModules: boolean
-    packageJsonHasClerk: boolean
+  keys: {
+    stripeKeyPresent: boolean
+    stripeKeyMode: 'test' | 'live' | 'unknown'
+    stripeKeyFingerprint: string | null
+    resendKeyPresent: boolean
+    jwtSecretPresent: boolean
   }
   warning: string | null
 }
 
 export async function GET() {
+  const stripeKey = process.env.STRIPE_SECRET_KEY
   const result: DiagResult = {
     ok: true,
     timestamp: new Date().toISOString(),
@@ -32,21 +37,16 @@ export async function GET() {
       vercelEnv: process.env.VERCEL_ENV || null,
       vercelRegion: process.env.VERCEL_REGION || null,
       vercelUrl: process.env.VERCEL_URL || null,
+      buildId: process.env.NEXT_BUILD_ID || null,
     },
-    build: {
-      hasClerkInNodeModules: false,
-      packageJsonHasClerk: false,
+    keys: {
+      stripeKeyPresent: !!stripeKey,
+      stripeKeyMode: stripeKey?.startsWith('sk_live_') ? 'live' : stripeKey?.startsWith('sk_test_') ? 'test' : 'unknown',
+      stripeKeyFingerprint: stripeKey ? '...' + stripeKey.slice(-6) : null,
+      resendKeyPresent: !!process.env.RESEND_API_KEY,
+      jwtSecretPresent: !!process.env.JWT_SECRET,
     },
     warning: null,
-  }
-
-  // Check if Clerk is somehow still installed
-  try {
-    // @ts-ignore - dynamic check
-    const clerkPackage = await import('@clerk/nextjs').then(() => true).catch(() => false)
-    result.build.hasClerkInNodeModules = clerkPackage
-  } catch {
-    result.build.hasClerkInNodeModules = false
   }
 
   // Check for Clerk env vars (should not exist)
@@ -56,8 +56,7 @@ export async function GET() {
   }
 
   // Check for test keys in production
-  const stripeKey = process.env.STRIPE_SECRET_KEY
-  if (stripeKey && stripeKey.startsWith('sk_test_') && process.env.VERCEL_ENV === 'production') {
+  if (result.keys.stripeKeyMode === 'test' && process.env.VERCEL_ENV === 'production') {
     result.warning = 'STRIPE_SECRET_KEY is a TEST key in production environment'
   }
 
