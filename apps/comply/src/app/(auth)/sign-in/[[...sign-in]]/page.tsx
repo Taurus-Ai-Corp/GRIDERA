@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import type { Route } from 'next'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -103,7 +104,7 @@ export default function SignInPage() {
 
           <p className="text-center text-sm text-graphite-med">
             Don't have an account?{' '}
-            <Link href="/sign-up" className="text-accent hover:underline">
+            <Link href={'/sign-up' as Route} className="text-accent hover:underline">
               Sign up
             </Link>
           </p>

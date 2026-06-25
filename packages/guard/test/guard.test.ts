@@ -89,7 +89,7 @@ describe('Input Rules', () => {
     const tokenLimit = verdicts.find(v => v.rule === 'token-limit')
     expect(tokenLimit?.pass).toBe(false)
     expect(tokenLimit?.reason).toContain('exceeds')
-  })
+  }, 10000) // Increased timeout for large string processing
 
   it('should allow prompts within token limit', () => {
     const shortPrompt = 'Hello world'

@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Nav from '@/components/nav'
+import ProductShell from '@/components/product-shell'
 
 export default function ScanPage() {
   const router = useRouter()
@@ -14,11 +14,8 @@ export default function ScanPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!domain.trim()) return
-
     setLoading(true)
     setError('')
-
-    // Animate scanning dots
     let dotCount = 0
     const interval = setInterval(() => {
       dotCount = (dotCount + 1) % 4
@@ -31,14 +28,8 @@ export default function ScanPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain: domain.trim() }),
       })
-
       const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error ?? 'Scan failed. Please try again.')
-      }
-
-      // Store result in sessionStorage so the results page can read it
+      if (!res.ok) throw new Error(data.error ?? 'Scan failed. Please try again.')
       sessionStorage.setItem('qgrid_scan_result', JSON.stringify(data))
       clearInterval(interval)
       router.push('/scan/results')
@@ -51,10 +42,8 @@ export default function ScanPage() {
   }
 
   return (
-    <>
-      <Nav />
-      <main className="min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-20">
-        {/* Background grid */}
+    <ProductShell>
+      <main className="min-h-[100dvh] flex flex-col items-center justify-center px-6 pt-24 pb-20">
         <div
           className="fixed inset-0 pointer-events-none opacity-[0.03]"
           style={{
@@ -66,13 +55,11 @@ export default function ScanPage() {
         />
 
         <div className="relative z-10 w-full max-w-[600px] text-center">
-          {/* Label */}
           <div className="inline-flex items-center gap-3 font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-[var(--accent)] mb-6 px-4 py-[6px] border border-[var(--accent)]">
             <span className="block w-5 h-px bg-[var(--accent)]" aria-hidden="true" />
-            FREE PQC ASSESSMENT
+            Free PQC Assessment
           </div>
 
-          {/* Heading */}
           <h1
             className="font-[var(--font-heading)] font-bold leading-[1.08] tracking-[-0.02em] mb-4"
             style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}
@@ -88,7 +75,6 @@ export default function ScanPage() {
             verifiable.
           </p>
 
-          {/* Scan form */}
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-4">
             <input
               type="text"
@@ -107,20 +93,10 @@ export default function ScanPage() {
               disabled={loading || !domain.trim()}
               className="btn-primary whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
             >
-              {loading ? (
-                <span className="font-mono text-[13px]">
-                  Scanning{dots}
-                </span>
-              ) : (
-                <>
-                  Scan Now
-                  <span aria-hidden="true">→</span>
-                </>
-              )}
+              {loading ? <span className="font-mono text-[13px]">Scanning{dots}</span> : <>Scan Now<span aria-hidden="true">→</span></>}
             </button>
           </form>
 
-          {/* Loading status */}
           {loading && (
             <p className="font-mono text-[12px] text-[var(--graphite-med)] tracking-[0.06em] uppercase mb-4">
               <span className="inline-block w-[6px] h-[6px] rounded-full bg-[var(--accent)] mr-2 dot-pulse align-middle" />
@@ -128,23 +104,18 @@ export default function ScanPage() {
             </p>
           )}
 
-          {/* Error */}
           {error && (
             <p className="font-mono text-[12px] text-red-400 border border-red-400/30 bg-red-400/5 px-4 py-3 mb-4 text-left">
               ✗ {error}
             </p>
           )}
 
-          {/* Fine print */}
           <p className="font-mono text-[11px] text-[var(--graphite-med)] tracking-[0.04em] opacity-60">
             No signup required. Results are cryptographically verified.
           </p>
 
-          {/* What we check */}
           <div className="mt-16 border border-[var(--graphite-ghost)] bg-[var(--bone-deep)] p-6 text-left">
-            <p className="font-mono text-[11px] text-[var(--accent)] tracking-[0.1em] uppercase mb-4">
-              What we check
-            </p>
+            <p className="font-mono text-[11px] text-[var(--accent)] tracking-[0.1em] uppercase mb-4">What we check</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 'TLS certificate algorithms',
@@ -163,6 +134,6 @@ export default function ScanPage() {
           </div>
         </div>
       </main>
-    </>
+    </ProductShell>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import type { Route } from 'next'
 import { Shield, Lock, Cpu, FileCheck, ChevronRight, X, Clock, Users, Layers, TrendingDown } from 'lucide-react'
 import { JurisdictionBadge } from '@/components/jurisdiction-badge'
 
@@ -131,7 +132,7 @@ export default function EULandingPage() {
         {/* Fix 3: btn-cta-metallic on primary CTA */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
           <Link
-            href="/sign-up"
+            href={'/sign-up' as Route}
             className="btn-cta-metallic inline-flex items-center justify-center gap-2 h-12 px-8 text-base font-semibold rounded-brand"
           >
             Start Free Trial
@@ -304,7 +305,7 @@ export default function EULandingPage() {
               14-day free trial. No credit card required.
             </p>
             <Link
-              href="/sign-up"
+              href={'/sign-up' as Route}
               className="btn-cta-metallic inline-flex items-center justify-center gap-2 h-12 px-10 text-base font-semibold rounded-brand"
             >
               Start Free Trial
