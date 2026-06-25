@@ -179,10 +179,10 @@ export const COMPLIANCE_MATRIX: ComplianceEntry[] = [
   // ─── COVERED: Conformity assessment ────────────────────────────────────────
   {
     featureId: 'conformity-assessment',
-    featureName: 'EU AI Act Conformity Assessment (18 questions, 6 sections)',
+    featureName: 'EU AI Act Conformity Assessment (22 questions, 6 sections)',
     category: 'risk-management',
     description:
-      'Structured 18-question assessment covering system info, risk, data governance, transparency, human oversight, and security with weighted scoring.',
+      'Structured 22-question assessment covering system info, risk, data governance, transparency, human oversight, and security with weighted scoring.',
     status: 'covered',
     implementationPath: 'apps/comply/src/lib/assessment-sections.ts',
     regulations: [

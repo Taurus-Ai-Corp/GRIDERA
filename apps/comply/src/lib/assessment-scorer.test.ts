@@ -90,6 +90,8 @@ describe('scoreAssessment — scoring engine', () => {
         'The system poses minimal safety risk as it provides decision support only. All flagged transactions require manual review by a qualified analyst before any action is taken.',
       bias_assessment:
         'Bias assessed through quarterly audits using held-out test sets stratified by geography, transaction type, and customer demographic. No significant disparate impact detected in last four audits.',
+      biometric_processing: 'No biometric processing', // select last option = 100
+      individual_scoring: 'No scoring of individuals', // select last option = 100
       // data-governance: text = long, POSITIVE boolean = true
       training_data:
         'Training data consists of 5 years of anonymised transaction records with PII removed. Data sourced exclusively from internal systems and preprocessed to remove outliers and duplicate records.',
@@ -108,12 +110,14 @@ describe('scoreAssessment — scoring engine', () => {
       override_capability: true, // POSITIVE → true = 100
       monitoring:
         'Real-time dashboards track precision, recall, and false positive rates. Automated alerts trigger when metrics deviate more than two standard deviations from the baseline. Monthly model refresh cycle.',
+      emergency_stop: 'Immediate kill switch available', // select last option = 100
       // security: text = long, POSITIVE boolean = true
       accuracy_metrics:
         'Precision: 94.2%, Recall: 91.8%, F1: 93.0% on held-out test set (Q4 2024). AUC-ROC: 0.987. Benchmarked quarterly against industry-standard fraud detection baselines.',
       security_measures:
         'End-to-end TLS 1.3 encryption, role-based access control with MFA, model artefacts stored in encrypted S3 buckets, penetration testing conducted annually by third-party security firm.',
       adversarial_testing: true, // POSITIVE → true = 100
+      conformity_assessment: 'Third-party assessment completed', // select last option = 100
     }
     const result = scoreAssessment(bestResponses)
     expect(result.score).toBeGreaterThan(75)
@@ -127,8 +131,8 @@ describe('scoreAssessment — scoring engine', () => {
       safety_risks: 'Some risk considered',      // short → 25 points
     }
     const result = scoreAssessment(partialResponses)
-    // These 2 questions get 25 pts each across 18 questions total
-    // avg = (25+25) / 18 ≈ 2.8 overall — that's unacceptable actually
+    // These 2 questions get 25 pts each across 22 questions total
+    // avg works out very low overall — that's unacceptable actually
     // So test the threshold boundary properly via riskLevel label
     expect(['unacceptable', 'high', 'limited', 'minimal']).toContain(result.riskLevel)
   })
@@ -151,6 +155,8 @@ describe('scoreAssessment — scoring engine', () => {
         'Minimal safety risk — decision support only. All flagged transactions require manual review by a qualified analyst before any action is taken on the alert.',
       bias_assessment:
         'Bias assessed quarterly using held-out test sets stratified by geography and transaction type. No significant disparate impact detected in last four audits.',
+      biometric_processing: 'No biometric processing',
+      individual_scoring: 'No scoring of individuals',
       training_data:
         'Five years of anonymised transaction records, PII removed, sourced from internal systems and preprocessed to remove outliers and duplicate records systematically.',
       data_quality:
@@ -166,11 +172,13 @@ describe('scoreAssessment — scoring engine', () => {
       override_capability: true,
       monitoring:
         'Real-time dashboards track precision, recall, false positive rates. Automated alerts trigger on metric deviations. Monthly model refresh cycle in place.',
+      emergency_stop: 'Immediate kill switch available',
       accuracy_metrics:
         'Precision 94.2%, Recall 91.8%, F1 93.0% on held-out test set. AUC-ROC 0.987. Benchmarked quarterly against industry-standard fraud detection baselines.',
       security_measures:
         'TLS 1.3 encryption end-to-end, role-based access control with MFA, encrypted model artefact storage, annual third-party penetration testing completed.',
       adversarial_testing: true,
+      conformity_assessment: 'Third-party assessment completed',
     })
     expect(rBest.riskLevel).toBe('minimal')
     expect(rBest.score).toBeGreaterThan(75)
@@ -238,6 +246,22 @@ describe('scoreAssessment — scoring engine', () => {
     const order = { critical: 0, high: 1, medium: 2, low: 3 }
     for (let i = 1; i < priorities.length; i++) {
       expect(order[priorities[i]!]).toBeGreaterThanOrEqual(order[priorities[i - 1]!])
+    }
+  })
+
+  // Ported EU AI Act select questions must order options worst -> best, because
+  // scoreSelect rewards later indices. Guards against an option-order inversion.
+  it('ported select questions score the worst option below the best option', () => {
+    const cases: Array<{ section: string; id: string; worst: string; best: string }> = [
+      { section: 'risk-assessment', id: 'biometric_processing', worst: 'Real-time biometric identification', best: 'No biometric processing' },
+      { section: 'risk-assessment', id: 'individual_scoring', worst: 'Social or behavioral scoring', best: 'No scoring of individuals' },
+      { section: 'human-oversight', id: 'emergency_stop', worst: 'No emergency stop mechanism', best: 'Immediate kill switch available' },
+      { section: 'security', id: 'conformity_assessment', worst: 'Not yet conducted', best: 'Third-party assessment completed' },
+    ]
+    for (const c of cases) {
+      const worst = scoreAssessment({ [c.id]: c.worst })
+      const best = scoreAssessment({ [c.id]: c.best })
+      expect(best.categoryScores[c.section] ?? 0).toBeGreaterThan(worst.categoryScores[c.section] ?? 0)
     }
   })
 })

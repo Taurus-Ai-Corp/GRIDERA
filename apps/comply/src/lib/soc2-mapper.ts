@@ -50,7 +50,7 @@ const CONTROL_MAPPINGS: Record<
     status: 'met',
     platformFeature: 'QRS Engine + AI Act Assessment',
     evidence:
-      'Quantum Readiness Score (QRS) engine performs risk identification across cryptographic posture. EU AI Act conformity assessment covers 18-question risk analysis across 6 sections.',
+      'Quantum Readiness Score (QRS) engine performs risk identification across cryptographic posture. EU AI Act conformity assessment covers 22-question risk analysis across 6 sections.',
   },
   'CC4.1': {
     status: 'met',

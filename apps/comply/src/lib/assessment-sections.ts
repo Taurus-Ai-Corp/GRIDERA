@@ -1,5 +1,5 @@
 /**
- * EU AI Act conformity assessment — 6 sections, 18 questions
+ * EU AI Act conformity assessment — 6 sections, 22 questions
  */
 
 export interface AssessmentQuestion {
@@ -77,6 +77,35 @@ export const euAssessmentSections: AssessmentSection[] = [
         type: 'text',
         weight: 2,
         riskIndicator: 'medium',
+      },
+      {
+        id: 'biometric_processing',
+        label: 'Does the system use biometric identification or categorization?',
+        type: 'select',
+        // Options ordered worst -> best: scoreSelect rewards later indices.
+        options: [
+          'Real-time biometric identification',
+          'Post-processing biometric identification',
+          'Biometric categorization only',
+          'No biometric processing',
+        ],
+        helpText: 'Real-time remote biometric identification is a prohibited/high-risk practice under EU AI Act Article 5',
+        weight: 3,
+        riskIndicator: 'high',
+      },
+      {
+        id: 'individual_scoring',
+        label: 'Is the system used to score or evaluate individuals?',
+        type: 'select',
+        options: [
+          'Social or behavioral scoring',
+          'Creditworthiness scoring',
+          'Other individual evaluations',
+          'No scoring of individuals',
+        ],
+        helpText: 'Social/behavioral scoring of individuals is prohibited under EU AI Act Article 5',
+        weight: 3,
+        riskIndicator: 'high',
       },
     ],
   },
@@ -157,6 +186,20 @@ export const euAssessmentSections: AssessmentSection[] = [
         type: 'text',
         weight: 2,
       },
+      {
+        id: 'emergency_stop',
+        label: 'Can the system be stopped or disabled in an emergency?',
+        type: 'select',
+        options: [
+          'No emergency stop mechanism',
+          'Stop only with prior authorization',
+          'Stop with minimal delay',
+          'Immediate kill switch available',
+        ],
+        helpText: 'High-risk systems must let operators intervene or halt operation (EU AI Act Article 14)',
+        weight: 2,
+        riskIndicator: 'high',
+      },
     ],
   },
   {
@@ -182,6 +225,20 @@ export const euAssessmentSections: AssessmentSection[] = [
         label: 'Has adversarial testing been conducted?',
         type: 'boolean',
         weight: 2,
+      },
+      {
+        id: 'conformity_assessment',
+        label: 'Has a conformity assessment been conducted for this system?',
+        type: 'select',
+        options: [
+          'Not yet conducted',
+          'In progress',
+          'Self-assessment completed',
+          'Third-party assessment completed',
+        ],
+        helpText: 'High-risk AI systems require a conformity assessment before market placement (EU AI Act Article 43)',
+        weight: 3,
+        riskIndicator: 'high',
       },
     ],
   },
