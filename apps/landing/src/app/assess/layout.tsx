@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'EU AI Act Risk Assessment | Quantum Grid',
     description:
-      'Is your AI system HIGH RISK under the EU AI Act? Find out in 2 minutes. Free assessment by Q-Grid Comply.',
+      'Is your AI system HIGH RISK under the EU AI Act? Find out in 2 minutes. Free assessment by GRIDERA|Comply.',
     url: 'https://q-grid.net/assess',
     siteName: 'Quantum Grid',
     locale: 'en_US',

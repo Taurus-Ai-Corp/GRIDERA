@@ -101,7 +101,7 @@ export default function CompetitiveTable() {
               Competitive Comparison
             </h2>
             <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--graphite-med)] mt-1">
-              Q-Grid Comply vs. legacy cryptography vendors
+              GRIDERA|Comply vs. legacy cryptography vendors
             </p>
           </div>
         </div>

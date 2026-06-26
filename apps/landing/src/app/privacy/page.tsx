@@ -6,7 +6,7 @@ import Footer from '@/components/footer'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'Privacy Policy for Q-Grid Comply — how we collect, use, store, and protect your data. GDPR-compliant. Last updated March 29, 2026.',
+    'Privacy Policy for GRIDERA|Comply — how we collect, use, store, and protect your data. GDPR-compliant. Last updated March 29, 2026.',
 }
 
 const TOC = [
@@ -41,8 +41,8 @@ export default function PrivacyPage() {
           </p>
           <p className="mt-4 text-[16px] leading-[1.75] text-[var(--graphite-med)]">
             TAURUS AI Corp (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates{' '}
-            <strong className="text-[var(--graphite)]">Q-Grid Comply</strong> and{' '}
-            <strong className="text-[var(--graphite)]">Q-Grid Scanner</strong>. This Privacy Policy
+            <strong className="text-[var(--graphite)]">GRIDERA|Comply</strong> and{' '}
+            <strong className="text-[var(--graphite)]">GRIDERA|Scan</strong>. This Privacy Policy
             explains how we collect, use, store, and protect information when you use our services.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
                 <h3 className="font-medium text-[var(--graphite)] mb-1">Scan Data</h3>
                 <p>
                   Domain names and publicly accessible SSL certificate information submitted through
-                  Q-Grid Scanner. This data consists exclusively of publicly available information.
+                  GRIDERA|Scan. This data consists exclusively of publicly available information.
                   We do not access any non-public systems.
                 </p>
               </div>
@@ -424,7 +424,7 @@ export default function PrivacyPage() {
                 {[
                   'AI inference runs on the customer\'s own infrastructure using a self-hosted model (Ollama, vLLM, or compatible OpenAI-API endpoint)',
                   'Assessment data and report content never leave the customer\'s network boundary',
-                  'Q-Grid Comply acts as a thin orchestration layer — it sends structured prompts to your local AI endpoint and formats the response',
+                  'GRIDERA|Comply acts as a thin orchestration layer — it sends structured prompts to your local AI endpoint and formats the response',
                   'Blockchain anchoring (Hedera HCS hashes) still occurs from customer infrastructure, ensuring audit trails remain intact without data exposure',
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
@@ -516,7 +516,7 @@ export default function PrivacyPage() {
                 ))}
               </ul>
               <p>
-                Continued use of Q-Grid Comply after changes become effective constitutes acceptance
+                Continued use of GRIDERA|Comply after changes become effective constitutes acceptance
                 of the updated Privacy Policy.
               </p>
             </div>

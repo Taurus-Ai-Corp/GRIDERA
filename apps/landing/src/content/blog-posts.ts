@@ -18,7 +18,7 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-25',
     readingTime: '9 min read',
     author: 'Effin Fernandez',
-    authorRole: 'Founder, Q-Grid Comply',
+    authorRole: 'Founder, GRIDERA|Comply',
     tags: ['PQC', 'Blockchain', 'NIST', 'SWIFT 2027', 'EU AI Act'],
   },
 ]

@@ -79,7 +79,7 @@ export default function AgentsSection() {
             </h3>
 
             <p className="text-[15px] leading-[1.75] text-[var(--graphite-med)]">
-              Q-Grid deploys specialized compliance engines that work continuously — scanning your
+              GRIDERA deploys specialized compliance engines that work continuously — scanning your
               cryptographic inventory, scoring quantum-readiness, mapping EU AI Act exposure, and
               generating audit evidence signed with{' '}
               <span className="font-mono text-[var(--accent)] text-[13px]">ML-DSA-65</span> and

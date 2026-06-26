@@ -2,7 +2,7 @@ const DIFF_CARDS = [
   {
     num: '01',
     title: 'We Sell Compliance, They Sell Hardware',
-    body: 'Thales, Entrust, and IBM lead with HSMs that cost $50K–$250K before you write a single policy. Q-Grid Comply starts at $399/month and is operational in under an hour.',
+    body: 'Thales, Entrust, and IBM lead with HSMs that cost $50K–$250K before you write a single policy. GRIDERA|Comply starts at $399/month and is operational in under an hour.',
     competitor: 'vs. Thales · Entrust · IBM',
   },
   {
@@ -26,7 +26,7 @@ const DIFF_CARDS = [
   {
     num: '05',
     title: 'Accessible to Every Team',
-    body: 'Enterprise PQC migration used to require a $250K+ engagement. Q-Grid Comply democratizes access with SaaS pricing, self-service onboarding, and no minimum commitment.',
+    body: 'Enterprise PQC migration used to require a $250K+ engagement. GRIDERA|Comply democratizes access with SaaS pricing, self-service onboarding, and no minimum commitment.',
     competitor: 'vs. $50K–$250K enterprise engagements',
   },
   {
@@ -49,7 +49,7 @@ export default function Differentiators() {
           <span className="font-mono text-[14px] text-[var(--accent)] tracking-[0.02em]">03</span>
           <div>
             <h2 className="font-[var(--font-heading)] text-[28px] font-semibold leading-[1.2] text-[var(--graphite)]">
-              Why Q-Grid Wins
+              Why GRIDERA Wins
             </h2>
             <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--graphite-med)] mt-1">
               Six reasons compliance teams choose us over legacy vendors

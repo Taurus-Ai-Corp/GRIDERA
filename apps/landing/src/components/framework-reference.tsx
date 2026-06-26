@@ -146,7 +146,7 @@ export default function FrameworkReference() {
           {/* Right: description */}
           <div className="reveal flex flex-col gap-6" style={{ transitionDelay: '150ms' }}>
             <p className="text-[15px] leading-[1.75] text-[var(--graphite-med)]">
-              Q-Grid maps your infrastructure against the complete landscape of quantum-safe
+              GRIDERA maps your infrastructure against the complete landscape of quantum-safe
               compliance requirements. From NIST PQC standards to the EU AI Act&apos;s August 2026
               deadline — every framework is tracked, scored, and reported.
             </p>

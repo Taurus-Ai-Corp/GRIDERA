@@ -578,7 +578,7 @@ export default function ScanResultsPage() {
                   rel="noopener noreferrer"
                   className="btn-secondary text-center justify-center w-full"
                 >
-                  Go to Q-Grid / Comply →
+                  Go to GRIDERA|Comply →
                 </a>
               </div>
             </div>

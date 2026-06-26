@@ -415,7 +415,7 @@ export default function EmbedAssessPage() {
               rel="noopener noreferrer"
               style={{ color: '#00CCAA', textDecoration: 'none' }}
             >
-              Q-Grid Comply
+              GRIDERA|Comply
             </a>
           </div>
         </div>

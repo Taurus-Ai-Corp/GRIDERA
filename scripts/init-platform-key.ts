@@ -22,7 +22,7 @@ async function main() {
   const kp = ml_dsa65.keygen(seed)
 
   console.log('# ============================================')
-  console.log('# Q-Grid Platform Keys — Generated ' + new Date().toISOString())
+  console.log('# GRIDERA Platform Keys — Generated ' + new Date().toISOString())
   console.log('# Add these to .env.local AND Vercel env vars')
   console.log('# NEVER commit these values to git')
   console.log('# ============================================')

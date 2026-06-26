@@ -6,7 +6,7 @@ import Footer from '@/components/footer'
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description:
-    'Terms of Service for Q-Grid Comply — AI compliance automation platform. Subscription terms, acceptable use, and governing law.',
+    'Terms of Service for GRIDERA|Comply — AI compliance automation platform. Subscription terms, acceptable use, and governing law.',
 }
 
 const TOC = [
@@ -44,7 +44,7 @@ export default function TermsPage() {
           </p>
           <p className="mt-4 text-[16px] leading-[1.75] text-[var(--graphite-med)]">
             These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of{' '}
-            <strong className="text-[var(--graphite)]">Q-Grid Comply</strong>, operated by{' '}
+            <strong className="text-[var(--graphite)]">GRIDERA|Comply</strong>, operated by{' '}
             <strong className="text-[var(--graphite)]">TAURUS AI Corp</strong>. By accessing or
             using the service, you agree to be bound by these Terms.
           </p>
@@ -82,8 +82,8 @@ export default function TermsPage() {
             </h2>
             <div className="space-y-4 text-[var(--graphite-med)]">
               <p>
-                By creating an account, starting a free trial, or using any feature of Q-Grid
-                Comply, you confirm that you have read, understood, and agreed to these Terms and
+                By creating an account, starting a free trial, or using any feature of GRIDERA|Comply,
+                you confirm that you have read, understood, and agreed to these Terms and
                 our{' '}
                 <Link href="/privacy" className="text-[var(--accent)] underline underline-offset-2">
                   Privacy Policy
@@ -91,7 +91,7 @@ export default function TermsPage() {
                 .
               </p>
               <p>
-                If you are using Q-Grid Comply on behalf of an organization, you represent that you
+                If you are using GRIDERA|Comply on behalf of an organization, you represent that you
                 have authority to bind that organization to these Terms.
               </p>
               <p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
             </h2>
             <div className="space-y-4 text-[var(--graphite-med)]">
               <p>
-                Q-Grid Comply is an AI-assisted compliance automation platform. The service
+                GRIDERA|Comply is an AI-assisted compliance automation platform. The service
                 includes:
               </p>
               <ul className="space-y-3">
@@ -117,7 +117,7 @@ export default function TermsPage() {
                   'SWIFT Customer Security Programme (CSP) 2027 readiness assessments',
                   'AI-generated compliance reports with gap analysis and remediation guidance',
                   'Hedera blockchain-anchored audit trails providing cryptographic proof-of-compliance',
-                  'Free Q-Grid Scanner tool for PQC vulnerability assessment of public-facing endpoints',
+                  'Free GRIDERA|Scan tool for PQC vulnerability assessment of public-facing endpoints',
                   'ML-DSA-65 post-quantum signatures on all compliance artifacts',
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
@@ -169,7 +169,7 @@ export default function TermsPage() {
               4. Subscription Plans
             </h2>
             <p className="text-[var(--graphite-med)] mb-6">
-              Q-Grid Comply is offered under the following subscription tiers:
+              GRIDERA|Comply is offered under the following subscription tiers:
             </p>
             <div className="border border-[var(--graphite-ghost)] overflow-hidden mb-6">
               <table className="w-full text-[14px]">
@@ -274,7 +274,7 @@ export default function TermsPage() {
               7. Acceptable Use
             </h2>
             <div className="space-y-4 text-[var(--graphite-med)]">
-              <p>You agree to use Q-Grid Comply only for lawful purposes. You must not:</p>
+              <p>You agree to use GRIDERA|Comply only for lawful purposes. You must not:</p>
               <ul className="space-y-3">
                 {[
                   'Use the service for any illegal purpose or in violation of any applicable law or regulation',
@@ -309,7 +309,7 @@ export default function TermsPage() {
               <div>
                 <h3 className="font-medium text-[var(--graphite)] mb-2">Our Intellectual Property</h3>
                 <p>
-                  Q-Grid, Q-Grid Comply, TAURUS AI Corp, and related marks are trademarks of TAURUS
+                  GRIDERA, GRIDERA|Comply, TAURUS AI Corp, and related marks are trademarks of TAURUS
                   AI Corp. The platform software, assessment frameworks, AI agent logic, scoring
                   methodologies, and underlying PQC implementations are our proprietary intellectual
                   property. All rights reserved.
@@ -326,8 +326,8 @@ export default function TermsPage() {
               <div>
                 <h3 className="font-medium text-[var(--graphite)] mb-2">Assessment Templates</h3>
                 <p>
-                  The question sets, scoring rubrics, and assessment templates used within Q-Grid
-                  Comply are our intellectual property. You may not reproduce or redistribute them
+                  The question sets, scoring rubrics, and assessment templates used within GRIDERA|Comply
+                  are our intellectual property. You may not reproduce or redistribute them
                   outside the platform without written permission.
                 </p>
               </div>
@@ -351,7 +351,7 @@ export default function TermsPage() {
               <div className="p-4 border border-[var(--graphite-ghost)] bg-[var(--bone-deep)]">
                 <p className="font-medium text-[var(--graphite)] mb-2">Important Notice</p>
                 <p>
-                  Q-Grid Comply provides compliance assessment guidance and automation tools.
+                  GRIDERA|Comply provides compliance assessment guidance and automation tools.
                   Assessments and reports generated by the platform are <strong className="text-[var(--graphite)]">informational only
                   and do not constitute legal advice</strong>. The platform is not a substitute for
                   qualified legal counsel, certified compliance professionals, or official regulatory
@@ -363,7 +363,7 @@ export default function TermsPage() {
               </p>
               <ul className="space-y-3">
                 {[
-                  'Q-Grid Comply is provided "as is" without warranty of any kind, express or implied, including fitness for a particular compliance purpose',
+                  'GRIDERA|Comply is provided "as is" without warranty of any kind, express or implied, including fitness for a particular compliance purpose',
                   'We do not warrant that assessments will identify all compliance gaps or that following our guidance will result in regulatory compliance',
                   'Our total liability for any claim arising from use of the service is limited to the amount you paid us in the 12 months preceding the claim',
                   'We are not liable for indirect, incidental, special, or consequential damages including loss of profits, data, or business opportunities',
@@ -389,7 +389,7 @@ export default function TermsPage() {
               10. Data Handling
             </h2>
             <p className="text-[var(--graphite-med)]">
-              Your use of Q-Grid Comply is also governed by our{' '}
+              Your use of GRIDERA|Comply is also governed by our{' '}
               <Link href="/privacy" className="text-[var(--accent)] underline underline-offset-2">
                 Privacy Policy
               </Link>

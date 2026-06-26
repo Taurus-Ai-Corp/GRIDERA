@@ -59,7 +59,7 @@ export default function QuantumThreatBlockchain() {
               </div>
               <div>
                 <p className="text-[14px] font-medium text-[var(--graphite)]">Effin Fernandez</p>
-                <p className="text-[12px] text-[var(--graphite-light)]">Founder, Q-Grid Comply</p>
+                <p className="text-[12px] text-[var(--graphite-light)]">Founder, GRIDERA|Comply</p>
               </div>
             </div>
           </header>
@@ -374,7 +374,7 @@ export default function QuantumThreatBlockchain() {
             <H2>We Built This Because Nobody Else Would</H2>
 
             <P>
-              Q-Grid Comply exists because we sat in the gap between those Reddit threads and those regulatory
+              GRIDERA|Comply exists because we sat in the gap between those Reddit threads and those regulatory
               deadlines and realized nobody was building the connective tissue. PQC vendors ship algorithms.
               Compliance tools ship checklists. Neither ships a platform that takes an enterprise from cryptographic
               discovery through migration execution to blockchain-anchored compliance proof.

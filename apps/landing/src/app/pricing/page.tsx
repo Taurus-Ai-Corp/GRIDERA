@@ -116,7 +116,7 @@ const FAQS = [
   },
   {
     q: 'How does the blockchain audit trail work?',
-    a: 'Every assessment is cryptographically signed using ML-DSA-65 (NIST FIPS 204) and anchored to the Hedera Consensus Service (HCS). This creates an immutable, timestamped record that regulators can independently verify — without trusting Q-Grid.',
+    a: 'Every assessment is cryptographically signed using ML-DSA-65 (NIST FIPS 204) and anchored to the Hedera Consensus Service (HCS). This creates an immutable, timestamped record that regulators can independently verify — without trusting GRIDERA.',
   },
   {
     q: 'Can I switch plans?',
@@ -128,7 +128,7 @@ const FAQS = [
   },
   {
     q: 'What compliance frameworks do you cover?',
-    a: 'Q-Grid Comply covers 14+ frameworks across 4 jurisdictions: EU AI Act (Aug 2026), NIST FIPS 203/204, SWIFT 2027, PIPEDA (Canada), DPDP (India), VARA (UAE), ISO 27001, SOC 2, OSFI B-13, ECB TIBER-EU, RBI guidelines, PCI-DSS, GDPR (crypto provisions), and DORA.',
+    a: 'GRIDERA|Comply covers 14+ frameworks across 4 jurisdictions: EU AI Act (Aug 2026), NIST FIPS 203/204, SWIFT 2027, PIPEDA (Canada), DPDP (India), VARA (UAE), ISO 27001, SOC 2, OSFI B-13, ECB TIBER-EU, RBI guidelines, PCI-DSS, GDPR (crypto provisions), and DORA.',
   },
 ]
 
@@ -510,7 +510,7 @@ export default function PricingPage() {
             Ready to get quantum-safe?
           </h2>
           <p className="text-[16px] text-[var(--graphite-med)] leading-[1.6] mb-10 max-w-[480px] mx-auto">
-            Join compliance teams across Canada, EU, India, and UAE using Q-Grid Comply to stay
+            Join compliance teams across Canada, EU, India, and UAE using GRIDERA|Comply to stay
             ahead of post-quantum mandates.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
