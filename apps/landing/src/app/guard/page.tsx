@@ -47,7 +47,7 @@ export default function GuardPage() {
     <ProductShell>
       <ProductHero
         badge="PQC-SIGNED • EU AI ACT • SOC 2"
-        eyebrow="GRIDERA Guard"
+        eyebrow="GRIDERA|Guard"
         title={
           <>
             LLM Guardrails Your

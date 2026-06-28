@@ -81,7 +81,7 @@ export default function MigratePage() {
   return (
     <ProductShell>
       <ProductHero
-        eyebrow="GRIDERA Migrate"
+        eyebrow="GRIDERA|Migrate"
         title={
           <>
             Migrate Your Infrastructure to

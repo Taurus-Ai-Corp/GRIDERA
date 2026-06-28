@@ -4,7 +4,7 @@ import ProductHero from '@/components/product-hero'
 import ProductSection from '@/components/product-section'
 
 export const metadata: Metadata = {
-  title: 'GRIDERA Lend — MSME Lending Platform',
+  title: 'GRIDERA|Lend — MSME Lending Platform',
   description:
     'AI-powered MSME lending and loan repayment management. Quantum-safe credit scoring, automated KYC, and regulator-ready audit trails for emerging markets.',
 }
@@ -27,7 +27,7 @@ export default function LendPage() {
   return (
     <ProductShell>
       <ProductHero
-        eyebrow="GRIDERA Lend"
+        eyebrow="GRIDERA|Lend"
         title={
           <>
             AI Lending for
@@ -66,7 +66,7 @@ export default function LendPage() {
         <div className="max-w-[720px] mx-auto px-6 text-center">
           <p className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-[var(--accent)] mb-4">Book a Demo</p>
           <h2 className="font-[var(--font-heading)] text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] leading-[1.1] text-[var(--graphite)] mb-4">
-            Deploy GRIDERA Lend in Your Market
+            Deploy GRIDERA|Lend in Your Market
           </h2>
           <p className="text-[16px] text-[var(--graphite-med)] leading-[1.6] max-w-[520px] mx-auto mb-8">
             We run pilot programs with regulated lenders. Get a tailored demo, compliance mapping, and integration plan.

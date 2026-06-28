@@ -1,11 +1,11 @@
 const FOOTER_LINKS = {
   Products: [
     { label: 'GRIDERA Platform', href: '/' },
-    { label: 'GRIDERA Guard', href: '/guard' },
-    { label: 'GRIDERA Scan', href: '/scan' },
-    { label: 'GRIDERA Migrate', href: '/migrate' },
-    { label: 'GRIDERA Comply', href: '/comply' },
-    { label: 'GRIDERA Lend', href: '/lend' },
+    { label: 'GRIDERA|Guard', href: '/guard' },
+    { label: 'GRIDERA|Scan', href: '/scan' },
+    { label: 'GRIDERA|Migrate', href: '/migrate' },
+    { label: 'GRIDERA|Comply', href: '/comply' },
+    { label: 'GRIDERA|Lend', href: '/lend' },
     { label: 'GRIDERA Asset', href: '/asset' },
   ],
   Resources: [

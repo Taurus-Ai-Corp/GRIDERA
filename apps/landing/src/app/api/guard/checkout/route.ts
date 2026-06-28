@@ -59,7 +59,7 @@ export async function POST(req: Request) {
             price_data: {
               currency: 'eur',
               product_data: {
-                name: `GRIDERA Guard ${plan.name}`,
+                name: `GRIDERA|Guard ${plan.name}`,
                 description: plan.tagline,
               },
               unit_amount: unitAmount,
