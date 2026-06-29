@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         {
           price_data: {
             currency: plan.currency,
-            product_data: { name: `GRIDERA Comply ${plan.name}` },
+            product_data: { name: `GRIDERA|Comply ${plan.name}` },
             unit_amount: unitAmount,
             recurring: { interval },
           },

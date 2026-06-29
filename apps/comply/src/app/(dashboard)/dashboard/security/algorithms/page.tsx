@@ -387,7 +387,7 @@ export default function AlgorithmsPage() {
               <p className="text-xs text-graphite-med leading-relaxed">
                 ML-DSA (FIPS 204) and ML-KEM (FIPS 203) were finalised by NIST in August 2024. These are
                 module-lattice-based algorithms designed to resist attacks from both classical and quantum computers.
-                All GRIDERA Comply artifacts are signed with ML-DSA-65 and anchored to Hedera HCS.
+                All GRIDERA|Comply artifacts are signed with ML-DSA-65 and anchored to Hedera HCS.
               </p>
             </div>
           </div>
