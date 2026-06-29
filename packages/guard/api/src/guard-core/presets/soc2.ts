@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — SOC 2 Type II Preset
+ * GRIDERA|Guard — SOC 2 Type II Preset
  *
  * Maps guard rules to SOC 2 Trust Services Criteria:
  * CC6 (Security), CC7 (Availability), CC8 (Change Management).

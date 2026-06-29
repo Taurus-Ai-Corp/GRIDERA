@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Hedera HCS Anchoring
+ * GRIDERA|Guard — Hedera HCS Anchoring
  *
  * Anchors guard attestations to Hedera Consensus Service (HCS) topics
  * for immutable, governed, carbon-negative audit trails.

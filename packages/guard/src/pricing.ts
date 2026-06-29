@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Pricing Calculator
+ * GRIDERA|Guard — Pricing Calculator
  *
  * Model pricing table (USD per 1K tokens) and estimation functions.
  */

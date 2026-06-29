@@ -358,7 +358,7 @@ Key sizes: ML-DSA-65 public key = 1,952 bytes, secret key = 4,032 bytes, signatu
 | **Phase 4** | PQC_ONLY | Full PQC deployment, classical algorithms deprecated |
 | **Phase 5** | CERTIFIED | External audit and compliance certification achieved |
 
-Migration progress is tracked in the GRIDERA Comply dashboard. Each phase transition requires approval from {{dpoName}} ({{dpoEmail}}) and generates a PQC-signed attestation.`,
+Migration progress is tracked in the GRIDERA|Comply dashboard. Each phase transition requires approval from {{dpoName}} ({{dpoEmail}}) and generates a PQC-signed attestation.`,
     },
     {
       title: 'Policy Review',

@@ -1,7 +1,7 @@
 {
   "name": "@taurus/guard-api",
   "version": "1.0.0",
-  "description": "GRIDERA Guard API — Fastify server exposing PQC-attested AI guardrails",
+  "description": "GRIDERA|Guard API — Fastify server exposing PQC-attested AI guardrails",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

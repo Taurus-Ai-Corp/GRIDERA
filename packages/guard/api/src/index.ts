@@ -1,5 +1,5 @@
 /**
- * @taurus/guard-api — GRIDERA Guard Fastify Server
+ * @taurus/guard-api — GRIDERA|Guard Fastify Server
  *
  * PQC-attested AI guardrails API with EU AI Act compliance.
  * Entry point re-exports the build() and start() functions.

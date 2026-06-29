@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Core Guard Module
+ * GRIDERA|Guard — Core Guard Module
  *
  * Wraps any LLM call with input/output guard rules and produces
  * an ML-DSA-65 signed attestation for every invocation.

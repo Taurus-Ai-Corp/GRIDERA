@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Audit Trail Persistence
+ * GRIDERA|Guard — Audit Trail Persistence
  *
  * Pluggable audit adapter for writing guard attestations to storage.
  * Default: no-op (fire-and-forget). Override with custom adapter.

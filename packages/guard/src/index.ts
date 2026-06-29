@@ -1,5 +1,5 @@
 /**
- * @taurus/guard — GRIDERA Guard
+ * @taurus/guard — GRIDERA|Guard
  *
  * PQC-attested AI guardrails with EU AI Act compliance.
  *

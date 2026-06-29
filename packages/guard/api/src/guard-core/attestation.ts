@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — PQC Attestation Signing
+ * GRIDERA|Guard — PQC Attestation Signing
  *
  * Signs guard attestations with ML-DSA-65 (NIST FIPS 204).
  * Falls back to SHA-256 hash when PQC keys are unavailable.

@@ -1,7 +1,7 @@
 {
   "name": "@taurus/guard",
   "version": "1.0.0",
-  "description": "GRIDERA Guard — PQC-attested AI guardrails with EU AI Act compliance",
+  "description": "GRIDERA|Guard — PQC-attested AI guardrails with EU AI Act compliance",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

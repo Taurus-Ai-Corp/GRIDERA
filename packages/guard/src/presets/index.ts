@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Preset Index
+ * GRIDERA|Guard — Preset Index
  *
  * Re-exports all jurisdiction presets.
  */

@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — EU AI Act Preset
+ * GRIDERA|Guard — EU AI Act Preset
  *
  * Maps guard rules to EU AI Act Articles 9, 11, 14, 15.
  * These are additional rules applied on top of the default input/output rules

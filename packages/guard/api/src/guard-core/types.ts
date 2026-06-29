@@ -1,7 +1,7 @@
 /**
  * @taurus/guard — Core Type Definitions
  *
- * Public API surface for GRIDERA Guard:
+ * Public API surface for GRIDERA|Guard:
  * PQC-attested AI guardrails with jurisdiction-aware compliance mapping.
  */
 

@@ -301,7 +301,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Observability | GRIDERA Comply',
+  title: 'AI Observability | GRIDERA|Comply',
 }
 
 async function getObserveData(jurisdiction: string) {

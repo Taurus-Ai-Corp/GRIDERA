@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — Input/Output Guard Rules Engine
+ * GRIDERA|Guard — Input/Output Guard Rules Engine
  *
  * Validates LLM inputs (prompts) and outputs (responses) against
  * configurable security, privacy, and quality rules.

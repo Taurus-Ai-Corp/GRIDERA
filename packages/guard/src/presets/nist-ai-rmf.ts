@@ -1,5 +1,5 @@
 /**
- * GRIDERA Guard — NIST AI Risk Management Framework Preset
+ * GRIDERA|Guard — NIST AI Risk Management Framework Preset
  *
  * Maps guard rules to NIST AI RMF functions:
  * Govern, Map, Measure, Manage.
