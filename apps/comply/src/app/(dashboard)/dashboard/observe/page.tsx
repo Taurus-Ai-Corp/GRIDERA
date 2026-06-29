@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'AI Observability | GRIDERA Comply' }
+export const metadata: Metadata = { title: 'AI Observability | GRIDERA|Comply' }
 
 async function getObserveData(jurisdiction: string) {
   const baseUrl = process.env['NEXT_PUBLIC_APP_URL'] ?? 'http://localhost:3000'

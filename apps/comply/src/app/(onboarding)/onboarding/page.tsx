@@ -130,7 +130,7 @@ export default function OnboardingPage() {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="font-heading text-2xl font-bold text-graphite">
-          Welcome to GRIDERA Comply
+          Welcome to GRIDERA|Comply
         </h1>
         <p className="text-sm text-graphite-med mt-1">
           Let&apos;s set up your compliance workspace in a few steps.
