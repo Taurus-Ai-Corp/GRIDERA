@@ -22,7 +22,7 @@ importers:
     dependencies:
       '@taurus-ai/swarm-spawner':
         specifier: ^0.4.0
-        version: 0.4.0(bn.js@5.2.3)
+        version: 0.4.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))
       '@taurus/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -52,7 +52,7 @@ importers:
         version: 0.469.0(react@19.2.7)
       next:
         specifier: ^16.2.1
-        version: 16.2.9(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^19.0.0
         version: 19.2.7
@@ -107,7 +107,7 @@ importers:
         version: link:../../packages/ui
       next:
         specifier: ^16.2.1
-        version: 16.2.9(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^19.0.0
         version: 19.2.7
@@ -196,9 +196,9 @@ importers:
         specifier: ^5.0.0
         version: 5.1.0
     devDependencies:
-      '@hashgraph/sdk':
-        specifier: ^2.81.0
-        version: 2.81.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))
+      '@hiero-ledger/sdk':
+        specifier: ^2.82.0
+        version: 2.85.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.0
@@ -4399,7 +4399,7 @@ snapshots:
   '@grpc/proto-loader@0.7.15':
     dependencies:
       lodash.camelcase: 4.3.0
-      long: 5.3.1
+      long: 5.3.2
       protobufjs: 7.6.4
       yargs: 17.7.3
 
@@ -4996,7 +4996,7 @@ snapshots:
       postcss: 8.5.15
       tailwindcss: 4.3.1
 
-  '@taurus-ai/swarm-spawner@0.4.0(bn.js@5.2.3)':
+  '@taurus-ai/swarm-spawner@0.4.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))':
     dependencies:
       '@hashgraph/sdk': 2.81.0(bn.js@5.2.3)(react-native@0.86.0(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))
       '@noble/hashes': 2.2.0
@@ -6292,7 +6292,7 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next@16.2.9(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@next/env': 16.2.9
       '@swc/helpers': 0.5.15
@@ -6301,7 +6301,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
-      styled-jsx: 5.1.6(react@19.2.7)
+      styled-jsx: 5.1.6(@babel/core@7.29.7)(react@19.2.7)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.2.9
       '@next/swc-darwin-x64': 16.2.9
@@ -6528,7 +6528,7 @@ snapshots:
   protobufjs@8.2.0:
     dependencies:
       '@types/node': 25.9.4
-      long: 5.3.1
+      long: 5.3.2
 
   proxy-addr@2.0.7:
     dependencies:
@@ -6915,10 +6915,12 @@ snapshots:
     optionalDependencies:
       '@types/node': 25.9.4
 
-  styled-jsx@5.1.6(react@19.2.7):
+  styled-jsx@5.1.6(@babel/core@7.29.7)(react@19.2.7):
     dependencies:
       client-only: 0.0.1
       react: 19.2.7
+    optionalDependencies:
+      '@babel/core': 7.29.7
 
   sucrase@3.35.1:
     dependencies:
