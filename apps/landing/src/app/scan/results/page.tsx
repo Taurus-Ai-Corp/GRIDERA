@@ -143,6 +143,31 @@ export default function ScanResultsPage() {
     }
   }, [router])
 
+  const [cbomStatus, setCbomStatus] = useState<'idle' | 'loading' | 'error'>('idle')
+
+  async function handleCbomDownload() {
+    if (!result) return
+    setCbomStatus('loading')
+    try {
+      const res = await fetch('/api/cbom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ domain: result.domain }),
+      })
+      if (!res.ok) throw new Error('CBOM generation failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${result.domain}-cbom-cyclonedx-1.6.json`
+      a.click()
+      URL.revokeObjectURL(url)
+      setCbomStatus('idle')
+    } catch {
+      setCbomStatus('error')
+    }
+  }
+
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email.includes('@')) return
@@ -522,6 +547,28 @@ export default function ScanResultsPage() {
 
           {/* ── CTA section ── */}
           <div className="border border-[var(--graphite-ghost)] bg-[var(--bone-deep)] mt-8 p-8">
+            <div className="max-w-[520px] mx-auto text-center mb-10 pb-10 border-b border-[var(--graphite-ghost)]">
+              <p className="font-mono text-[11px] text-[var(--accent)] tracking-[0.1em] uppercase mb-3">
+                Cryptographic Bill of Materials
+              </p>
+              <p className="text-[14px] text-[var(--graphite-med)] leading-[1.7] mb-5">
+                Export this scan as a CycloneDX 1.6 CBOM — ML-DSA-65 signed, with a detached
+                signature envelope you can verify independently.
+              </p>
+              <button
+                onClick={handleCbomDownload}
+                disabled={cbomStatus === 'loading' || Boolean(scanError)}
+                className="btn-secondary justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {cbomStatus === 'loading' ? 'Re-scanning & signing…' : 'Download CBOM (CycloneDX 1.6) ↓'}
+              </button>
+              {cbomStatus === 'error' && (
+                <p className="font-mono text-[11px] text-red-400 mt-3">
+                  CBOM generation failed — please try again.
+                </p>
+              )}
+            </div>
+
             <div className="max-w-[520px] mx-auto text-center">
               <p className="font-mono text-[11px] text-[var(--accent)] tracking-[0.1em] uppercase mb-3">
                 Next Step
