@@ -15,12 +15,21 @@
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "pilot0:resign": "tsx scripts/pilot0-resign.ts",
+    "cbom:verify": "tsx scripts/verify-cbom.ts"
   },
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
     "@types/node": "^25.5.0",
     "typescript": "^5.8.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "tsx": "^4.19.0",
+    "ajv": "^8.17.0",
+    "ajv-formats": "^3.0.0",
+    "@taurus/hedera": "workspace:*"
+  },
+  "dependencies": {
+    "@taurus/pqc-crypto": "workspace:*"
   }
 }
