@@ -35,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/arq-quantum/gridera-guard"
   },
-  "homepage": "https://guard.gridera.net",
+  "homepage": "https://q-grid.net/guard",
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",

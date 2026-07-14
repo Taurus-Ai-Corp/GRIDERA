@@ -7,13 +7,12 @@ import Nav from '@/components/nav'
 import Footer from '@/components/footer'
 
 // Executor URL used in examples.
-// TODO: guard.gridera.net is currently NXDOMAIN. Set NEXT_PUBLIC_GUARD_EXECUTOR_URL
-// in Vercel once DNS is fixed; otherwise requests will fail at runtime.
+// Prefer eu.q-grid.net rewrite → guard-beryl; override via NEXT_PUBLIC_GUARD_EXECUTOR_URL.
 function getExecutorUrl(): string {
   if (typeof window === 'undefined') return ''
   return (
     process.env['NEXT_PUBLIC_GUARD_EXECUTOR_URL'] ??
-    'https://guard.gridera.net/guard/v1/execute'
+    'https://eu.q-grid.net/guard/v1/execute'
   )
 }
 
@@ -63,7 +62,7 @@ function SuccessContent() {
     }
     if (!sessionId) {
       setStatus('error')
-      setMessage('Missing session ID — please contact support@gridera.net')
+      setMessage('Missing session ID — please contact admin@taurusai.io')
       return
     }
     void pollLookup()

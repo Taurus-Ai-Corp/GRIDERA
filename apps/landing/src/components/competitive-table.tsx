@@ -14,10 +14,10 @@ const PARTIAL = (
   </span>
 )
 
-const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode; fortanix: React.ReactNode; thales: React.ReactNode; entrust: React.ReactNode }> = [
+const ROWS: Array<{ label: string; gridera: React.ReactNode; ibm: React.ReactNode; fortanix: React.ReactNode; thales: React.ReactNode; entrust: React.ReactNode }> = [
   {
     label: 'Starting Price',
-    qgrid: <span className="font-semibold text-[var(--accent)]">$399/mo</span>,
+    gridera: <span className="font-semibold text-[var(--accent)]">$399/mo</span>,
     ibm: <span>$50K+</span>,
     fortanix: <span>$25K+</span>,
     thales: <span>$50K+</span>,
@@ -25,7 +25,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'EU AI Act Focus',
-    qgrid: CHECK,
+    gridera: CHECK,
     ibm: PARTIAL,
     fortanix: CROSS,
     thales: PARTIAL,
@@ -33,7 +33,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'Assessment Automation',
-    qgrid: PARTIAL,
+    gridera: PARTIAL,
     ibm: PARTIAL,
     fortanix: PARTIAL,
     thales: CROSS,
@@ -41,7 +41,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'Blockchain Audit Trail',
-    qgrid: PARTIAL,
+    gridera: PARTIAL,
     ibm: CROSS,
     fortanix: CROSS,
     thales: CROSS,
@@ -49,7 +49,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'PQC Certificate Scanning',
-    qgrid: CHECK,
+    gridera: CHECK,
     ibm: CROSS,
     fortanix: CROSS,
     thales: CROSS,
@@ -57,7 +57,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'Post-Quantum Crypto',
-    qgrid: CHECK,
+    gridera: CHECK,
     ibm: CHECK,
     fortanix: CHECK,
     thales: PARTIAL,
@@ -65,7 +65,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'Self-Hosted AI',
-    qgrid: CHECK,
+    gridera: CHECK,
     ibm: PARTIAL,
     fortanix: CROSS,
     thales: CROSS,
@@ -73,7 +73,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
   },
   {
     label: 'Deployment Time',
-    qgrid: <span className="font-semibold text-[var(--accent)]">Same day</span>,
+    gridera: <span className="font-semibold text-[var(--accent)]">Same day</span>,
     ibm: <span>6–18 mo</span>,
     fortanix: <span>3–6 mo</span>,
     thales: <span>6–12 mo</span>,
@@ -82,7 +82,7 @@ const ROWS: Array<{ label: string; qgrid: React.ReactNode; ibm: React.ReactNode;
 ]
 
 const HEADERS = [
-  { key: 'qgrid', label: 'Q-GRID Comply', highlight: true },
+  { key: 'gridera', label: 'GRIDERA|Comply', highlight: true },
   { key: 'ibm', label: 'IBM Quantum Safe', highlight: false },
   { key: 'fortanix', label: 'Fortanix', highlight: false },
   { key: 'thales', label: 'Thales HSM', highlight: false },
@@ -130,13 +130,13 @@ export default function CompetitiveTable() {
               </tr>
             </thead>
             <tbody>
-              {ROWS.map(({ label, qgrid, ibm, fortanix, thales, entrust }) => (
+              {ROWS.map(({ label, gridera, ibm, fortanix, thales, entrust }) => (
                 <tr key={label} className="group">
                   <td className="px-4 py-[14px] border-b border-[var(--graphite-ghost)] font-medium text-[var(--graphite)] group-hover:bg-[rgba(255,255,255,0.02)] whitespace-nowrap">
                     {label}
                   </td>
                   <td className="px-4 py-[14px] border-b border-[var(--graphite-ghost)] bg-[rgba(0,204,170,0.06)] group-hover:bg-[rgba(0,204,170,0.1)]">
-                    {qgrid}
+                    {gridera}
                   </td>
                   {[ibm, fortanix, thales, entrust].map((val, i) => (
                     <td

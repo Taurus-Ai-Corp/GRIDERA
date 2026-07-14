@@ -93,12 +93,12 @@ export default function CtaSection() {
           {/* Direct comply link */}
           <div className="pt-6 border-t border-[var(--graphite-ghost)]">
             <a
-              href="https://eu.q-grid.net"
+              href="https://eu.q-grid.net/comply"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mono text-[12px] font-medium tracking-[0.1em] uppercase text-[var(--graphite-med)] hover:text-[var(--accent)] transition-colors"
             >
-              GO TO Q-GRID / COMPLY →
+              GO TO GRIDERA|Comply →
             </a>
           </div>
         </div>
