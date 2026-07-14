@@ -12,12 +12,11 @@ import { getStripe, getResend } from '@/lib/billing'
 import type Stripe from 'stripe'
 
 // Executor URL used in examples and emails.
-// TODO: guard.gridera.net is currently NXDOMAIN. Set NEXT_PUBLIC_GUARD_EXECUTOR_URL
-// in Vercel once DNS is fixed; otherwise requests will fail at runtime.
+// Prefer eu.q-grid.net rewrite → guard-beryl; override via NEXT_PUBLIC_GUARD_EXECUTOR_URL.
 function getExecutorUrl(): string {
   return (
     process.env['NEXT_PUBLIC_GUARD_EXECUTOR_URL'] ??
-    'https://guard.gridera.net/guard/v1/execute'
+    'https://eu.q-grid.net/guard/v1/execute'
   )
 }
 

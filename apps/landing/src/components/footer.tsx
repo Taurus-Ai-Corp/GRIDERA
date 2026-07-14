@@ -6,7 +6,7 @@ const FOOTER_LINKS = {
     { label: 'GRIDERA|Migrate', href: '/migrate' },
     { label: 'GRIDERA|Comply', href: '/comply' },
     { label: 'GRIDERA|Lend', href: '/lend' },
-    { label: 'GRIDERA Asset', href: '/asset' },
+    { label: 'GRIDERA|Asset', href: '/asset' },
   ],
   Resources: [
     { label: 'Pricing', href: '/pricing' },
@@ -80,10 +80,15 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[var(--graphite-ghost)] pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <p className="font-mono text-[11px] tracking-[0.06em] text-[var(--graphite-light)]">
-            &copy; {new Date().getFullYear()} Taurus AI Corp. Ontario, Canada &middot; Dubai IFZA
-            &middot; Wyoming LLC
-          </p>
+          <div className="space-y-1">
+            <p className="font-mono text-[11px] tracking-[0.06em] text-[var(--graphite-light)]">
+              &copy; {new Date().getFullYear()} Taurus AI Corp. Ontario, Canada &middot; Dubai IFZA
+              &middot; Wyoming LLC
+            </p>
+            <p className="font-mono text-[11px] tracking-[0.06em] text-[var(--graphite-light)]">
+              q-grid.net — the Quantum-Grid.Network &middot; GRIDERA by Taurus AI
+            </p>
+          </div>
           <p className="font-mono text-[11px] tracking-[0.06em] text-[var(--graphite-light)]">
             Powered by{' '}
             <a

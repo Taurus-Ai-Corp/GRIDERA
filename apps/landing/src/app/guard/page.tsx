@@ -64,7 +64,7 @@ export default function GuardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="glass-surface p-6">
             <p className="font-mono text-[10px] text-[var(--graphite-med)] tracking-[0.1em] uppercase mb-3">Request</p>
-            <pre className="text-[13px] text-[var(--graphite)] overflow-x-auto"><code>{`curl -X POST https://guard.gridera.net/v1/execute \\
+            <pre className="text-[13px] text-[var(--graphite)] overflow-x-auto"><code>{`curl -X POST https://eu.q-grid.net/guard/v1/execute \\
   -H "X-API-Key: YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{

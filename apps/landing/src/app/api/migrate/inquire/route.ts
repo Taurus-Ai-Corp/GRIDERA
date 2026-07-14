@@ -91,7 +91,7 @@ export async function POST(req: Request) {
           </tr>
         </table>
         <p style="color: #888; font-size: 12px; margin-top: 24px;">
-          This is a lead capture inquiry from gridera.net/migrate. Engagement range: $250K–$1M+.
+          This is a lead capture inquiry from q-grid.net/migrate. Engagement range: $250K–$1M+.
         </p>
       </body>
       </html>
