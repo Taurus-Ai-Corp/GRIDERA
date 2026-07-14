@@ -61,9 +61,27 @@ const FRAMEWORKS = [
   },
   {
     standard: 'CNSA 2.0',
-    reference: 'NSA 2027',
+    reference: 'NSA · Jan 2027 gate',
     status: 'Upcoming' as const,
     href: 'https://media.defense.gov/2022/Sep/07/2003071836/-1/-1/0/CSI_CNSA_2.0_FAQ_.PDF',
+  },
+  {
+    standard: 'EO 14412',
+    reference: 'US Federal PQC',
+    status: 'Active' as const,
+    href: 'https://www.federalregister.gov/executive-orders',
+  },
+  {
+    standard: 'FIPS 140-2 Sunset',
+    reference: 'Sept 2026',
+    status: 'Upcoming' as const,
+    href: 'https://csrc.nist.gov/projects/cryptographic-module-validation-program',
+  },
+  {
+    standard: 'CMMC 2.0',
+    reference: 'DoD · Nov 2026',
+    status: 'Upcoming' as const,
+    href: 'https://dodcio.defense.gov/cmmc/',
   },
 ]
 
