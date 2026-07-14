@@ -118,7 +118,7 @@ describe('auth', () => {
   beforeEach(async () => {
     vi.clearAllMocks()
     process.env['JWT_SECRET'] = 'test-secret-at-least-32-characters-long!!'
-    process.env['NODE_ENV'] = 'test'
+    // NODE_ENV is read-only in vitest/TS — leave unset (dev path allows test secret)
     mockCookies = (await cookies()) as unknown as typeof mockCookies
     vi.mocked(bcrypt.compare).mockResolvedValue(true as never)
     vi.mocked(bcrypt.hash).mockResolvedValue('$2b$12$hashedpassword' as never)
