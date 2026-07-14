@@ -81,8 +81,9 @@ export default function PrivacyPage() {
               <div>
                 <h3 className="font-medium text-[var(--graphite)] mb-1">Account Information</h3>
                 <p>
-                  Name and email address provided when you register via Clerk authentication. We
+                  Name and email address provided when you register for a GRIDERA account. We
                   store only what is necessary to manage your account and deliver the service.
+                  Authentication is first-party (credentials and session cookies on our systems).
                 </p>
               </div>
               <div>
@@ -306,11 +307,6 @@ export default function PrivacyPage() {
             <div className="space-y-4">
               {[
                 {
-                  name: 'Clerk',
-                  purpose: 'Authentication and identity management (SSO, MFA, session management)',
-                  link: 'https://clerk.com/privacy',
-                },
-                {
                   name: 'Stripe',
                   purpose:
                     'Payment processing. Card data is handled exclusively by Stripe and never stored on our servers',
@@ -388,8 +384,7 @@ export default function PrivacyPage() {
                   </thead>
                   <tbody className="divide-y divide-[var(--graphite-ghost)]">
                     {[
-                      ['__session', 'Essential', 'Clerk authentication session token'],
-                      ['__client_uat', 'Essential', 'Clerk client-side user activity token'],
+                      ['gridera_auth', 'Essential', 'First-party authentication session (HTTP-only JWT)'],
                       ['__cf_bm', 'Essential', 'Cloudflare bot management (Vercel infrastructure)'],
                     ].map(([cookie, type, purpose]) => (
                       <tr key={cookie}>

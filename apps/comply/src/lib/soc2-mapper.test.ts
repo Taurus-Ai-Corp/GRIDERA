@@ -77,10 +77,11 @@ describe('SOC 2 Mapper — readiness score', () => {
   it('calculates overall score 0-100 with per-category breakdown for all 5 categories', () => {
     const score = getSoc2ReadinessScore()
 
-    // 14 met (×100) + 15 partial (×50) + 4 not-met (×0) = 2150 / 33 = 65.15 → 65
-    expect(score.overall).toBe(65)
-    expect(score.metControls).toBe(14)
-    expect(score.partialControls).toBe(15)
+    // Auth honesty (2026-07-14): CC6.1–6.3 partial (first-party JWT, no MFA yet)
+    // 11 met (×100) + 18 partial (×50) + 4 not-met (×0) = 2000 / 33 ≈ 60.6 → 61
+    expect(score.overall).toBe(61)
+    expect(score.metControls).toBe(11)
+    expect(score.partialControls).toBe(18)
     expect(score.gapControls).toBe(4)
     expect(score.totalControls).toBeGreaterThanOrEqual(33)
     expect(score.metControls + score.partialControls + score.gapControls).toBe(score.totalControls)

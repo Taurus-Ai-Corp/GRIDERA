@@ -141,7 +141,7 @@ export default function TermsPage() {
             </h2>
             <div className="space-y-4 text-[var(--graphite-med)]">
               <p>
-                Accounts are created and managed via Clerk authentication. You agree to:
+                Accounts are created and managed via GRIDERA first-party authentication. You agree to:
               </p>
               <ul className="space-y-3">
                 {[

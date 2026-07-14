@@ -162,7 +162,7 @@ const result = await guard.execute({
 - [ ] T8: Add jurisdiction presets — eu-ai-act.ts, nist-ai-rmf.ts, soc2.ts
 - [ ] T9: Write comprehensive test suite (guard.test.ts, rules.test.ts, attestation.test.ts, hedera.test.ts, integration.test.ts)
 - [ ] T10: Create Fastify API server with 5 endpoints
-- [ ] T11: Add API key auth middleware (Clerk-compatible)
+- [ ] T11: Add API key auth middleware (first-party; not Clerk)
 - [ ] T12: Deploy to guard.gridera.net on Vercel
 
 ### Phase 2: Enterprise Hooks (Weeks 3-6)

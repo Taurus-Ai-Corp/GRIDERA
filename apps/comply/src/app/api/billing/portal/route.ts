@@ -5,7 +5,7 @@ import { getStripe } from '@/lib/stripe'
 import { getDb } from '@/lib/db'
 
 // POST /api/billing/portal — create a Stripe Customer Portal session
-// Looks up stripeCustomerId from the users table by Clerk ID.
+// Looks up stripeCustomerId from the users table by internal user id.
 export async function POST() {
   try {
     const authUser = await getCurrentUser()

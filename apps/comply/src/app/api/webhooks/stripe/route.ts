@@ -117,14 +117,21 @@ export async function POST(req: Request) {
 
 // ─── DB Persistence (fire-and-forget, never blocks response) ─────────────────
 
-async function persistSubscription(clerkUserId: string, stripeCustomerId: string, plan: 'starter' | 'growth'): Promise<void> {
+async function persistSubscription(userId: string, stripeCustomerId: string, plan: 'starter' | 'growth'): Promise<void> {
   try {
     const db = getDb()
     if (!db) return
     const { users } = await import('@taurus/db')
-    await db.update(users)
-      .set({ stripeCustomerId, plan })
-      .where(eq(users.clerkId, clerkUserId))
+    // Prefer internal user id (JWT auth). Fall back to legacy clerk_id column only if needed.
+    const byId = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+      columns: { id: true },
+    })
+    if (byId) {
+      await db.update(users).set({ stripeCustomerId, plan }).where(eq(users.id, userId))
+      return
+    }
+    await db.update(users).set({ stripeCustomerId, plan }).where(eq(users.clerkId, userId))
   } catch (err) {
     console.error('[webhooks/stripe] Failed to persist subscription:', err)
   }

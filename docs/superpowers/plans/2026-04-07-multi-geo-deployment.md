@@ -6,7 +6,7 @@
 
 **Architecture:** Same codebase (`apps/comply`), deployed 3x with different env vars. Each region has its own Neon PostgreSQL in a local AWS zone. Jurisdiction detection already works via `@taurus/jurisdiction` package.
 
-**Tech Stack:** Neon PostgreSQL, Vercel, Clerk, DNS (Vercel or Cloudflare)
+**Tech Stack:** Neon PostgreSQL, Vercel, first-party JWT (JWT_SECRET), DNS (Vercel or Cloudflare)
 
 ---
 
@@ -104,8 +104,8 @@ curl -X POST "https://api.vercel.com/v11/projects" \
 vercel env add JURISDICTION production comply-na <<< "na"
 vercel env add NEXT_PUBLIC_JURISDICTION production comply-na <<< "na"
 vercel env add DATABASE_URL production comply-na <<< "<na-neon-connection-string>"
-vercel env add CLERK_SECRET_KEY production comply-na <<< "<na-clerk-secret>"
-vercel env add NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY production comply-na <<< "<na-clerk-publishable>"
+vercel env add JWT_SECRET production comply-na <<< "$(openssl rand -base64 32)"
+# JWT auth (no Clerk) keys removed 2026-07-14 — do not add CLERK_*
 ```
 
 - [ ] **Step 3: Set comply-na Vercel region**
@@ -125,7 +125,7 @@ Same steps with:
 - `JURISDICTION=in`, `NEXT_PUBLIC_JURISDICTION=in`
 - `DATABASE_URL=<in-neon-connection-string>`
 - Region: `bom1` (Mumbai)
-- Clerk keys: new IN Clerk project
+- JWT_SECRET: region-specific secret (no Clerk)
 
 - [ ] **Step 5: Trigger initial deployments**
 

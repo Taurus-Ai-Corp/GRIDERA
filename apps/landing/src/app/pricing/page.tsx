@@ -23,7 +23,7 @@ const TIERS = [
       'Core compliance engines',
       'Basic audit trail (database-backed)',
       'Email support',
-      'Clerk SSO',
+      'Email/password sign-in (SSO roadmap)',
       '14-day free trial included',
     ],
   },
