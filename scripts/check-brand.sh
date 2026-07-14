@@ -24,11 +24,19 @@ QGRID_VERBS='Comply|Scan|Scanner|Migrate|Certify|Lend|Pay|Arq|Shield|Guard|Obser
 # Space-form product names that MUST use the pipe (GRIDERA|Comply). NOTE: "Platform" is NOT
 # here on purpose — "GRIDERA Platform" / "the GRIDERA platform" is legitimate prose.
 GRIDERA_VERBS='Comply|Scan|Migrate|Certify|Lend|Pay|Arq|Shield|Guard|Observe'
+# All case variants of the deprecated prefix ("Q-GRID Comply" was invisible to the old
+# case-sensitive regex). Hyphenated identifiers (Q-GRID-QaaS-Platform,
+# Quantum-Grid.Network) never match — the space is required.
+QGRID_PREFIX='(Q-GRID|Q-Grid|q-grid|QGRID)'
+# "Quantum Grid" / "Quantum Grid Mesh" are retired display brands; the GitHub repo is GRIDERA.
+# q-grid-platform: dir/package renamed gridera-platform (Wave D) — old token must not resurface.
+RETIRED_BRANDS='(Quantum Grid)|(Quantum-Grid-Mesh)|(quantum-grid-mesh)|(q-grid-platform)'
 # The pipe form "GRIDERA|Comply" never matches (regex requires a literal space).
-FORBIDDEN="(Q-Grid (${QGRID_VERBS}))|(GRIDERA (${GRIDERA_VERBS}))"
+FORBIDDEN="(${QGRID_PREFIX} (${QGRID_VERBS}))|(GRIDERA (${GRIDERA_VERBS}))|${RETIRED_BRANDS}"
 
-# Paths that legitimately contain the forbidden strings as negative examples.
-EXCLUDE_RE='(^|/)(scripts/check-brand\.sh|\.githooks/)|BRAND|brand-rule'
+# Paths that legitimately contain the forbidden strings as negative examples,
+# plus historical plans/specs (docs/superpowers/) that record the old names.
+EXCLUDE_RE='(^|/)(scripts/check-brand\.sh|\.githooks/|docs/superpowers/)|BRAND|brand-rule'
 
 fail=0
 report() { # file, line, text
@@ -78,8 +86,8 @@ fi
 
 if [ "$fail" -ne 0 ]; then
   echo ""
-  echo "  Brand guard: use pipe form (GRIDERA|Comply), never \"Q-Grid <Verb>\" or space-form \"GRIDERA <Verb>\"."
-  echo "  Domains (q-grid.net), the q-grid-platform dir/package, and the repo name are fine."
+  echo "  Brand guard: use pipe form (GRIDERA|Comply), never \"Q-Grid <Verb>\" (any case) or space-form \"GRIDERA <Verb>\"."
+  echo "  \"Quantum Grid\"/\"Quantum-Grid-Mesh\"/\"q-grid-platform\" are retired (dir/package is gridera-platform). Domains (q-grid.net — FROZEN, production) are fine."
   echo "  Edge case? add 'brand-allow' on the line, or bypass once with: git commit --no-verify"
   exit 1
 fi

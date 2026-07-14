@@ -30,7 +30,7 @@ export default function ScanPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Scan failed. Please try again.')
-      sessionStorage.setItem('qgrid_scan_result', JSON.stringify(data))
+      sessionStorage.setItem('gridera_scan_result', JSON.stringify(data))
       clearInterval(interval)
       router.push('/scan/results')
     } catch (err) {

@@ -73,7 +73,7 @@ describe('ai-guard input rules', () => {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 pnpm --filter comply exec vitest run src/lib/ai-guard.test.ts
 ```
 
@@ -699,7 +699,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 1: Run full test suite**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 pnpm test
 ```
 

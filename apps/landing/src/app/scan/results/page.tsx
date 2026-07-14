@@ -131,7 +131,9 @@ export default function ScanResultsPage() {
   const [emailStatus, setEmailStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
 
   useEffect(() => {
-    const raw = sessionStorage.getItem('qgrid_scan_result')
+    // Dual-read during key migration: in-flight scans stored under the legacy key
+    // must survive a deploy mid-session.
+    const raw = sessionStorage.getItem('gridera_scan_result') ?? sessionStorage.getItem('qgrid_scan_result')
     if (!raw) {
       router.replace('/scan')
       return

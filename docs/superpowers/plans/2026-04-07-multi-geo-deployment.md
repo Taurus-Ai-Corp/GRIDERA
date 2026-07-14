@@ -45,7 +45,7 @@ Same process:
 - [ ] **Step 3: Run Drizzle migrations on both databases**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 
 # NA
 DATABASE_URL="postgresql://neondb_owner:<password>@<na-host>.us-east-2.aws.neon.tech/neondb?sslmode=require" \
@@ -76,7 +76,7 @@ DATABASE_URL="<na-url>" pnpm --filter @taurus/db exec drizzle-kit studio
 - [ ] **Step 1: Create comply-na Vercel project**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 
 # Create project linked to same repo
 vercel project add comply-na
@@ -131,7 +131,7 @@ Same steps with:
 
 ```bash
 # Push triggers auto-deploy on all 3 projects
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 git commit --allow-empty -m "chore: trigger multi-geo deployment
 
 Co-Authored-By: E.Fdz <admin@taurusai.io>
@@ -189,7 +189,7 @@ In `geo-selector.tsx`, find the region config array and set `live: true` for NA 
 - [ ] **Step 2: Commit**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 git add apps/landing/src/components/geo-selector.tsx
 git commit -m "feat(landing): enable NA and IN regions in geo-selector
 

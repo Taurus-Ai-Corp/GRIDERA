@@ -1,4 +1,4 @@
-# Q-GRID Comply: Enterprise PQC Migration Architecture
+# GRIDERA|Comply: Enterprise PQC Migration Architecture
 
 ## Solving the Organizational Adoption Gap Through Cryptographic Agility, AI-Powered Compliance, and Verifiable Proof
 
@@ -32,9 +32,9 @@ Post-quantum cryptography standards are finalized. The algorithms are public. Th
 
 The bottleneck was never the algorithms — NIST solved that in August 2024. The bottleneck is **organizational adoption**.
 
-**Q-GRID Comply** is the first platform to address all five organizational barriers that prevent enterprises from achieving quantum-safe compliance. It delivers:
+**GRIDERA|Comply** is the first platform to address all five organizational barriers that prevent enterprises from achieving quantum-safe compliance. It delivers:
 
-| Metric | Traditional Approach | Q-GRID Comply |
+| Metric | Traditional Approach | GRIDERA|Comply |
 |--------|---------------------|---------------|
 | **Time to first migration** | 10-15 months (procurement alone) | 1 day |
 | **Full compliance timeline** | 27-48 months | 6 months |
@@ -42,7 +42,7 @@ The bottleneck was never the algorithms — NIST solved that in August 2024. The
 | **Vendor lock-in** | Proprietary stacks | Open standards (NIST FIPS 203/204) |
 | **Compliance proof** | Self-reported checklists | Quantum-signed immutable audit trails |
 
-**For Investors:** Q-GRID Comply targets a $36.5B addressable market (post-quantum cryptography + compliance automation) with a SaaS model ($500-$2,000/mo) requiring zero vendor infrastructure investment.
+**For Investors:** GRIDERA|Comply targets a $36.5B addressable market (post-quantum cryptography + compliance automation) with a SaaS model ($500-$2,000/mo) requiring zero vendor infrastructure investment.
 
 **For CISOs:** Start compliance work today without procurement approval. Prove progress to regulators with cryptographic proof. Migrate incrementally without touching production systems.
 
@@ -80,13 +80,13 @@ Nobody gets promoted for preventing a breach that hasn't happened yet. The incen
 
 ## 3. Architecture Overview
 
-Q-GRID Comply is a **layered architecture** designed for incremental adoption, zero-downtime migration, and verifiable compliance proof.
+GRIDERA|Comply is a **layered architecture** designed for incremental adoption, zero-downtime migration, and verifiable compliance proof.
 
 ### 3.1 System Architecture
 
 ```
                     ┌─────────────────────────────────────────┐
-                    │           Q-GRID Comply Platform         │
+                    │           GRIDERA|Comply Platform         │
                     │         (Next.js 15 + React 19)          │
                     ├─────────────────────────────────────────┤
                     │                                         │
@@ -154,7 +154,7 @@ User ──────────── Subscription (Stripe)
 
 ```
 ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-│  Enterprise      │     │  Q-GRID Comply   │     │  Verification    │
+│  Enterprise      │     │  GRIDERA|Comply   │     │  Verification    │
 │  Systems         │────▶│  Platform        │────▶│  Layer           │
 │                  │     │                  │     │                  │
 │  - TLS Endpoints │     │  - Crypto Scan   │     │  - Hedera HCS    │
@@ -180,7 +180,7 @@ Each solution directly addresses one enterprise trap. Together, they form a comp
 
 **Innovation: Self-Service Onboarding with Immediate Value**
 
-Traditional enterprise PQC vendors require months of procurement before delivering any value. Q-GRID Comply inverts this model:
+Traditional enterprise PQC vendors require months of procurement before delivering any value. GRIDERA|Comply inverts this model:
 
 | Day | Activity | Value Delivered |
 |-----|----------|----------------|
@@ -198,7 +198,7 @@ Traditional enterprise PQC vendors require months of procurement before deliveri
 
 **Novel Integration — CycloneDX for Cryptographic Inventory:**
 
-[CycloneDX](https://github.com/CycloneDX) is the OWASP standard for Software Bill of Materials. Q-GRID Comply extends it to produce **Cryptographic Bills of Materials (CBOM)** — a concept that doesn't exist in any competing product. The CBOM catalogs:
+[CycloneDX](https://github.com/CycloneDX) is the OWASP standard for Software Bill of Materials. GRIDERA|Comply extends it to produce **Cryptographic Bills of Materials (CBOM)** — a concept that doesn't exist in any competing product. The CBOM catalogs:
 
 - Every cryptographic algorithm used across the enterprise
 - Key sizes, expiration dates, and quantum vulnerability status
@@ -208,7 +208,7 @@ Traditional enterprise PQC vendors require months of procurement before deliveri
 
 **Why This Matters:**
 
-Enterprises can bypass procurement because Q-GRID Comply delivers value on Day 1. The CBOM provides a concrete artifact that CISOs can present to boards and risk committees immediately — before any migration work begins.
+Enterprises can bypass procurement because GRIDERA|Comply delivers value on Day 1. The CBOM provides a concrete artifact that CISOs can present to boards and risk committees immediately — before any migration work begins.
 
 ---
 
@@ -217,7 +217,7 @@ Enterprises can bypass procurement because Q-GRID Comply delivers value on Day 1
 
 **Innovation: Cryptographic Agility Framework with Feature Flag Control**
 
-This is Q-GRID Comply's core technical innovation. Instead of requiring enterprises to replace all cryptographic infrastructure simultaneously, we enable **parallel operation of legacy and quantum-safe algorithms** with feature-flag-controlled switching.
+This is GRIDERA|Comply's core technical innovation. Instead of requiring enterprises to replace all cryptographic infrastructure simultaneously, we enable **parallel operation of legacy and quantum-safe algorithms** with feature-flag-controlled switching.
 
 **Architecture: Dual-Mode Cryptographic Engine**
 
@@ -270,7 +270,7 @@ This is Q-GRID Comply's core technical innovation. Instead of requiring enterpri
 
 **Novel Integration — OpenFeature for Cryptographic Algorithm Switching:**
 
-[OpenFeature](https://github.com/open-feature/js-sdk) is a CNCF incubating project that provides vendor-agnostic feature flagging. Q-GRID Comply uses it to control cryptographic algorithm selection — a novel application that doesn't exist in any other PQC migration tool.
+[OpenFeature](https://github.com/open-feature/js-sdk) is a CNCF incubating project that provides vendor-agnostic feature flagging. GRIDERA|Comply uses it to control cryptographic algorithm selection — a novel application that doesn't exist in any other PQC migration tool.
 
 This enables:
 - **Percentage rollouts**: Migrate 10% of signatures to ML-DSA, then 50%, then 100%
@@ -289,7 +289,7 @@ Risk committees can approve migration because it's **reversible, incremental, an
 
 **Innovation: Quantum-Signed Immutable Audit Trails on Hedera**
 
-Every compliance action in Q-GRID Comply generates a cryptographic proof: an ML-DSA signature over the audit entry, anchored to Hedera Consensus Service (HCS) for immutability.
+Every compliance action in GRIDERA|Comply generates a cryptographic proof: an ML-DSA signature over the audit entry, anchored to Hedera Consensus Service (HCS) for immutability.
 
 **How It Works:**
 
@@ -345,7 +345,7 @@ Every compliance action in Q-GRID Comply generates a cryptographic proof: an ML-
 
 **Novel Integration — Hedera Consensus Service for Compliance Anchoring:**
 
-[Hedera HCS](https://github.com/hiero-ledger/hiero-sdk-js) provides ordered, timestamped, immutable message logging at enterprise scale (~10,000 TPS, $0.0001 per message). Q-GRID Comply uses HCS to create **the first quantum-signed compliance audit trail on a public distributed ledger**.
+[Hedera HCS](https://github.com/hiero-ledger/hiero-sdk-js) provides ordered, timestamped, immutable message logging at enterprise scale (~10,000 TPS, $0.0001 per message). GRIDERA|Comply uses HCS to create **the first quantum-signed compliance audit trail on a public distributed ledger**.
 
 This means:
 - **Regulators can independently verify** compliance work without trusting the enterprise's self-reporting
@@ -364,7 +364,7 @@ Compliance stops being theater. Every claim is backed by cryptographic proof. Re
 
 **Innovation: Open Standards Foundation with Infrastructure-Agnostic Design**
 
-Q-GRID Comply is built entirely on open standards. No proprietary algorithms, no vendor-specific APIs, no infrastructure requirements.
+GRIDERA|Comply is built entirely on open standards. No proprietary algorithms, no vendor-specific APIs, no infrastructure requirements.
 
 **Open Standards Stack:**
 
@@ -381,7 +381,7 @@ Q-GRID Comply is built entirely on open standards. No proprietary algorithms, no
 
 **Novel Integration — Hiero DID SDK for Compliance Attestation:**
 
-[Hiero DID SDK](https://github.com/hiero-ledger/hiero-did-sdk-js) enables decentralized identity on Hedera. Q-GRID Comply uses it to create **Verifiable Compliance Credentials** — W3C-standard credentials that prove an organization's quantum readiness status without revealing internal system details.
+[Hiero DID SDK](https://github.com/hiero-ledger/hiero-did-sdk-js) enables decentralized identity on Hedera. GRIDERA|Comply uses it to create **Verifiable Compliance Credentials** — W3C-standard credentials that prove an organization's quantum readiness status without revealing internal system details.
 
 This enables:
 - **Supply chain compliance propagation**: A bank can verify that its vendors are quantum-safe without auditing their systems directly
@@ -391,7 +391,7 @@ This enables:
 
 **Why This Matters:**
 
-Enterprises own their compliance data. They can switch from Q-GRID Comply to any other tool without losing work. Their cryptographic inventory, audit trails, and compliance records are stored in open formats (CycloneDX, W3C VC, Hedera HCS) that any system can read.
+Enterprises own their compliance data. They can switch from GRIDERA|Comply to any other tool without losing work. Their cryptographic inventory, audit trails, and compliance records are stored in open formats (CycloneDX, W3C VC, Hedera HCS) that any system can read.
 
 ---
 
@@ -400,7 +400,7 @@ Enterprises own their compliance data. They can switch from Q-GRID Comply to any
 
 **Innovation: Real-Time Quantum Readiness Scoring with Executive Dashboards**
 
-Q-GRID Comply transforms invisible compliance work into measurable, reportable, promotable metrics.
+GRIDERA|Comply transforms invisible compliance work into measurable, reportable, promotable metrics.
 
 **Quantum Readiness Score (QRS): 0-100**
 
@@ -427,7 +427,7 @@ The QRS is a composite score calculated from five weighted dimensions:
 
 **EU AI Act Assessment Module (Currently Implemented):**
 
-Q-GRID Comply already includes a production-ready EU AI Act assessment wizard with:
+GRIDERA|Comply already includes a production-ready EU AI Act assessment wizard with:
 
 - **25 questions** across 5 categories: Risk Classification, Transparency, Data Governance, Human Oversight, Technical Documentation
 - **Weighted scoring engine** with risk level determination (minimal, limited, high, unacceptable)
@@ -444,11 +444,11 @@ The incentive structure flips: preventing quantum risk becomes visible, measurab
 
 ## 5. Open-Source Integration Map
 
-Q-GRID Comply is built on a curated stack of open-source libraries and platforms, each selected for maturity, community support, and alignment with open standards.
+GRIDERA|Comply is built on a curated stack of open-source libraries and platforms, each selected for maturity, community support, and alignment with open standards.
 
 ### 5.1 Cryptographic Core
 
-| Component | Library | License | Role in Q-GRID Comply |
+| Component | Library | License | Role in GRIDERA|Comply |
 |-----------|---------|---------|----------------------|
 | **ML-DSA/ML-KEM/SLH-DSA** | [@noble/post-quantum](https://github.com/paulmillr/noble-post-quantum) | MIT | **Primary PQC library** — audited, zero-dependency pure JS. ML-KEM (512/768/1024), ML-DSA (44/65/87), SLH-DSA (all 12 parameter sets). Fastest pure JS PQC implementation. |
 | **Node.js Native PQC** | [Node.js v24.7+](https://nodejs.org/en/blog/release/v24.7.0) | MIT | Native `crypto.encapsulate()` / `crypto.sign()` for ML-KEM/ML-DSA via OpenSSL 3.5. Zero-dependency path for modern runtimes. |
@@ -461,19 +461,19 @@ Q-GRID Comply is built on a curated stack of open-source libraries and platforms
 
 ### 5.2 AI/ML Pipeline
 
-| Component | Model/Library | Role in Q-GRID Comply |
+| Component | Model/Library | Role in GRIDERA|Comply |
 |-----------|--------------|----------------------|
 | **EU AI Act Evaluation** | [COMPL-AI Framework](https://github.com/compl-ai/compl-ai) / [HF Space](https://huggingface.co/spaces/latticeflow/compl-ai-board) | ETH Zurich open-source framework — 27 benchmarks for LLM compliance scoring against EU AI Act. Scores models 0-1. |
 | **Policy Violation Detection** | [EU AI Act Policy Model](https://huggingface.co/suhas-km/eu-ai-act-policy-model) | Fine-tuned DistilBERT for detecting EU AI Act compliance issues in text. Categorizes violations, references articles. F1: ~0.81. |
 | **Legal NLP** | [LEGAL-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased) | Pre-trained on 12GB legal text. Fine-tune on PQC regulatory corpus for domain-specific "PQC-Legal-BERT." |
 | **Crypto Vulnerability Detection** | [CodeAstra-7B](https://huggingface.co/rootxhacker/CodeAstra-7B) | Scans enterprise codebases for cryptographic vulnerabilities across 13 languages (83% accuracy). Runs via Ollama ($0 cost). |
 | **Insecure Code Detection** | [CodeBERT-detect-insecure](https://huggingface.co/mrm8488/codebert-base-finetuned-detect-insecure-code) | Lightweight binary classification for insecure cryptographic patterns. ONNX export for Node.js inference. |
-| **Compliance Agent** | [EU AI Act Compliance Agent](https://huggingface.co/spaces/MCP-1st-Birthday/eu-ai-act-compliance-agent) | MCP-based compliance agent by legitima.ai — aligns with Q-GRID's existing MCP server architecture. |
+| **Compliance Agent** | [EU AI Act Compliance Agent](https://huggingface.co/spaces/MCP-1st-Birthday/eu-ai-act-compliance-agent) | MCP-based compliance agent by legitima.ai — aligns with GRIDERA's existing MCP server architecture. |
 | **Regulatory NLP** | Claude API (Anthropic) | EU AI Act article parsing, compliance gap analysis, recommendation generation |
 
 ### 5.3 Compliance & GRC
 
-| Component | Platform | Role in Q-GRID Comply |
+| Component | Platform | Role in GRIDERA|Comply |
 |-----------|----------|----------------------|
 | **CBOM Toolchain** | [IBM CBOMkit](https://github.com/cbomkit/cbomkit) / [PQCA Action](https://github.com/PQCA/cbomkit-action) | **Most strategic integration.** 5 components: Hyperion (source scan), Theia (container scan), Coeus (visualizer), Themis (quantum-safe compliance engine), Mnemosyne (CBOM repository). CycloneDX standard. GitHub Action for CI/CD. |
 | **Compliance Mapping** | [CISO Assistant](https://github.com/intuitem/ciso-assistant-community) (~3.4k stars) | 100+ compliance frameworks (ISO 27001, GDPR, EU AI Act, SOC 2, NIS2, DORA). REST API. Auto-mapping between frameworks. |
@@ -486,13 +486,13 @@ Q-GRID Comply is built on a curated stack of open-source libraries and platforms
 
 ### 5.4 Infrastructure
 
-| Component | Technology | Role in Q-GRID Comply |
+| Component | Technology | Role in GRIDERA|Comply |
 |-----------|-----------|----------------------|
 | **Feature Flags (Standard)** | [OpenFeature JS SDK](https://github.com/open-feature/js-sdk) (CNCF) | Vendor-agnostic crypto algorithm switching abstraction. Customers use their own flag provider. |
-| **Feature Flags (Backend)** | [Unleash](https://github.com/Unleash/unleash) (~12.1k stars) | Same stack (Node.js + PostgreSQL). Self-hosted. Default OpenFeature provider for Q-GRID. Gradual rollout + kill switches. |
+| **Feature Flags (Backend)** | [Unleash](https://github.com/Unleash/unleash) (~12.1k stars) | Same stack (Node.js + PostgreSQL). Self-hosted. Default OpenFeature provider for GRIDERA. Gradual rollout + kill switches. |
 | **Blockchain** | [Hedera SDK](https://github.com/hiero-ledger/hiero-sdk-js) | Primary immutable audit trail via HCS (~10k TPS, $0.0001/msg). HTS for compliance certificate NFTs. |
 | **Transparency Log** | [Tessera](https://github.com/transparency-dev/trillian-tessera) (Google) | Secondary transparency log for dual-attestation. Certificate Transparency model auditors already understand. |
-| **Supply Chain** | [Sigstore/Cosign](https://github.com/sigstore/cosign) (OpenSSF) | Sign all Q-GRID deployment artifacts. Verifiable provenance that the compliance platform hasn't been tampered with. |
+| **Supply Chain** | [Sigstore/Cosign](https://github.com/sigstore/cosign) (OpenSSF) | Sign all GRIDERA deployment artifacts. Verifiable provenance that the compliance platform hasn't been tampered with. |
 | **Identity** | [Hiero DID SDK](https://github.com/hiero-ledger/hiero-did-sdk-js) | Decentralized compliance credentials (W3C Verifiable Credentials) |
 | **Database** | [Prisma ORM](https://github.com/prisma/prisma) | Type-safe database access (PostgreSQL) |
 | **Auth** | [NextAuth.js v5](https://github.com/nextauthjs/next-auth) | Enterprise authentication with SSO support |
@@ -538,7 +538,7 @@ Layer 6: GOVERNANCE & REPORTING
 ├── CISO Assistant API ──── General GRC framework mapping (100+ frameworks)
 ├── VerifyWise API ──────── AI governance integration (same stack)
 ├── CBOMkit-Coeus ───────── CBOM visualization
-└── Q-GRID Dashboard ────── Unified compliance view + QRS scoring
+└── GRIDERA Dashboard ────── Unified compliance view + QRS scoring
 ```
 
 ### 5.6 Key Novel Differentiators
@@ -553,7 +553,7 @@ Layer 6: GOVERNANCE & REPORTING
 ### 5.7 Integration Dependency Graph
 
 ```
-                     Q-GRID Comply Platform
+                     GRIDERA|Comply Platform
                             │
             ┌───────────────┼───────────────┐
             ▼               ▼               ▼
@@ -588,9 +588,9 @@ Layer 6: GOVERNANCE & REPORTING
 
 ### 6.1 The Crypto Vulnerability Detection Pipeline
 
-Q-GRID Comply introduces a novel application of HuggingFace models: **automated detection of cryptographic vulnerabilities and quantum-unsafe patterns in enterprise codebases**.
+GRIDERA|Comply introduces a novel application of HuggingFace models: **automated detection of cryptographic vulnerabilities and quantum-unsafe patterns in enterprise codebases**.
 
-This is fundamentally different from traditional code scanning. Generic vulnerability scanners find SQL injection and XSS. Q-GRID Comply's pipeline finds:
+This is fundamentally different from traditional code scanning. Generic vulnerability scanners find SQL injection and XSS. GRIDERA|Comply's pipeline finds:
 
 - **Hardcoded cryptographic algorithms** (e.g., `RSA-2048` string literals that should be configurable)
 - **Non-agile key generation** (e.g., key generation functions that don't support algorithm switching)
@@ -658,7 +658,7 @@ Enterprise Codebase
 └─────────────────────┘
 ```
 
-### 6.3 Novel HuggingFace Space: Q-GRID Crypto Scanner
+### 6.3 Novel HuggingFace Space: GRIDERA Crypto Scanner
 
 **Proposed HuggingFace Space:** `Taurus-BizFlow/Q-GRID-Crypto-Scanner`
 
@@ -734,7 +734,7 @@ def scan_crypto_vulnerabilities(code_snippet: str) -> dict:
 
 ### 6.4 Fine-Tuning Strategy for Cryptographic Domain
 
-Q-GRID Comply plans to release a **fine-tuned model** on HuggingFace specifically for cryptographic vulnerability detection:
+GRIDERA|Comply plans to release a **fine-tuned model** on HuggingFace specifically for cryptographic vulnerability detection:
 
 **Model:** `Taurus-BizFlow/CryptoGuard-7B`
 
@@ -773,7 +773,7 @@ Month 0                                                    Month 48
   ❌ G7 recommendation MAYBE met (Month 48-72)
 ```
 
-### 7.2 Q-GRID Comply Migration Timeline
+### 7.2 GRIDERA|Comply Migration Timeline
 
 ```
 Day 1        Week 1       Month 1      Month 3      Month 6
@@ -794,7 +794,7 @@ Day 1        Week 1       Month 1      Month 3      Month 6
 
 ### 7.3 Side-by-Side Comparison
 
-| Dimension | Traditional (27-48 mo) | Q-GRID Comply (6 mo) | Improvement |
+| Dimension | Traditional (27-48 mo) | GRIDERA|Comply (6 mo) | Improvement |
 |-----------|----------------------|---------------------|-------------|
 | **Time to first value** | 10-15 months | 1 day | 300-450x faster |
 | **Procurement required** | Yes (months) | No (self-service) | Eliminated |
@@ -808,7 +808,7 @@ Day 1        Week 1       Month 1      Month 3      Month 6
 
 ### 7.4 Cost Comparison
 
-| Cost Category | Traditional | Q-GRID Comply | Savings |
+| Cost Category | Traditional | GRIDERA|Comply | Savings |
 |---------------|-------------|---------------|---------|
 | **Year 1 License** | $500K-$2M | $6K-$24K | 96-99% |
 | **Implementation Services** | $200K-$500K | $0 (self-service) | 100% |
@@ -846,7 +846,7 @@ Day 1        Week 1       Month 1      Month 3      Month 6
 ```yaml
 openapi: 3.1.0
 info:
-  title: Q-GRID Comply API
+  title: GRIDERA|Comply API
   version: 1.0.0
   description: Enterprise PQC migration and compliance automation
 
@@ -957,7 +957,7 @@ paths:
 - [LEGAL-BERT](https://huggingface.co/nlpaueb/legal-bert-base-uncased) — Pre-trained on 12GB legal text
 - [CodeAstra-7B](https://huggingface.co/rootxhacker/CodeAstra-7B) — Multi-language vulnerability detection (83% accuracy)
 - [CodeBERT-detect-insecure-code](https://huggingface.co/mrm8488/codebert-base-finetuned-detect-insecure-code) — Binary insecure code classification
-- [Taurus-BizFlow/Q-GRID-QaaS-Platform](https://huggingface.co/Taurus-BizFlow/Q-GRID-QaaS-Platform) — Q-GRID platform documentation
+- [Taurus-BizFlow/Q-GRID-QaaS-Platform](https://huggingface.co/Taurus-BizFlow/Q-GRID-QaaS-Platform) — GRIDERA platform documentation
 
 ### Research Papers
 - "Zero-Downtime Post-Quantum TLS 1.3 Migration: A Bridge-Server-Based Approach" — [ePrint 2025/1792](https://eprint.iacr.org/2025/1792)
@@ -976,9 +976,9 @@ paths:
 
 ---
 
-## About Q-GRID Comply
+## About GRIDERA|Comply
 
-**Q-GRID Comply** (internal codename: GRIDERA) is the quantum-safe compliance module of the **Q-GRID Q-SaaS Platform** by **Taurus AI Corp**.
+**GRIDERA|Comply** (internal codename: GRIDERA) is the quantum-safe compliance module of the **GRIDERA Q-SaaS Platform** by **Taurus AI Corp**.
 
 **Q-SaaS = Quantum Security as a Service**
 

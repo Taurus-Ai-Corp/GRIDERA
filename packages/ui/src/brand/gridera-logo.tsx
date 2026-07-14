@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from '../lib/utils.js'
 
-interface QGridLogoProps {
+interface GrideraLogoProps {
   /** 'icon' = grid only, 'mark' = grid + wordmark, 'wordmark' = text only */
   variant?: 'icon' | 'mark' | 'wordmark'
   /** Override teal accent color */
@@ -20,13 +20,13 @@ interface QGridLogoProps {
  * breaking symmetry bottom-right. Center node enlarged (governance).
  * Concept B: pure "grid" minimalism.
  */
-export function QGridLogo({
+export function GrideraLogo({
   variant = 'mark',
   color = '#00CCAA',
   size = 32,
   showSubtitle = false,
   className,
-}: QGridLogoProps) {
+}: GrideraLogoProps) {
   const gridMesh = (
     <svg
       width={size}
@@ -37,7 +37,7 @@ export function QGridLogo({
       aria-hidden="true"
     >
       <defs>
-        <filter id="qgrid-glow" x="-40%" y="-40%" width="180%" height="180%">
+        <filter id="gridera-glow" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b" />
           <feMerge>
             <feMergeNode in="b" />
@@ -70,7 +70,7 @@ export function QGridLogo({
       </g>
 
       {/* Grid nodes */}
-      <g filter="url(#qgrid-glow)">
+      <g filter="url(#gridera-glow)">
         <circle cx="20" cy="20" r="3" fill={color} />
         <circle cx="50" cy="20" r="3" fill={color} />
         <circle cx="80" cy="20" r="3" fill={color} />

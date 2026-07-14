@@ -23,7 +23,7 @@
 
 NIST finalized post-quantum cryptography standards (FIPS 203/204/205) in August 2024. The EU AI Act mandates compliance by August 2026. Every organization running TLS, signing code, or managing certificates must migrate — but most have zero visibility into their cryptographic posture.
 
-Quantum Grid is the first platform that combines automated PQC vulnerability scanning with blockchain-anchored audit trails and multi-jurisdictional regulatory mapping, giving enterprises a single pane of glass for the quantum migration.
+GRIDERA is the first platform that combines automated PQC vulnerability scanning with blockchain-anchored audit trails and multi-jurisdictional regulatory mapping, giving enterprises a single pane of glass for the quantum migration.
 
 ## Key Features
 
@@ -42,7 +42,7 @@ Quantum Grid is the first platform that combines automated PQC vulnerability sca
 ## Architecture
 
 ```
-quantum-grid-mesh/
+gridera/
 ├── apps/
 │   ├── landing/          # Marketing site (q-grid.net) — Next.js 16, dark mode
 │   └── comply/           # Compliance platform — Next.js 16, first-party JWT auth, Stripe billing
@@ -103,8 +103,8 @@ graph TB
 
 ```bash
 # Prerequisites: Node.js >= 20, pnpm >= 9
-git clone https://github.com/Taurus-Ai-Corp/Quantum-Grid-Mesh.git
-cd Quantum-Grid-Mesh
+git clone https://github.com/Taurus-Ai-Corp/GRIDERA.git
+cd GRIDERA
 
 # Install dependencies
 pnpm install
@@ -198,7 +198,7 @@ We welcome contributions. Please read our [Contributing Guidelines](https://gith
 
 ## License
 
-This project is licensed under the [Business Source License 1.1](LICENSE) (BSL 1.1). The licensed work is Quantum Grid Mesh. The licensor is TAURUS AI Corp. The change date is April 1, 2030. On the change date, the license converts to Apache 2.0. Additional use grants are available for evaluation, development, and non-commercial use. Commercial deployment requires a paid license — see [Enterprise](#enterprise).
+This project is licensed under the [Business Source License 1.1](LICENSE) (BSL 1.1). The licensed work is GRIDERA. The licensor is TAURUS AI Corp. The change date is April 1, 2030. On the change date, the license converts to Apache 2.0. Additional use grants are available for evaluation, development, and non-commercial use. Commercial deployment requires a paid license — see [Enterprise](#enterprise).
 
 ## Links
 
