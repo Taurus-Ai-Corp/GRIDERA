@@ -296,15 +296,15 @@ export const COMPLIANCE_MATRIX: ComplianceEntry[] = [
       { framework: 'NIS2', article: 'Article 21(2)(h)', description: 'Policies on the use of cryptography and encryption' },
     ],
   },
-  // ─── PARTIAL: Clerk authentication ─────────────────────────────────────────
+  // ─── PARTIAL: First-party JWT authentication (Clerk removed 2026-06-24) ────
   {
-    featureId: 'clerk-auth',
-    featureName: 'Clerk Authentication (proxy.ts)',
+    featureId: 'jwt-auth',
+    featureName: 'First-party JWT Authentication',
     category: 'access-control',
     description:
-      'Clerk v7 authentication protecting all /dashboard/* routes via proxy.ts middleware. SSO and MFA supported via Clerk configuration.',
+      'Dashboard routes protected by first-party JWT cookies (jose) via middleware.ts. Password + session auth lives in Neon. MFA and SAML planned via Better Auth — not a third-party IdP.',
     status: 'partial',
-    implementationPath: 'apps/comply/src/proxy.ts',
+    implementationPath: 'apps/comply/src/lib/auth.ts',
     regulations: [
       { framework: 'GDPR', article: 'Article 32(1)(b)', description: 'Ability to ensure ongoing confidentiality of processing systems' },
       { framework: 'SOC 2', article: 'CC6.1', description: 'Logical and physical access controls' },

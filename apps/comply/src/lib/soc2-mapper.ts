@@ -59,22 +59,25 @@ const CONTROL_MAPPINGS: Record<
       'Real-time AI observability dashboard monitors guard pass/block/warn rates, cost tracking, latency metrics (avg + P95), and self-hosted ratio.',
   },
   'CC6.1': {
-    status: 'met',
-    platformFeature: 'Clerk Auth + PQC Signing',
+    status: 'partial',
+    platformFeature: 'First-party JWT Auth + PQC Signing',
     evidence:
-      'Clerk v7 authentication with SSO and MFA protecting all dashboard routes via proxy.ts. ML-DSA-65 post-quantum signing for all attestations.',
+      'Dashboard routes protected by first-party JWT (jose) middleware. ML-DSA-65 post-quantum signing for attestations. Password hashing harden + MFA still required (see ADR-2026-07-14).',
+    gap: 'No MFA yet; password hashing must be argon2/bcrypt in production; no third-party IdP.',
   },
   'CC6.2': {
-    status: 'met',
-    platformFeature: 'Clerk User Registration',
+    status: 'partial',
+    platformFeature: 'First-party User Registration',
     evidence:
-      'Clerk handles user registration with email verification, identity provider integration, and account provisioning workflows.',
+      'Sign-up/sign-in via /api/auth/* with credentials stored in Neon (users table).',
+    gap: 'Email verification and identity-provider federation not yet shipped.',
   },
   'CC6.3': {
-    status: 'met',
-    platformFeature: 'Route Protection + Clerk RBAC',
+    status: 'partial',
+    platformFeature: 'Route Protection + JWT sessions',
     evidence:
-      'Next.js proxy.ts enforces route-level access control. Dashboard routes require authenticated sessions. Role-based access managed through Clerk organisations.',
+      'Next.js middleware.ts enforces authenticated sessions on /dashboard/* routes.',
+    gap: 'Fine-grained RBAC (CISO/Auditor/Viewer) and org SCIM not yet implemented.',
   },
   'CC6.6': {
     status: 'met',
@@ -226,9 +229,9 @@ const CONTROL_MAPPINGS: Record<
   },
   'P7.1': {
     status: 'partial',
-    platformFeature: 'Clerk Profile Management',
+    platformFeature: 'User Profile Management',
     evidence:
-      'Clerk provides user self-service profile management and correction.',
+      'Settings UI allows basic profile fields; auth identity stored in Neon users table.',
     gap: 'No periodic data quality reviews or data quality standards documented.',
   },
   'P8.1': {

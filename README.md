@@ -45,7 +45,7 @@ Quantum Grid is the first platform that combines automated PQC vulnerability sca
 quantum-grid-mesh/
 ├── apps/
 │   ├── landing/          # Marketing site (q-grid.net) — Next.js 16, dark mode
-│   └── comply/           # Compliance platform — Next.js 16, Clerk auth, Stripe billing
+│   └── comply/           # Compliance platform — Next.js 16, first-party JWT auth, Stripe billing
 ├── packages/
 │   ├── pqc-crypto/       # ML-DSA-65 signing, ML-KEM-768 encapsulation, AES-256-GCM
 │   ├── pqc-engine/       # SSL scanner, QRS scoring algorithm
@@ -72,7 +72,7 @@ graph TB
 
     subgraph "Application Layer"
         H[Next.js 16 + proxy.ts]
-        I[Clerk v7 Auth]
+        I[First-party JWT Auth]
         J[Stripe Billing]
     end
 
@@ -119,7 +119,7 @@ pnpm test
 pnpm --filter landing dev
 
 # Start the compliance platform (light mode, port 3000)
-# Requires Clerk keys in apps/comply/.env.local
+# Requires JWT_SECRET + DATABASE_URL in apps/comply/.env.local (see .env.example)
 pnpm --filter comply dev
 ```
 
@@ -160,7 +160,7 @@ pnpm --filter comply dev
 
 **Sovereign AI Deployment** — Run the entire platform on your own infrastructure. AI report generation via self-hosted Nemotron, Mistral, or any OpenAI-compatible endpoint. Zero data egress.
 
-**Clerk Organizations + SCIM** — Enterprise SSO with SAML/OIDC, team management, role-based access (CISO, CTO, Auditor, Viewer roles), and SCIM directory sync.
+**Org roles + future SSO** — First-party JWT auth today (Neon-resident). Enterprise SAML/OIDC and SCIM are planned via self-hosted Better Auth / BoxyHQ when a design partner requires them — **not** a third-party IdP like Clerk.
 
 **CycloneDX CBOM Generation** — Automated Cryptographic Bill of Materials from your codebase. Integrates with GitHub, GitLab, and Bitbucket for continuous crypto inventory.
 
@@ -175,7 +175,7 @@ Contact: [enterprise@taurusai.io](mailto:enterprise@taurusai.io)
 | Mono-repo | Turborepo + pnpm workspaces |
 | Framework | Next.js 16 (proxy.ts routing) |
 | Language | TypeScript 5.8 (83.7% of codebase) |
-| Auth | Clerk v7 (SSO, Organizations, SCIM) |
+| Auth | First-party JWT (`jose`) → Better Auth (planned); Clerk permanently out |
 | Database | Neon PostgreSQL v17 (Frankfurt) + Drizzle ORM |
 | PQC | @noble/post-quantum (ML-DSA-65, ML-KEM-768) |
 | Blockchain | Hedera Consensus Service (HCS) |

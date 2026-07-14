@@ -4,7 +4,7 @@ import { organizations } from './organizations'
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
-  clerkId: text('clerk_id').unique(), // Optional for Clerk migration
+  clerkId: text('clerk_id').unique(), // LEGACY optional column — do not write; drop after Better Auth migration
   email: text('email').notNull().unique(),
   passwordHash: text('password_hash'), // bcrypt/argon2 hash for JWT auth
   organizationId: uuid('organization_id').references(() => organizations.id),

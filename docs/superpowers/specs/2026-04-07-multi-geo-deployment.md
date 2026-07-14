@@ -2,7 +2,9 @@
 
 **Goal:** Deploy comply app to NA (na.q-grid.net) and IN (in.q-grid.net) with true data residency — separate databases per region, same codebase.
 
-**Approach:** Infrastructure-only. Zero code changes. The `@taurus/jurisdiction` package already handles detection, config, pricing, and regulatory frameworks. The comply app reads `JURISDICTION` env var. We just need databases, Vercel projects, Clerk orgs, and DNS.
+**Approach:** Infrastructure-only. Zero code changes. The `@taurus/jurisdiction` package already handles detection, config, pricing, and regulatory frameworks. The comply app reads `JURISDICTION` env var. We just need databases, Vercel projects, auth secrets (`JWT_SECRET`), and DNS.
+
+> **2026-07-14 auth update:** Clerk is permanently removed. Per-region isolation uses separate Neon DBs + `JWT_SECRET` (and later Better Auth) — **not** separate Clerk projects. See `docs/ops/ADR-2026-07-14-auth-better-auth-vs-harden-jwt.md`.
 
 ---
 
@@ -37,12 +39,11 @@ Each database runs the same Drizzle schema. Migrations run independently per reg
 
 All three point to the same GitHub repo (Quantum-Grid-Mesh), same root directory (`apps/comply`). Only env vars differ.
 
-### 3. Clerk Organizations (2 new)
+### 3. Auth secrets (per region)
 
-Each region gets its own Clerk project for auth isolation:
-- EU: existing Clerk keys
-- NA: new Clerk project → `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- IN: new Clerk project → same pattern
+Each region gets its own first-party auth secret (no Clerk):
+- EU / NA / IN: distinct `JWT_SECRET` values on each Vercel project
+- Future: Better Auth on region Neon (see ADR-2026-07-14)
 
 ### 4. DNS Records
 
@@ -60,7 +61,7 @@ Update `geo-selector.tsx` to set `live: true` for NA and IN links.
 
 - No edge geo-routing (manual selector is fine for now)
 - No cross-region data sync (each region is fully independent)
-- No shared user accounts across regions (separate Clerk projects)
+- No shared user accounts across regions (separate Neon + JWT_SECRET per region)
 - No AE region yet (Phase 2, pending ADGM RegLab)
 
 ## Data Residency Guarantee
