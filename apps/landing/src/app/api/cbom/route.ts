@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     // Dynamic imports to avoid build issues with Node.js modules
     const { scanDomain, generateCBOM, signCBOM } = await import('@taurus/pqc-engine')
-    const { generateKeyPair } = await import('@taurus/pqc-crypto')
+    const { getSigningKeys } = await import('@/lib/signing-keys')
 
     const scanResult = await scanDomain(cleanDomain)
     if (scanResult.error) {
@@ -33,18 +33,8 @@ export async function POST(req: Request) {
 
     const cbom = generateCBOM(scanResult, { targetName: cleanDomain })
 
-    // Sign with the platform key when configured, ephemeral otherwise
-    const publicKeyHex = process.env['PLATFORM_PQC_PUBLIC_KEY']
-    const secretKeyHex = process.env['PLATFORM_PQC_SECRET_KEY']
-    let keys
-    if (publicKeyHex && secretKeyHex) {
-      keys = {
-        publicKey: Uint8Array.from(Buffer.from(publicKeyHex, 'hex')),
-        secretKey: Uint8Array.from(Buffer.from(secretKeyHex, 'hex')),
-      }
-    } else {
-      keys = generateKeyPair()
-    }
+    // Platform keys when configured AND self-verifying, ephemeral otherwise
+    const keys = await getSigningKeys()
     const signed = signCBOM(cbom, keys.secretKey, keys.publicKey)
 
     return new NextResponse(JSON.stringify(signed, null, 2), {

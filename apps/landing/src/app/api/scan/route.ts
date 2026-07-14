@@ -22,44 +22,25 @@ export async function POST(req: Request) {
 
     // Dynamic imports to avoid build issues with Node.js modules
     const { scanDomain, calculateQrsScore, generateRecommendations } = await import('@taurus/pqc-engine')
-    const { createStamp, generateKeyPair } = await import('@taurus/pqc-crypto')
+    const { createStamp } = await import('@taurus/pqc-crypto')
+    const { getSigningKeys } = await import('@/lib/signing-keys')
 
     const scanResult = await scanDomain(cleanDomain)
     const qrsScore = calculateQrsScore(scanResult)
     const recommendations = generateRecommendations(scanResult, 'na')
 
-    // PQC stamp — use platform key from env if available, otherwise generate ephemeral key
-    const publicKeyHex = process.env['PLATFORM_PQC_PUBLIC_KEY']
-    const secretKeyHex = process.env['PLATFORM_PQC_SECRET_KEY']
-
-    let stamp
-    if (publicKeyHex && secretKeyHex) {
-      const publicKey = Uint8Array.from(Buffer.from(publicKeyHex, 'hex'))
-      const secretKey = Uint8Array.from(Buffer.from(secretKeyHex, 'hex'))
-      stamp = createStamp(
-        {
-          type: 'scan',
-          id: crypto.randomUUID(),
-          payload: { domain: cleanDomain, qrsScore },
-          jurisdiction: 'na',
-        },
-        secretKey,
-        publicKey,
-      )
-    } else {
-      // Dev fallback — generate ephemeral key
-      const kp = generateKeyPair()
-      stamp = createStamp(
-        {
-          type: 'scan',
-          id: crypto.randomUUID(),
-          payload: { domain: cleanDomain, qrsScore },
-          jurisdiction: 'na',
-        },
-        kp.secretKey,
-        kp.publicKey,
-      )
-    }
+    // PQC stamp — platform keys when configured AND self-verifying, ephemeral otherwise
+    const keys = await getSigningKeys()
+    const stamp = createStamp(
+      {
+        type: 'scan',
+        id: crypto.randomUUID(),
+        payload: { domain: cleanDomain, qrsScore },
+        jurisdiction: 'na',
+      },
+      keys.secretKey,
+      keys.publicKey,
+    )
 
     const scanId = stamp.hash.slice(0, 16)
 
