@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|--------|
-| **Status** | **Accepted** |
+| **Status** | **Accepted** · Harden JWT P0 implemented 2026-07-14 |
 | **Date** | 2026-07-14 |
 | **Deciders** | TAURUS AI Corp (GRIDERA ops) |
 | **Context** | Clerk removed from code 2026-06-24 (`afac35e`). Residual docs/env still said Clerk. Product sells multi-geo PQC / EU AI Act compliance — third-party US IdP is a sub-processor liability. |

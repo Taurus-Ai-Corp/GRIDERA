@@ -14,6 +14,9 @@ const PUBLIC_ROUTES = [
   '/api/auth/signup',
   '/api/auth/signout',
   '/api/auth/me',
+  '/api/auth/forgot-password',
+  '/api/auth/reset-password',
+  '/api/auth/verify-email',
   '/api/webhooks',
   // GRIDERA|Guard executor is proxied to the standalone guard API, which does
   // its own API-key auth. JWT middleware must not gate it.
