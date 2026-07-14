@@ -50,7 +50,7 @@
 
 | Local path | `origin` | Role |
 |------------|----------|------|
-| `/Users/taurus_ai/Documents/HEDERA/q-grid-platform` | `git@github.com:Taurus-Ai-Corp/GRIDERA.git` | **Canonical monorepo** (planned rename → `gridera-platform`) |
+| `/Users/taurus_ai/Documents/HEDERA/gridera-platform` | `git@github.com:Taurus-Ai-Corp/GRIDERA.git` | **Canonical monorepo** (planned rename → `gridera-platform`) |
 | `/Users/taurus_ai/Documents/HEDERA/hiero-cli-pqc` | `git@github.com:Taurus-Ai-Corp/gridera-scan.git` | Scan CLI |
 | (if present) `HEDERA/Comply.Q-Grid.EU` | `gridera-comply` | Legacy Gen-2 — Vercel `gridera` project only |
 

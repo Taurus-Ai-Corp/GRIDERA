@@ -166,7 +166,7 @@ EOF
 - [ ] **Step 4: Commit the archival log**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 cp /Users/taurus_ai/Documents/HEDERA/_archive/ARCHIVAL-LOG.md docs/superpowers/plans/ARCHIVAL-LOG.md
 git add docs/superpowers/plans/ARCHIVAL-LOG.md docs/superpowers/plans/2026-04-07-hedera-archival.md
 git commit -m "docs: add HEDERA archival plan and log
@@ -229,7 +229,7 @@ Add to the "Deleted" table in `_archive/ARCHIVAL-LOG.md`:
 - [ ] **Step 5: Commit log update**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 cp /Users/taurus_ai/Documents/HEDERA/_archive/ARCHIVAL-LOG.md docs/superpowers/plans/ARCHIVAL-LOG.md
 git add docs/superpowers/plans/ARCHIVAL-LOG.md
 git commit -m "docs: log deletion of duplicate clones (Comply.Q-Grid.in, Rupee_Grid_pay)
@@ -477,7 +477,7 @@ Add new "Parked" table:
 - [ ] **Step 4: Commit final archival log**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 cp /Users/taurus_ai/Documents/HEDERA/_archive/ARCHIVAL-LOG.md docs/superpowers/plans/ARCHIVAL-LOG.md
 git add docs/superpowers/plans/ARCHIVAL-LOG.md
 git commit -m "docs: complete HEDERA archival — 39 dirs → 15
@@ -532,7 +532,7 @@ Expected: HEDERA total ~8-10GB active, _archive ~6-8GB (deletable later).
 - [ ] **Step 3: Verify q-grid-platform still builds**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 pnpm test
 ```
 
@@ -545,7 +545,7 @@ Remove references to archived repos. Update "Important: HEDERA Directory Structu
 - [ ] **Step 5: Push**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 git push origin main
 ```
 

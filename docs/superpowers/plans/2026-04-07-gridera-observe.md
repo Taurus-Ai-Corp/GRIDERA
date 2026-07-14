@@ -62,7 +62,7 @@ export const auditTrail = pgTable('audit_trail', {
 - [ ] **Step 2: Run Drizzle migration on EU database**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 pnpm --filter @taurus/db exec drizzle-kit push
 ```
 
@@ -444,7 +444,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 1: Run full test suite**
 
 ```bash
-cd /Users/taurus_ai/Documents/HEDERA/q-grid-platform
+cd /Users/taurus_ai/Documents/HEDERA/gridera-platform
 pnpm test
 ```
 

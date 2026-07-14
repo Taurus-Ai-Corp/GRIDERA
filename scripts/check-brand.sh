@@ -25,11 +25,12 @@ QGRID_VERBS='Comply|Scan|Scanner|Migrate|Certify|Lend|Pay|Arq|Shield|Guard|Obser
 # here on purpose — "GRIDERA Platform" / "the GRIDERA platform" is legitimate prose.
 GRIDERA_VERBS='Comply|Scan|Migrate|Certify|Lend|Pay|Arq|Shield|Guard|Observe'
 # All case variants of the deprecated prefix ("Q-GRID Comply" was invisible to the old
-# case-sensitive regex). Hyphenated identifiers (Q-GRID-QaaS-Platform, q-grid-platform,
+# case-sensitive regex). Hyphenated identifiers (Q-GRID-QaaS-Platform,
 # Quantum-Grid.Network) never match — the space is required.
 QGRID_PREFIX='(Q-GRID|Q-Grid|q-grid|QGRID)'
 # "Quantum Grid" / "Quantum Grid Mesh" are retired display brands; the GitHub repo is GRIDERA.
-RETIRED_BRANDS='(Quantum Grid)|(Quantum-Grid-Mesh)|(quantum-grid-mesh)'
+# q-grid-platform: dir/package renamed gridera-platform (Wave D) — old token must not resurface.
+RETIRED_BRANDS='(Quantum Grid)|(Quantum-Grid-Mesh)|(quantum-grid-mesh)|(q-grid-platform)'
 # The pipe form "GRIDERA|Comply" never matches (regex requires a literal space).
 FORBIDDEN="(${QGRID_PREFIX} (${QGRID_VERBS}))|(GRIDERA (${GRIDERA_VERBS}))|${RETIRED_BRANDS}"
 
@@ -86,7 +87,7 @@ fi
 if [ "$fail" -ne 0 ]; then
   echo ""
   echo "  Brand guard: use pipe form (GRIDERA|Comply), never \"Q-Grid <Verb>\" (any case) or space-form \"GRIDERA <Verb>\"."
-  echo "  \"Quantum Grid\"/\"Quantum-Grid-Mesh\" are retired. Domains (q-grid.net — FROZEN, production) and the q-grid-platform dir/package are fine."
+  echo "  \"Quantum Grid\"/\"Quantum-Grid-Mesh\"/\"q-grid-platform\" are retired (dir/package is gridera-platform). Domains (q-grid.net — FROZEN, production) are fine."
   echo "  Edge case? add 'brand-allow' on the line, or bypass once with: git commit --no-verify"
   exit 1
 fi
