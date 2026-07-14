@@ -56,10 +56,11 @@ async function pqcSign(
     )
 
     return { signature: stamp.signature, algorithm: 'ML-DSA-65' }
-  } catch {
-    // PQC module unavailable — fall back to SHA-256
+  } catch (err) {
+    // PQC module unavailable — fall back to SHA-256 hash
+    // Label honestly as SHA-256 fallback, NOT ML-DSA-65
     const signature = await sha256Fallback(payload)
-    return { signature, algorithm: 'ML-DSA-65' }
+    return { signature, algorithm: 'SHA-256-fallback' }
   }
 }
 
