@@ -31,4 +31,4 @@ export type { BadgeProps } from './components/badge.js'
 // Brand components
 export { PqcBadge } from './brand/pqc-badge.js'
 export { QrsScoreCard } from './brand/qrs-score-card.js'
-export { QGridLogo } from './brand/q-grid-logo.js'
+export { GrideraLogo } from './brand/gridera-logo.js'

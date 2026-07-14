@@ -829,7 +829,7 @@ function ReportPageContent() {
     async function load() {
       setLoadState('loading')
       try {
-        const raw = sessionStorage.getItem('qgrid_scan_result')
+        const raw = sessionStorage.getItem('gridera_scan_result') ?? sessionStorage.getItem('qgrid_scan_result')
         if (raw) {
           const parsed = JSON.parse(raw) as ScanResult
           if (parsed.scanId === scanId) {
