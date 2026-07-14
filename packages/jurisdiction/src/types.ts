@@ -4,6 +4,8 @@ export interface Regulation {
   id: string
   name: string
   authority: string
+  /** ISO date the mandate bites (procurement gate, sunset, enforcement start). */
+  deadline?: string
 }
 
 export interface RiskLevel {

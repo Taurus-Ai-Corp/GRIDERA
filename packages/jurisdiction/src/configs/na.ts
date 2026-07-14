@@ -5,8 +5,50 @@ export const naConfig: JurisdictionConfig = {
   name: 'North America',
   shortName: 'NA',
   domain: 'na.q-grid.net',
-  currency: { code: 'CAD', symbol: '$', locale: 'en-CA' },
+  currency: { code: 'USD', symbol: '$', locale: 'en-US' },
   regulations: [
+    // ── US federal deadline stack (the NA launch narrative) ──
+    {
+      id: 'eo-14412',
+      name: 'Executive Order 14412 — Accelerated Federal PQC Migration',
+      authority: 'The White House',
+      deadline: '2026-06-01',
+    },
+    {
+      id: 'cnsa-2-0',
+      name: 'NSA CNSA 2.0 — PQC procurement gate for new deployments',
+      authority: 'National Security Agency',
+      deadline: '2027-01-01',
+    },
+    {
+      id: 'nist-fips-203-204',
+      name: 'NIST FIPS 203/204 — ML-KEM & ML-DSA standards',
+      authority: 'NIST',
+      deadline: '2024-08-13',
+    },
+    {
+      id: 'fips-140-2-sunset',
+      name: 'FIPS 140-2 certificate sunset (140-3 required)',
+      authority: 'NIST CMVP',
+      deadline: '2026-09-21',
+    },
+    {
+      id: 'cmmc-2-0',
+      name: 'CMMC 2.0 — defense supply-chain enforcement',
+      authority: 'US Department of Defense',
+      deadline: '2026-11-10',
+    },
+    {
+      id: 'fedramp',
+      name: 'FedRAMP',
+      authority: 'US GSA',
+    },
+    {
+      id: 'hipaa',
+      name: 'HIPAA Security Rule',
+      authority: 'US HHS',
+    },
+    // ── Canadian frameworks ──
     {
       id: 'tb-directive-adm',
       name: 'Treasury Board Directive on Automated Decision-Making',
