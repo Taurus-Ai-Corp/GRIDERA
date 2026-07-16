@@ -52,6 +52,7 @@ export async function POST(req: Request) {
       certificates: scanResult.certificates,
       recommendations,
       tlsVersion: scanResult.tlsVersion,
+      keyExchange: scanResult.keyExchange,
       scannedAt: scanResult.scannedAt,
       error: scanResult.error,
       pqcStamp: {
