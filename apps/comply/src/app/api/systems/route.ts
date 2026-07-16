@@ -12,7 +12,8 @@ export async function GET() {
   try {
     const authUser = await getCurrentUser()
     if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    const orgId = authUser.organizationId ?? authUser.id
+    const orgId = authUser.organizationId
+    if (!orgId) return NextResponse.json({ systems: [] })
 
     const db = getDb()
     if (!db) {
@@ -21,7 +22,6 @@ export async function GET() {
       return NextResponse.json({ systems })
     }
 
-    // Neon DB: use orgId as organizationId
     const rows = await db
       .select()
       .from(systemsTable)
@@ -53,7 +53,6 @@ export async function POST(req: Request) {
   try {
     const authUser = await getCurrentUser()
     if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    const orgId = authUser.organizationId ?? authUser.id
 
     const body = await req.json().catch(() => null)
     if (!body) return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
@@ -71,6 +70,16 @@ export async function POST(req: Request) {
     const jurisdiction = (process.env['JURISDICTION'] ?? 'eu') as 'eu' | 'na' | 'in' | 'ae'
 
     const db = getDb()
+    // Prefer real org id from JWT/DB hydrate — never use user id as organization_id (FK)
+    const orgId = authUser.organizationId
+    if (!orgId && db) {
+      return NextResponse.json(
+        { error: 'Complete onboarding: create an organization first' },
+        { status: 400 },
+      )
+    }
+    const effectiveOrgId = orgId ?? authUser.id // in-memory fallback only
+
     if (!db) {
       // Fallback: in-memory store
       const system: SystemRecord = {
@@ -87,9 +96,9 @@ export async function POST(req: Request) {
         createdAt: new Date().toISOString(),
       }
 
-      const existing = systemsStore.get(orgId) ?? []
+      const existing = systemsStore.get(effectiveOrgId) ?? []
       existing.push(system)
-      systemsStore.set(orgId, existing)
+      systemsStore.set(effectiveOrgId, existing)
 
       void logAuditEvent({
         userId: authUser.id,
@@ -102,11 +111,11 @@ export async function POST(req: Request) {
       return NextResponse.json(system, { status: 201 })
     }
 
-    // Neon DB insert — orgId used as organizationId
+    // Neon DB insert — must be a real organizations.id
     const [row] = await db
       .insert(systemsTable)
       .values({
-        organizationId: orgId,
+        organizationId: effectiveOrgId,
         name: name.trim(),
         description,
         riskLevel,

@@ -1,5 +1,8 @@
 import type { NextConfig } from 'next'
 
+const GUARD_EXECUTOR_ORIGIN =
+  process.env['GUARD_EXECUTOR_ORIGIN'] ?? 'https://guard-beryl.vercel.app'
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: false,
@@ -21,6 +24,21 @@ const nextConfig: NextConfig = {
         ],
       },
     ]
+  },
+  /**
+   * Proxy GRIDERA|Guard executor under the Comply domain so EU clients never
+   * need guard.gridera.net (NXDOMAIN) or a separate host in product copy.
+   * Health: GET /guard/v1/health → guard-beryl.
+   */
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/guard/v1/:path*',
+          destination: `${GUARD_EXECUTOR_ORIGIN}/guard/v1/:path*`,
+        },
+      ],
+    }
   },
 }
 

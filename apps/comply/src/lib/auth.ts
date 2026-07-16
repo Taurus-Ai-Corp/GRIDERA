@@ -186,6 +186,14 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   const payload = await verifyToken(token)
   if (!payload) return null
 
+  // Hydrate from DB when available — JWT may be stale after onboarding links org
+  try {
+    const fresh = await getUserById(payload.sub)
+    if (fresh) return fresh
+  } catch {
+    /* fall through to JWT claims */
+  }
+
   return {
     id: payload.sub,
     email: payload.email,

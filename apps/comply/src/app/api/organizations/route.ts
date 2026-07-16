@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
 import { getDb } from '@/lib/db'
-import { getCurrentUser } from '@/lib/auth'
+import { getCurrentUser, createToken, setAuthCookie } from '@/lib/auth'
 import { logAuditEvent } from '@/lib/audit-logger'
 
 const createOrgSchema = z.object({
@@ -52,6 +52,16 @@ export async function POST(req: Request) {
     await db.update(users)
       .set({ organizationId: org.id, jurisdiction })
       .where(eq(users.id, authUser.id))
+
+    // Re-issue session cookie so JWT carries organizationId (client APIs depend on it)
+    const session = await createToken({
+      sub: authUser.id,
+      email: authUser.email,
+      organizationId: org.id,
+      plan: authUser.plan,
+      jurisdiction,
+    })
+    await setAuthCookie(session)
 
     // Audit
     void logAuditEvent({
