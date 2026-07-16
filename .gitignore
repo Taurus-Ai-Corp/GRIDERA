@@ -26,3 +26,4 @@ coverage/
 .vercel
 .DS_Store
 .claude/settings.json
+.codemap
