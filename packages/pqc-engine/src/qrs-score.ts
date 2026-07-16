@@ -50,10 +50,24 @@ function scoreKeySize(algorithms: Algorithm[]): number {
   return scores.reduce((a, b) => a + b, 0) / scores.length
 }
 
-function scorePqcReadiness(algorithms: Algorithm[]): number {
-  if (algorithms.length === 0) return 0
-  const pqcCount = algorithms.filter((a) => a.grade === 'PQC_READY').length
-  return (pqcCount / algorithms.length) * 100
+// Partial credit for running a post-quantum hybrid key exchange while the
+// certificate is still classical. It mitigates harvest-now-decrypt-later on
+// the session — roughly half the quantum threat surface — but leaves
+// authentication (signatures) classical, so it is not full readiness.
+const HYBRID_KEX_CREDIT = 50
+
+function scorePqcReadiness(scan: ScanResult): number {
+  const { algorithms, keyExchange } = scan
+  // Full marks once a PQC certificate is actually present (no CA issues one
+  // yet, but the scoring is ready for it).
+  if (algorithms.length > 0) {
+    const pqcCount = algorithms.filter((a) => a.grade === 'PQC_READY').length
+    if (pqcCount > 0) return (pqcCount / algorithms.length) * 100
+  }
+  // Otherwise credit a confirmed PQC hybrid key exchange. `null`
+  // (undetermined) earns nothing but is not penalised beyond the baseline.
+  if (keyExchange?.hybridPqcSupported === true) return HYBRID_KEX_CREDIT
+  return 0
 }
 
 function scoreTlsCompliance(tlsVersion: string): number {
@@ -92,7 +106,7 @@ export function calculateQrsScore(scan: ScanResult): QrsScore {
   const categories = {
     algorithms: scoreAlgorithms(scan.algorithms),
     keySize: scoreKeySize(scan.algorithms),
-    pqcReadiness: scorePqcReadiness(scan.algorithms),
+    pqcReadiness: scorePqcReadiness(scan),
     compliance: scoreTlsCompliance(scan.tlsVersion),
   }
 

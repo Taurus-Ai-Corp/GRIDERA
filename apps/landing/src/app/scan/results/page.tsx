@@ -22,6 +22,14 @@ interface PqcStamp {
   timestamp: number
 }
 
+interface KeyExchangeInfo {
+  hybridPqcSupported: boolean | null
+  group?: string
+  detected: boolean
+  detectionMethod: string
+  note?: string
+}
+
 interface ScanResult {
   scanId: string
   domain: string
@@ -30,6 +38,7 @@ interface ScanResult {
   certificates: CertificateInfo[]
   recommendations: Recommendation[]
   tlsVersion: string
+  keyExchange?: KeyExchangeInfo
   scannedAt: string
   error?: string
   pqcStamp: PqcStamp
@@ -71,6 +80,36 @@ const priorityBadge: Record<Recommendation['priority'], string> = {
   high: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
   medium: 'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
   low: 'bg-[var(--accent)]/10 text-[var(--accent)] border-[var(--accent)]/30',
+}
+
+// ── Key Exchange Badge ────────────────────────────────────────────────────────
+// Surfaces the PQC hybrid key-exchange probe. Deliberately distinct from the
+// certificate grade: a green KEX badge on a HIGH-RISK cert is correct and is
+// the whole point — quantum-safe session, classical (no-PQC-CA-yet) signature.
+
+function KeyExchangeBadge({ kex }: { kex: KeyExchangeInfo }) {
+  let label: string
+  let cls: string
+  if (kex.hybridPqcSupported === true) {
+    label = `Quantum-safe key exchange${kex.group ? ` · ${kex.group}` : ''}`
+    cls = 'bg-[var(--accent)]/10 text-[var(--accent)] border-[var(--accent)]/30'
+  } else if (kex.hybridPqcSupported === false) {
+    label = 'Classical key exchange only'
+    cls = 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+  } else {
+    label = 'Key exchange: not determined'
+    cls = 'bg-[var(--graphite-ghost)]/40 text-[var(--graphite-med)] border-[var(--graphite-ghost)]'
+  }
+  return (
+    <div className="mt-2">
+      <span
+        className={`inline-block border px-2 py-1 font-mono text-[10px] tracking-[0.05em] ${cls}`}
+        title={kex.note ?? undefined}
+      >
+        {label}
+      </span>
+    </div>
+  )
 }
 
 // ── Score Gauge ───────────────────────────────────────────────────────────────
@@ -197,7 +236,7 @@ export default function ScanResultsPage() {
     )
   }
 
-  const { domain, qrsScore, algorithms, certificates, recommendations, tlsVersion, scannedAt, pqcStamp, scanId, error: scanError } = result
+  const { domain, qrsScore, algorithms, certificates, recommendations, tlsVersion, keyExchange, scannedAt, pqcStamp, scanId, error: scanError } = result
 
   return (
     <>
@@ -235,6 +274,7 @@ export default function ScanResultsPage() {
                 <span>Scanned: <span className="text-[var(--graphite)]">{new Date(scannedAt).toLocaleString()}</span></span>
                 <span className="font-mono text-[10px] text-[var(--graphite-ghost)]">ID: {scanId}</span>
               </div>
+              {keyExchange && <KeyExchangeBadge kex={keyExchange} />}
             </div>
             <a
               href={`/comply?scan=${encodeURIComponent(scanId)}`}

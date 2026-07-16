@@ -1,4 +1,5 @@
 import * as tls from 'tls'
+import { probeHybridKex } from './kex.js'
 import type { Algorithm, CertificateInfo, CryptoGrade, ScanResult } from './types.js'
 
 const PQC_ALGORITHMS = ['DILITHIUM', 'KYBER', 'ML-KEM', 'ML-DSA', 'SLH-DSA', 'SPHINCS']
@@ -146,12 +147,18 @@ export function scanDomain(domain: string): Promise<ScanResult> {
 
         socket.destroy()
 
-        resolve({
-          domain,
-          scannedAt,
-          algorithms,
-          certificates,
-          tlsVersion,
+        // Probe for post-quantum hybrid key exchange on a second, short-lived
+        // connection. Independent of the certificate: a site can run PQC key
+        // exchange today while its cert stays classical (no PQC CA exists yet).
+        probeHybridKex(domain).then((keyExchange) => {
+          resolve({
+            domain,
+            scannedAt,
+            algorithms,
+            certificates,
+            tlsVersion,
+            keyExchange,
+          })
         })
       },
     )
