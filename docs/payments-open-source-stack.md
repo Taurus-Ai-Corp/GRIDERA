@@ -84,8 +84,8 @@ Software gives you **primitives**; compliance is an **operating obligation**. Wh
 
 ## 6. Integration path (phased, with real commands)
 
-**Phase 0 — schema (small, do first)**
-- Make Stripe generic: rename/relax `billing.stripeEventId` → `providerEventId` (nullable), add `provider text` ('hyperswitch' | 'hedera' | 'lago'). Drizzle migration in `packages/db`.
+**Phase 0 — schema (small, do first)** — ✅ shipped in PR #31 (`feat/payments-phase0-provider-schema`), not yet applied to Neon.
+- Make Stripe generic **additively**: add `provider text` ('stripe' | 'hyperswitch' | 'hedera' | 'lago') and `provider_event_id` (unique). **Keep** `billing.stripeEventId` (marked `@deprecated`) — it is dropped only in Phase 5, so no current reader breaks and the schema apply can happen independently of the code cutover. Idempotent manual migration at `packages/db/migrations-manual/billing_provider_generic.sql`.
 
 **Phase 1 — Hyperswitch on OCI (fiat rail)**
 ```bash
