@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 const PRODUCTS = [
   { name: 'GRIDERA', href: '/', tag: 'Platform' },
@@ -21,6 +22,15 @@ const NAV_LINKS = [
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [productOpen, setProductOpen] = useState(false)
+  const pathname = usePathname()
+
+  // When inside a product vertical, scope the top-left wordmark to that product
+  // (e.g. GRIDERA|Comply). The parent brand stays the hero; the product name is
+  // integrated as a suffix. Longest-prefix match so sub-routes like
+  // /scan/results still resolve to their product.
+  const activeProduct = PRODUCTS.filter((p) => p.href !== '/').find(
+    (p) => pathname === p.href || pathname.startsWith(`${p.href}/`),
+  )
 
   return (
     <nav
@@ -35,9 +45,15 @@ export default function Nav() {
         <a href="/" className="flex flex-col shrink-0">
           <span className="font-[var(--font-heading)] text-[15px] font-bold tracking-[0.04em]">
             <span className="text-[var(--accent)]">GRIDERA</span>
+            {activeProduct && (
+              <span className="text-[var(--graphite-light)] font-medium">
+                <span className="text-[var(--graphite-ghost)] mx-[2px]">|</span>
+                {activeProduct.name}
+              </span>
+            )}
           </span>
           <span className="font-mono text-[8px] tracking-[0.12em] uppercase text-[var(--graphite-light)]">
-            by TAURUS AI Corp
+            {activeProduct ? activeProduct.tag : 'by TAURUS AI Corp'}
           </span>
         </a>
 
