@@ -39,6 +39,5 @@ export function resolveDatabaseUrl(
     )
   }
 
-  const generic = env['DATABASE_URL']?.trim()
-  return generic && generic.length > 0 ? generic : null
+  return env['DATABASE_URL']?.trim() || null
 }
