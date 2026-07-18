@@ -379,8 +379,18 @@ export function createHederaServer(options: HederaServerOptions = {}): Server {
     const accountIdStr = asString(raw['accountId'], 'accountId');
     const network = (asOptionalString(raw['network'], 'network') ?? 'testnet') as HederaConfig['network'];
 
+    // Validate BEFORE interpolating into the mirror-node URL. The inputSchema enum
+    // is advisory (not enforced at runtime), so an untrusted MCP client could set
+    // `network`/`accountId` to redirect the fetch off-host (SSRF) or inject path.
+    if (!['mainnet', 'testnet', 'previewnet'].includes(network)) {
+      throw new Error(`Invalid 'network' (expected mainnet, testnet, or previewnet)`);
+    }
+    if (!/^\d+\.\d+\.\d+$/.test(accountIdStr)) {
+      throw new Error(`Invalid 'accountId' (expected Hedera format shard.realm.num, e.g. 0.0.123456)`);
+    }
+
     // Use Mirror Node REST API (AccountBalanceQuery deprecated Sep 2026)
-    const mirrorUrl = `https://${network}.mirrornode.hedera.com/api/v1/accounts/${accountIdStr}`;
+    const mirrorUrl = `https://${network}.mirrornode.hedera.com/api/v1/accounts/${encodeURIComponent(accountIdStr)}`;
     const response = await fetch(mirrorUrl);
     if (!response.ok) {
       return textResult({
