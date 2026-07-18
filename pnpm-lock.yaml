@@ -46,7 +46,7 @@ importers:
         version: 3.0.3
       drizzle-orm:
         specifier: ^0.39.0
-        version: 0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
+        version: 0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(postgres@3.4.9)
       jose:
         specifier: ^6.0.0
         version: 6.2.3
@@ -159,7 +159,10 @@ importers:
         version: 0.10.4
       drizzle-orm:
         specifier: ^0.39.0
-        version: 0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
+        version: 0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(postgres@3.4.9)
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.9
     devDependencies:
       '@taurus/tsconfig':
         specifier: workspace:*
@@ -3198,6 +3201,10 @@ packages:
   postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
 
+  postgres@3.4.9:
+    resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
+    engines: {node: '>=12'}
+
   pretty-format@29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5460,10 +5467,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6):
+  drizzle-orm@0.39.3(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(postgres@3.4.9):
     optionalDependencies:
       '@neondatabase/serverless': 0.10.4
       '@types/pg': 8.11.6
+      postgres: 3.4.9
 
   dunder-proto@1.0.1:
     dependencies:
@@ -6529,6 +6537,8 @@ snapshots:
   postgres-interval@3.0.0: {}
 
   postgres-range@1.1.4: {}
+
+  postgres@3.4.9: {}
 
   pretty-format@29.7.0:
     dependencies:
