@@ -14,8 +14,6 @@ import {
   PrivateKey,
   TokenCreateTransaction,
   TransferTransaction,
-  AccountBalanceQuery,
-  AccountId,
 } from '@hiero-ledger/sdk';
 import { createHederaClient, type HederaConfig } from '@taurus/hedera';
 import { generateKeyPair, sign, type PqcKeyPair } from '@taurus/pqc-crypto';
@@ -36,10 +34,12 @@ function toHex(bytes: Uint8Array): string {
 
 export class QuantumCBDC {
   private readonly client: Client;
+  private readonly config: HederaConfig;
   private cbdcTokenId: string | null = null;
   private readonly wallets = new Map<string, WalletRecord>();
 
   constructor(config: HederaConfig) {
+    this.config = config;
     this.client = createHederaClient(config);
   }
 
@@ -153,12 +153,21 @@ export class QuantumCBDC {
       throw new Error(`Wallet not found: ${walletId}`);
     }
 
-    const balance = await new AccountBalanceQuery()
-      .setAccountId(AccountId.fromString(wallet.accountId))
-      .execute(this.client);
+    // Use Mirror Node REST API (AccountBalanceQuery deprecated Sep 2026)
+    const mirrorUrl = `https://${this.config.network}.mirrornode.hedera.com/api/v1/accounts/${wallet.accountId}`;
+    const response = await fetch(mirrorUrl);
+    if (!response.ok) {
+      throw new Error(`Mirror node balance query failed: ${response.status}`);
+    }
+    const balanceData = await response.json() as {
+      balance: number;
+      tokens: Array<{ token_id: string; balance: number }>;
+    };
 
-    const tokenBalance = balance.tokens?.get(this.cbdcTokenId);
-    const balanceNum = tokenBalance ? Number(tokenBalance.toNumber()) : 0;
+    const tokenBalance = balanceData.tokens?.find(
+      (t) => t.token_id === this.cbdcTokenId,
+    );
+    const balanceNum = tokenBalance ? Number(tokenBalance.balance) : 0;
 
     return {
       walletId,

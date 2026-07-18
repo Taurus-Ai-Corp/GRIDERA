@@ -31,51 +31,39 @@ async function anchorToHedera(
   attestation: GuardAttestation,
   config: HederaConfig,
 ): Promise<AnchorResult> {
-  try {
-    const { Client, TopicMessageSubmitTransaction, TopicId } =
-      await import('@hiero-ledger/sdk')
+  if (!config.operatorId || !config.operatorKey) {
+    throw new Error(
+      'HCS submission requires HEDERA_OPERATOR_ID and HEDERA_OPERATOR_KEY. ' +
+      'Set these in .env.local. Get testnet credentials at portal.hedera.com (free, instant). ' +
+      'Do NOT silently mock — audit trail integrity requires real submission.'
+    )
+  }
 
-    const client = Client.forName(config.network)
-    if (config.operatorId && config.operatorKey) {
-      client.setOperator(
-        config.operatorId,
-        config.operatorKey,
-      )
-    }
+  const { createHederaClient, submitToHCS } = await import('@taurus/hedera')
+  const client = createHederaClient({
+    network: config.network,
+    operatorId: config.operatorId,
+    operatorKey: config.operatorKey,
+  })
 
-    const message = JSON.stringify({
-      attestation_id: attestation.timestamp,
-      guard_verdict: attestation.guard_verdict,
-      signature: attestation.signature,
-      algorithm: attestation.algorithm,
-      jurisdiction: attestation.jurisdiction,
-      model: attestation.model,
-      tokens_in: attestation.tokens_in,
-      tokens_out: attestation.tokens_out,
-    })
+  const message = JSON.stringify({
+    attestation_id: attestation.timestamp,
+    guard_verdict: attestation.guard_verdict,
+    signature: attestation.signature,
+    algorithm: attestation.algorithm,
+    jurisdiction: attestation.jurisdiction,
+    model: attestation.model,
+    tokens_in: attestation.tokens_in,
+    tokens_out: attestation.tokens_out,
+  })
 
-    const tx = new TopicMessageSubmitTransaction({
-      topicId: TopicId.fromString(config.topicId),
-      message,
-    })
+  const { txId, sequence } = await submitToHCS(client, config.topicId, message)
 
-    const receipt = await tx.execute(client)
-    const txId = receipt.transactionId?.toString() ?? crypto.randomUUID()
-
-    return {
-      txId,
-      topicId: config.topicId,
-      sequenceNumber: 0, // Filled by mirror node query
-      timestamp: new Date().toISOString(),
-    }
-  } catch {
-    // Hedera SDK unavailable — return mock anchor
-    return {
-      txId: `mock-${crypto.randomUUID()}`,
-      topicId: config.topicId,
-      sequenceNumber: 0,
-      timestamp: new Date().toISOString(),
-    }
+  return {
+    txId,
+    topicId: config.topicId,
+    sequenceNumber: sequence,
+    timestamp: new Date().toISOString(),
   }
 }
 

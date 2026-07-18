@@ -26,3 +26,6 @@ coverage/
 .vercel
 .DS_Store
 .claude/settings.json
+
+# Hermes agent plans (may contain credentials)
+.hermes/

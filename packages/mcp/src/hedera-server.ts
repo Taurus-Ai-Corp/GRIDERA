@@ -21,8 +21,6 @@ import {
 import type { Client } from '@hiero-ledger/sdk';
 import {
   AccountCreateTransaction,
-  AccountBalanceQuery,
-  AccountId,
   Hbar,
   PrivateKey,
   TokenCreateTransaction,
@@ -378,20 +376,29 @@ export function createHederaServer(options: HederaServerOptions = {}): Server {
   }
 
   async function handleQueryBalance(raw: Record<string, unknown>): Promise<CallToolResult> {
-    const client = requireClient();
     const accountIdStr = asString(raw['accountId'], 'accountId');
-    const accountId = AccountId.fromString(accountIdStr);
+    const network = (asOptionalString(raw['network'], 'network') ?? 'testnet') as HederaConfig['network'];
 
-    const balance = await new AccountBalanceQuery()
-      .setAccountId(accountId)
-      .execute(client);
+    // Use Mirror Node REST API (AccountBalanceQuery deprecated Sep 2026)
+    const mirrorUrl = `https://${network}.mirrornode.hedera.com/api/v1/accounts/${accountIdStr}`;
+    const response = await fetch(mirrorUrl);
+    if (!response.ok) {
+      return textResult({
+        success: false,
+        error: `Mirror node balance query failed: ${response.status}`,
+      });
+    }
+    const balanceData = await response.json() as {
+      balance: number;
+      tokens: Array<{ token_id: string; balance: number }>;
+    };
 
     return textResult({
       success: true,
-      accountId: accountId.toString(),
+      accountId: accountIdStr,
       balance: {
-        hbars: balance.hbars.toString(),
-        tinybars: balance.hbars.toTinybars().toString(),
+        hbars: (balanceData.balance / 100_000_000).toString(),
+        tinybars: balanceData.balance.toString(),
       },
     });
   }
