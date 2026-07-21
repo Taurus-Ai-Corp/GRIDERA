@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#080A0F">
 <link rel="icon" type="image/png" href="/gridera-logo.png">
 <title>GRIDERA — How We Make Compliance Quantum-Safe</title>
@@ -24,6 +24,12 @@ body { background-color: #080A0F; color: #F3F4F6; }
 .step { counter-increment: step; position: relative; }
 .step::before { content: counter(step, decimal-leading-zero); position: absolute; left: -2.5rem; top: 0; font-family: 'JetBrains Mono', monospace; color: #00EB87; font-size: 1.25rem; font-weight: 700; }
 .timeline { counter-reset: step; }
+
+html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+body { overscroll-behavior-y: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+img, video { max-width: 100%; height: auto; content-visibility: auto; }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.card { will-change: transform; transform: translateZ(0); }
 </style>
 </head>
 <body class="font-sans min-h-screen">
@@ -42,7 +48,7 @@ body { background-color: #080A0F; color: #F3F4F6; }
   <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full card text-xs font-mono text-gridera-green mb-6">
     <span class="w-2 h-2 rounded-full bg-gridera-green animate-pulse"></span> Product deployed on q-grid.net
   </div>
-  <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight">
+  <h1 class="text-3xl sm:text-4xl md:text-6xl font-display font-bold mb-6 leading-tight">
     How GRIDERA turns quantum risk<br>
     <span class="text-gridera-green">into a compliance pipeline</span>
   </h1>
@@ -69,10 +75,10 @@ body { background-color: #080A0F; color: #F3F4F6; }
 <section id="demo" class="max-w-4xl mx-auto px-6 pb-16">
   <div class="mb-8">
     <div class="text-gridera-green font-mono text-xs mb-2">INTERACTIVE WALKTHROUGH</div>
-    <h2 class="text-3xl font-display font-bold">3 steps. 60 seconds. Zero slides.</h2>
+    <h2 class="text-2xl sm:text-3xl font-display font-bold">3 steps. 60 seconds. Zero slides.</h2>
   </div>
 
-  <div class="space-y-8 timeline pl-10">
+  <div class="space-y-8 timeline pl-8 sm:pl-10">
 
     <div class="card rounded-2xl p-6 step">
       <h3 class="font-display font-bold text-xl mb-3">1. Discover classical-crypto exposure</h3>
@@ -124,7 +130,7 @@ body { background-color: #080A0F; color: #F3F4F6; }
   <div class="card rounded-2xl p-8 md:p-12 border border-gridera-green/30">
     <div class="text-center mb-8">
       <div class="text-gridera-green font-mono text-xs mb-2">EARLY ACCESS</div>
-      <h2 class="text-3xl font-display font-bold mb-3">Get a free Quantum Readiness Score</h2>
+      <h2 class="text-2xl sm:text-3xl font-display font-bold mb-3">Get a free Quantum Readiness Score</h2>
       <p class="text-gray-400">Leave your email. We'll scan one domain or wallet and send a regulator-ready gap report within 24 hours.</p>
     </div>
     <form action="mailto:admin@taurusai.io" method="post" enctype="text/plain" class="max-w-md mx-auto space-y-4">
@@ -161,7 +167,7 @@ body { background-color: #080A0F; color: #F3F4F6; }
 <section class="max-w-4xl mx-auto px-6 pb-24">
   <div class="mb-8">
     <div class="text-gridera-green font-mono text-xs mb-2">STRATEGIC READS</div>
-    <h2 class="text-3xl font-display font-bold">Whitepapers &amp; strategy docs</h2>
+    <h2 class="text-2xl sm:text-3xl font-display font-bold">Whitepapers &amp; strategy docs</h2>
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <a href="/pdfs/autonomous-quantum-compliance.pdf" target="_blank" class="card rounded-xl p-5 hover:border-gridera-green/50 transition-all">
