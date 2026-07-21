@@ -18,6 +18,37 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname, '../..'),
   },
   generateBuildId: async () => BUILD_ID,
+  /**
+   * Canada sovereign cell interim routing.
+   *
+   * ca.q-grid.net is configured on Vercel but has no public DNS record yet —
+   * the apex zone is still on Name.com nameservers (not Replit). Until the
+   * registrar CNAME/NS cutover lands, expose the live CA Comply deploy under a
+   * path we already control on q-grid.net.
+   *
+   * Redirect (not reverse-proxy) so Next.js asset/auth paths on the CA app
+   * resolve against the CA host, not the landing host.
+   */
+  async redirects() {
+    const caCell = 'https://q-grid-comply-ca.vercel.app'
+    return [
+      {
+        source: '/ca',
+        destination: `${caCell}/`,
+        permanent: false,
+      },
+      {
+        source: '/ca/:path*',
+        destination: `${caCell}/:path*`,
+        permanent: false,
+      },
+      {
+        source: '/canada',
+        destination: `${caCell}/`,
+        permanent: false,
+      },
+    ]
+  },
   async headers() {
     return [
       {
