@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRIDERA — Agentic PQC Video Showcase</title>
+<meta name="theme-color" content="#080A0F">
 <link rel="icon" type="image/png" href="/gridera-logo.png">
+<title>GRIDERA — Agentic PQC Video Showcase</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
@@ -25,13 +26,26 @@ video { width: 100%; border-radius: 12px; }
 </head>
 <body class="font-sans min-h-screen p-6">
 <div class="max-w-6xl mx-auto">
-  <header class="flex items-center gap-4 mb-10">
-    <img src="/gridera-logo.png" alt="GRIDERA" class="w-12 h-12 rounded border border-white/10">
-    <div>
-      <div class="font-display text-2xl font-bold">GRIDERA<span class="text-gridera-green">™</span> Agentic PQC Showcase</div>
-      <div class="font-mono text-xs text-gray-400">Three 90-second demos: AI swarms, ephemeral agents, self-healing code.</div>
-    </div>
+  <header class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
+    <a href="https://q-grid.net" class="flex items-center gap-3">
+      <img src="/gridera-logo.png" alt="GRIDERA" class="w-12 h-12 rounded border border-white/10">
+      <div>
+        <div class="font-display text-2xl font-bold">GRIDERA<span class="text-gridera-green">™</span> Agentic PQC Showcase</div>
+        <div class="font-mono text-xs text-gray-400">Agentic demos that power the q-grid.net platform.</div>
+      </div>
+    </a>
+    <a href="https://q-grid.net" class="ml-auto px-4 py-2 rounded-lg bg-gridera-green text-black text-sm font-bold hover:bg-gridera-darkGreen transition-all">Main Site →</a>
   </header>
+
+  <!-- HERO VIDEO -->
+  <div class="card rounded-2xl p-4 mb-6">
+    <div class="text-gridera-green font-mono text-xs mb-2">FEATURED DEMO</div>
+    <h2 class="font-display font-bold text-xl mb-3">Hacking Reality's Code</h2>
+    <video controls poster="/videos/hacking-realitys-code.jpg" preload="metadata">
+      <source src="/videos/hacking-realitys-code.mp4" type="video/mp4">
+    </video>
+    <p class="text-sm text-gray-400 mt-3">A 90-second narrative on how GRIDERA maps quantum vulnerabilities across real infrastructure and turns them into regulator-ready action.</p>
+  </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="card rounded-2xl p-4">
@@ -68,12 +82,12 @@ video { width: 100%; border-radius: 12px; }
     <div class="flex flex-col sm:flex-row justify-center gap-4">
       <a href="/scan" class="px-6 py-3 rounded-xl bg-gridera-green text-black font-display font-bold hover:bg-gridera-darkGreen transition-all">Run Quantum Readiness Scan →</a>
       <a href="/pitch-deck.html" class="px-6 py-3 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">Open Pitch Deck</a>
-      <a href="/bf2026.html" class="px-6 py-3 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">BF2026 Hub</a>
+      <a href="/bf2026.html" class="px-6 py-3 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">Share Hub</a>
     </div>
   </div>
 
   <footer class="mt-10 text-center text-xs text-gray-500 font-mono">
-    TAURUS AI CORP. · admin@taurusai.io · q-grid.net · Blockchain Futurist Toronto 2026
+    TAURUS AI CORP. · Effin Fernandez · admin@taurusai.io · q-grid.net
   </footer>
 </div>
 </body>
