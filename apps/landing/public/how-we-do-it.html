@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080A0F">
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+<title>GRIDERA — How We Make Compliance Quantum-Safe</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { gridera: { green: '#00EB87', darkGreen: '#00B867', bg: '#080A0F', card: '#10141E' } },
+      fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+    }
+  }
+}
+</script>
+<style>
+body { background-color: #080A0F; color: #F3F4F6; }
+.card { background: rgba(16,20,30,0.9); border: 1px solid rgba(255,255,255,0.08); }
+.step { counter-increment: step; position: relative; }
+.step::before { content: counter(step, decimal-leading-zero); position: absolute; left: -2.5rem; top: 0; font-family: 'JetBrains Mono', monospace; color: #00EB87; font-size: 1.25rem; font-weight: 700; }
+.timeline { counter-reset: step; }
+</style>
+</head>
+<body class="font-sans min-h-screen">
+
+<nav class="border-b border-white/10 bg-[#080A0F]/80 backdrop-blur sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="https://q-grid.net" class="flex items-center gap-3">
+      <img src="/gridera-logo.png" class="w-9 h-9 rounded border border-white/10">
+      <span class="font-display font-bold tracking-wider">GRIDERA<span class="text-gridera-green">™</span></span>
+    </a>
+    <a href="https://q-grid.net" class="px-4 py-2 rounded-lg bg-gridera-green text-black text-sm font-bold hover:bg-gridera-darkGreen transition-all">Main Site →</a>
+  </div>
+</nav>
+
+<section class="max-w-6xl mx-auto px-6 py-16 text-center">
+  <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full card text-xs font-mono text-gridera-green mb-6">
+    <span class="w-2 h-2 rounded-full bg-gridera-green animate-pulse"></span> Product deployed on q-grid.net
+  </div>
+  <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight">
+    How GRIDERA turns quantum risk<br>
+    <span class="text-gridera-green">into a compliance pipeline</span>
+  </h1>
+  <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
+    A live, interactive walkthrough. No whitepapers. See the scan, the signing, and the audit anchor in 60 seconds.
+  </p>
+  <div class="flex flex-col sm:flex-row justify-center gap-4">
+    <a href="#demo" class="px-8 py-4 rounded-xl bg-gridera-green text-black font-display font-bold hover:bg-gridera-darkGreen transition-all">Try the Interactive Demo</a>
+    <a href="#signup" class="px-8 py-4 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">Get Early Access</a>
+  </div>
+</section>
+
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <div class="card rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
+    <div class="text-center md:text-left flex-1">
+      <h2 class="font-display text-2xl font-bold mb-2">Main website QR</h2>
+      <p class="text-gray-400 text-sm mb-4">Point any phone camera here. No app needed.</p>
+      <div class="font-mono text-xs text-gray-500">https://q-grid.net</div>
+    </div>
+    <img src="/QR_CODES/main-website.png" class="w-40 h-40 rounded bg-white p-2" alt="q-grid.net QR">
+  </div>
+</section>
+
+<section id="demo" class="max-w-4xl mx-auto px-6 pb-16">
+  <div class="mb-8">
+    <div class="text-gridera-green font-mono text-xs mb-2">INTERACTIVE WALKTHROUGH</div>
+    <h2 class="text-3xl font-display font-bold">3 steps. 60 seconds. Zero slides.</h2>
+  </div>
+
+  <div class="space-y-8 timeline pl-10">
+
+    <div class="card rounded-2xl p-6 step">
+      <h3 class="font-display font-bold text-xl mb-3">1. Discover classical-crypto exposure</h3>
+      <p class="text-sm text-gray-400 mb-4">Enter any domain, repo, or wallet. GRIDERA maps the keys, certificates, and dependencies still using non-PQC algorithms.</p>
+      <div class="bg-black/40 rounded-xl p-4 font-mono text-xs mb-4">
+        <div class="text-gray-500 mb-2">Example scan target:</div>
+        <input type="text" value="q-grid.net" readonly class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-gridera-green mb-2">
+        <div class="text-gray-500">Output: 3 TLS endpoints · 2 RSA certificates · 0 ML-DSA records</div>
+      </div>
+      <a href="/scan" class="inline-block px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-bold hover:border-gridera-green transition-all">Run real scan →</a>
+    </div>
+
+    <div class="card rounded-2xl p-6 step">
+      <h3 class="font-display font-bold text-xl mb-3">2. Route against your regulator's rulebook</h3>
+      <p class="text-sm text-gray-400 mb-4">Pick a jurisdiction. GRIDERA checks the finding against CNSA 2.0, EU AI Act, DPDP India, HK VASP, or UAE VARA deadlines and formats the evidence accordingly.</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+        <button onclick="setRegion('US')" class="region-btn px-3 py-2 rounded-lg bg-gridera-green/10 border border-gridera-green/30 text-xs font-bold text-gridera-green" data-region="US">US / CNSA 2.0</button>
+        <button onclick="setRegion('EU')" class="region-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-400" data-region="EU">EU / AI Act</button>
+        <button onclick="setRegion('IN')" class="region-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-400" data-region="IN">India / DPDP</button>
+        <button onclick="setRegion('HK')" class="region-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-400" data-region="HK">HK / VASP</button>
+      </div>
+      <div id="region-output" class="bg-black/40 rounded-xl p-4 font-mono text-xs text-gridera-green">
+        US / CNSA 2.0 selected → ML-DSA-65 migration window: software by 2026, high-value assets by 2030.
+      </div>
+    </div>
+
+    <div class="card rounded-2xl p-6 step">
+      <h3 class="font-display font-bold text-xl mb-3">3. Sign and anchor proof to Hiero</h3>
+      <p class="text-sm text-gray-400 mb-4">Every report is signed with ML-DSA-65 and submitted to Hedera Consensus Service. Regulators and auditors get tamper-evident history, not email attachments.</p>
+      <div class="bg-black/40 rounded-xl p-4 font-mono text-xs mb-4">
+        <div class="flex justify-between text-gray-500 mb-1"><span>HCS topic</span><span>0.0.9612022</span></div>
+        <div class="flex justify-between text-gray-500 mb-1"><span>Signature scheme</span><span>ML-DSA-65</span></div>
+        <div class="flex justify-between text-gray-500"><span>Status</span><span class="text-gridera-green">Anchored ✓</span></div>
+      </div>
+      <button onclick="window.location.href='#signup'" class="px-4 py-2 rounded-lg bg-gridera-green text-black text-xs font-bold hover:bg-gridera-darkGreen transition-all">See pricing / sign up →</button>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <div class="card rounded-2xl p-8 text-center">
+    <h3 class="font-display text-2xl font-bold mb-3">Prefer video?</h3>
+    <p class="text-gray-400 text-sm mb-6">Watch the 3 agentic demos that power the platform.</p>
+    <a href="/video-showcase.html" class="inline-block px-6 py-3 rounded-xl border border-gridera-green/30 text-gridera-green font-bold hover:bg-gridera-green/10 transition-all">🎬 Open Video Showcase</a>
+  </div>
+</section>
+
+<section id="signup" class="max-w-4xl mx-auto px-6 pb-24">
+  <div class="card rounded-2xl p-8 md:p-12 border border-gridera-green/30">
+    <div class="text-center mb-8">
+      <div class="text-gridera-green font-mono text-xs mb-2">EARLY ACCESS</div>
+      <h2 class="text-3xl font-display font-bold mb-3">Get a free Quantum Readiness Score</h2>
+      <p class="text-gray-400">Leave your email. We'll scan one domain or wallet and send a regulator-ready gap report within 24 hours.</p>
+    </div>
+    <form action="mailto:admin@taurusai.io" method="post" enctype="text/plain" class="max-w-md mx-auto space-y-4">
+      <input type="email" name="email" placeholder="you@company.com" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gridera-green">
+      <input type="text" name="target" placeholder="Domain, repo, or wallet to scan" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gridera-green">
+      <button type="submit" class="w-full px-6 py-4 rounded-xl bg-gridera-green text-black font-display font-bold hover:bg-gridera-darkGreen transition-all">Request Free Scan →</button>
+    </form>
+    <p class="text-center text-[10px] text-gray-500 mt-4">No spam. No sales call required. Report delivered by email.</p>
+  </div>
+</section>
+
+<section class="max-w-4xl mx-auto px-6 pb-24">
+  <h3 class="font-display text-xl font-bold mb-4">Share this page</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <a href="https://q-grid.net" target="_blank" class="card rounded-xl p-4 flex flex-col items-center text-center hover:border-gridera-green/50 transition-all">
+      <img src="/QR_CODES/main-website.png" class="w-24 h-24 rounded bg-white p-1 mb-2" alt="QR">
+      <div class="text-xs font-bold">Main Site</div>
+    </a>
+    <a href="https://q-grid.net/scan" target="_blank" class="card rounded-xl p-4 flex flex-col items-center text-center hover:border-gridera-green/50 transition-all">
+      <img src="/QR_CODES/scan.png" class="w-24 h-24 rounded bg-white p-1 mb-2" alt="QR">
+      <div class="text-xs font-bold">Scan</div>
+    </a>
+    <a href="https://q-grid.net/pitch-deck.html" target="_blank" class="card rounded-xl p-4 flex flex-col items-center text-center hover:border-gridera-green/50 transition-all">
+      <img src="/QR_CODES/pitch-deck.png" class="w-24 h-24 rounded bg-white p-1 mb-2" alt="QR">
+      <div class="text-xs font-bold">Pitch</div>
+    </a>
+    <a href="https://q-grid.net/share.html" target="_blank" class="card rounded-xl p-4 flex flex-col items-center text-center hover:border-gridera-green/50 transition-all">
+      <img src="/QR_CODES/share.png" class="w-24 h-24 rounded bg-white p-1 mb-2" alt="QR">
+      <div class="text-xs font-bold">Share Hub</div>
+    </a>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 py-8 text-center text-xs text-gray-500 font-mono">
+  TAURUS AI CORP. · Effin Fernandez · admin@taurusai.io · q-grid.net
+</footer>
+
+<script>
+function setRegion(region) {
+  const outputs = {
+    US: 'US / CNSA 2.0 selected → ML-DSA-65 migration window: software by 2026, high-value assets by 2030.',
+    EU: 'EU / AI Act selected → high-risk AI systems need documented PQC controls before market placement.',
+    IN: 'India / DPDP selected → data fiduciaries must demonstrate reasonable security safeguards, including crypto agility.',
+    HK: 'HK / VASP selected → licensed exchanges must maintain sound cybersecurity and audit trails.'
+  };
+  document.getElementById('region-output').textContent = outputs[region];
+  document.querySelectorAll('.region-btn').forEach(btn => {
+    const active = btn.dataset.region === region;
+    btn.className = active
+      ? 'region-btn px-3 py-2 rounded-lg bg-gridera-green/10 border border-gridera-green/30 text-xs font-bold text-gridera-green'
+      : 'region-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-400';
+  });
+}
+</script>
+
+</body>
+</html>
