@@ -284,6 +284,7 @@ function PricingCard({
       {/* CTA */}
       <a
         href={tier.ctaHref}
+        {...(tier.ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         className={`w-full text-center font-mono text-[12px] font-medium tracking-[0.06em] uppercase py-[14px] transition-all duration-200 ${
           tier.popular
             ? 'btn-primary justify-center'
