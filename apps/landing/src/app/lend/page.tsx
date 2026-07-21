@@ -36,7 +36,7 @@ export default function LendPage() {
           </>
         }
         description="MSME lending and repayment management powered by quantum-safe credit scoring, automated KYC, and blockchain-anchored audit trails. Built for regulators and lenders in India, UAE, and Canada."
-        cta={{ label: 'Request Demo', href: 'mailto:admin@taurusai.io?subject=GRIDERA%20Lend%20Demo' }}
+        cta={{ label: 'Request Demo', href: 'https://calendly.com/taurusai/gridera-executive-briefing' }}
         secondary={{ label: 'View Use Cases', href: '#features' }}
       />
 
@@ -72,7 +72,9 @@ export default function LendPage() {
             We run pilot programs with regulated lenders. Get a tailored demo, compliance mapping, and integration plan.
           </p>
           <a
-            href="mailto:admin@taurusai.io?subject=GRIDERA%20Lend%20Pilot%20Inquiry"
+            href="https://calendly.com/taurusai/gridera-executive-briefing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-primary"
           >
             Request Demo →

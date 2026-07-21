@@ -38,13 +38,21 @@ export default function ProductHero({ eyebrow, title, description, cta, secondar
         {(cta || secondary) && (
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             {cta && (
-              <a href={cta.href} className="btn-primary">
+              <a
+                href={cta.href}
+                {...(cta.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="btn-primary"
+              >
                 {cta.label}
                 <span aria-hidden="true">→</span>
               </a>
             )}
             {secondary && (
-              <a href={secondary.href} className="btn-secondary">
+              <a
+                href={secondary.href}
+                {...(secondary.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="btn-secondary"
+              >
                 {secondary.label}
               </a>
             )}

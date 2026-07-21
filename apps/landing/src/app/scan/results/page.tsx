@@ -552,7 +552,9 @@ export default function ScanResultsPage() {
                   ))}
                 </ul>
                 <a
-                  href="mailto:admin@taurusai.io?subject=Enterprise%20PQC%20Assessment"
+                  href="https://calendly.com/taurusai/gridera-executive-briefing"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-secondary text-[11px] py-[8px]"
                 >
                   Contact Sales →
