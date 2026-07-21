@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRIDERA — Agentic PQC Video Showcase</title>
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { gridera: { green: '#00EB87', darkGreen: '#00B867', bg: '#080A0F', card: '#10141E' } },
+      fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+    }
+  }
+}
+</script>
+<style>
+body { background-color: #080A0F; color: #F3F4F6; }
+.card { background: rgba(16,20,30,0.85); border: 1px solid rgba(255,255,255,0.08); }
+video { width: 100%; border-radius: 12px; }
+</style>
+</head>
+<body class="font-sans min-h-screen p-6">
+<div class="max-w-6xl mx-auto">
+  <header class="flex items-center gap-4 mb-10">
+    <img src="/gridera-logo.png" alt="GRIDERA" class="w-12 h-12 rounded border border-white/10">
+    <div>
+      <div class="font-display text-2xl font-bold">GRIDERA<span class="text-gridera-green">™</span> Agentic PQC Showcase</div>
+      <div class="font-mono text-xs text-gray-400">Three 90-second demos: AI swarms, ephemeral agents, self-healing code.</div>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="card rounded-2xl p-4">
+      <div class="text-gridera-green font-mono text-xs mb-2">DEMO 01</div>
+      <h3 class="font-display font-bold text-lg mb-3">AI Swarms Fix Quantum Vulnerabilities</h3>
+      <video controls poster="/videos/ai-swarms.jpg" preload="metadata">
+        <source src="/videos/ai-swarms.mp4" type="video/mp4">
+      </video>
+      <p class="text-sm text-gray-400 mt-3">Distributed agents hunt classical-crypto exposure across repos, infra, and wallets—then queue PQC migration tasks.</p>
+    </div>
+
+    <div class="card rounded-2xl p-4">
+      <div class="text-gridera-green font-mono text-xs mb-2">DEMO 02</div>
+      <h3 class="font-display font-bold text-lg mb-3">Ephemeral Agents Automate Post-Quantum Security</h3>
+      <video controls poster="/videos/ephemeral-agents.jpg" preload="metadata">
+        <source src="/videos/ephemeral-agents.mp4" type="video/mp4">
+      </video>
+      <p class="text-sm text-gray-400 mt-3">Short-lived agents spin up for a single scan or signature task, leave no long-lived keys, and write proof to HCS.</p>
+    </div>
+
+    <div class="card rounded-2xl p-4">
+      <div class="text-gridera-green font-mono text-xs mb-2">DEMO 03</div>
+      <h3 class="font-display font-bold text-lg mb-3">RefAgent Swarm Self-Heals Code</h3>
+      <video controls poster="/videos/refagent-swarm.jpg" preload="metadata">
+        <source src="/videos/refagent-swarm.mp4" type="video/mp4">
+      </video>
+      <p class="text-sm text-gray-400 mt-3">Review agents catch PQC regressions in CI/CD and patch crypto calls before they reach production.</p>
+    </div>
+  </div>
+
+  <div class="mt-10 card rounded-2xl p-8 text-center">
+    <h2 class="font-display text-2xl font-bold mb-4">Watch, then run your own scan</h2>
+    <p class="text-gray-400 mb-6">The videos show the agentic layer. The live demo proves the output on your infra.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="/scan" class="px-6 py-3 rounded-xl bg-gridera-green text-black font-display font-bold hover:bg-gridera-darkGreen transition-all">Run Quantum Readiness Scan →</a>
+      <a href="/pitch-deck.html" class="px-6 py-3 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">Open Pitch Deck</a>
+      <a href="/bf2026.html" class="px-6 py-3 rounded-xl border border-white/20 text-white font-display font-bold hover:border-gridera-green transition-all">BF2026 Hub</a>
+    </div>
+  </div>
+
+  <footer class="mt-10 text-center text-xs text-gray-500 font-mono">
+    TAURUS AI CORP. · admin@taurusai.io · q-grid.net · Blockchain Futurist Toronto 2026
+  </footer>
+</div>
+</body>
+</html>
