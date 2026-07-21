@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRIDERA — BF2026 Share Hub</title>
-<link rel="icon" type="image/png" href="/gridera-logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#080A0F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GRIDERA">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<title>GRIDERA — BF2026</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
@@ -18,116 +24,119 @@ tailwind.config = {
 }
 </script>
 <style>
-body { background-color: #080A0F; color: #F3F4F6; }
-.card { background: rgba(16,20,30,0.8); border: 1px solid rgba(255,255,255,0.08); }
+body { background-color: #080A0F; color: #F3F4F6; -webkit-tap-highlight-color: transparent; }
+.card { background: rgba(16,20,30,0.9); border: 1px solid rgba(255,255,255,0.08); }
+.qr-tile { transition: transform 0.15s ease; }
+.qr-tile:active { transform: scale(0.96); }
+.search-hidden { display: none !important; }
 </style>
 </head>
-<body class="font-sans min-h-screen p-6">
+<body class="font-sans min-h-screen p-4 pb-24">
 <div class="max-w-6xl mx-auto">
-  <header class="flex items-center gap-4 mb-10">
-    <img src="/gridera-logo.png" alt="GRIDERA" class="w-12 h-12 rounded border border-white/10">
-    <div>
-      <div class="font-display text-2xl font-bold">GRIDERA<span class="text-gridera-green">™</span></div>
-      <div class="font-mono text-xs text-gray-400">Blockchain Futurist Toronto 2026 — Share Hub</div>
+  <header class="sticky top-0 z-50 bg-[#080A0F]/90 backdrop-blur-lg border-b border-white/10 py-4 mb-6 -mx-4 px-4">
+    <div class="flex items-center gap-3 mb-3">
+      <img src="/gridera-logo.png" alt="GRIDERA" class="w-10 h-10 rounded border border-white/10">
+      <div>
+        <div class="font-display text-xl font-bold">GRIDERA<span class="text-gridera-green">™</span></div>
+        <div class="font-mono text-[10px] text-gray-400">Tap any QR to share · Use the search bar to filter</div>
+      </div>
+    </div>
+    <input id="search" type="text" placeholder="Search links..." 
+      class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gridera-green/50">
+    <div id="install-hint" class="hidden mt-3 text-[10px] text-gridera-green font-mono">
+      📱 Add to Home Screen: tap the share button in Safari, then "Add to Home Screen". This page works offline.
     </div>
   </header>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Pitch deck -->
-    <a href="/pitch-deck.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">PRIMARY</div>
-          <h3 class="font-display font-bold text-lg">Interactive Pitch Deck</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAACi0lEQVR4nO1awW3dMAx9pAX0aAMZoKMoG3SkztQNvkf5AwSwjgH8wYKk5CQF0vwUSCXA5EGQbB4IUiQfKZLgTlr5Xk4gWDmUhbguKFTpsSRgXdSP7Aig/UrhMBggZCQA025bwvxMyNstIW8LPETmi67lYQRZOVhhhnLvKQlywSTVwXQxz1MvQygLY12XWcTDYZYd9POa/rcAfyf+4P8ZWednwrpMAsx7FwHeJcbZWZOtFcaXB7WPRsIf+s2Os/4rQ8garAzg5riv6qQkD4KerQwdkmUwDr2i882iP6pjwryBDpz4itbusnKwwpzJa6vlRshXUhgPvJRfvkMoi3tfF4hsgFxmkbbsjgkdyytOtJ1cusvKp2eFiGjQm8VDohhpSVwXM94W1hriurh5mjNV84hsU/2mtqwW5N6y8ulZYZHQa6vcdmYtC4zIZqnwrTGuC9xxLHm5R5llLFFF3hrQWtthKIt6h4OFbw3agyczD4pVwdNO+dc3UWi/y7qo9awHxb1l5WCF9jL0nYTo0bq6ejTyb7aNemsoTAgPfYblrYvRUEaF9oHgh7CW9jKIDLz7E0lFGepg+twlV6Kay3gAWU/OilYOTw0YOtSo6NDdKuqtcay1ta1iwhc4aP7mLH7k3rLy6VlTfcEyKjqNUSocrAMbZQHlqx5DWTyUb22Hg6FFQktj0csYcuZJ7AFZyCad1mVSV/tiAThY8W8zT9C3rAMOKjD0Ny+ffuLQKzpfwvTmdEtYvwtoXfRReX5K1t+gvMU84deZ4JN5a3KgbnmrwcHj2Pq7EpgQY808zaIjGdSOnsueSLIMIWuw8uuZp9bVqC9dVmpVQI9QFsabeXqf1u6ycrAilHU3dVfWb0YUlHhXbEchAAAAAElFTkSuQmCC" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">Honest, hook-driven 10-slide deck with live scan iframe and investor Q&A. Use for VCs, CISOs, partners.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/pitch-deck.html</div>
+  <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    
+    <a href="https://q-grid.net/scan" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="quantum scan interactive">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Interactive</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAFcAQAAAACsbTuBAAAB90lEQVR4nO1aUarEIAxMwv7b+99ub6AnyEOjNbbwEB7bJ+sMRdpmPkIcNCay0jSSzHOJQPZANDwQjW+IBp84iFIemdnMg2kln6ch81QC+R66oAYiMnlQ0KyQYzAhdHuqjuvKkKGxjG++mdbyeQ4yySsA2eM1fBFRiFkTtnRcbQjd1trQlBWh6dB1fRaQn9SG+n8hbyocol5NmBSPPbSR+u7BZStpY/SmZXwWkB+JBl/2Di6j2ktZQDpQ+9pPotxOKFwOrdRyUX23ikctdyzk8zRknkogj8jFi9jqGLFoo727yobREGePr48G2ex3VcT+xz/FtIjPAvKjZ9ignFzuUaoclpRW62fdEJDXjIbGnGloGa0QWteTJoxn3JiGzFMJ5D/vKeQSjyHfGEZMisfXR4Pq+nA+Zz/F0gzjIN/YWBtqemj7SG2+ukQUuejOuSilg1s/hVIteZw1Ul3IZwH5MW2ovYZyf2MYS2Olt1QwKR5bRIPd5S59MyWuFdFLyXQln6ch81QC+b6ntL4J2xg0P9asN0Nt2SPOHrvkG+wUkmVQs4529avuL4v4LCD/TzRCP8bapzvMYlI89rsTmFqG0deQAzXzhWdQnrv3FfJh1j7Z7o6iZr53H7Yi9OpoL4JZZxZ9WNr93tdvwL2vFWdQQHZANDw+F40fwNcIoyDJexkAAAAASUVORK5CYII=" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Quantum Scan</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/scan</div>
     </a>
-
-    <!-- Stack page -->
-    <a href="/futurist-stack.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">TECHNICAL</div>
-          <h3 class="font-display font-bold text-lg">GRIDERA Stack Explainer</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAACiklEQVR4nO1bS4ojMQx9chmydCAH6KM4V54bOEfJAQbiZcBBgyS7OvRsmlmMTZe8KOqjhdCT5CdZRYxvrlv4riTgosGNBXcXVOrrqiF0fhHRWe+A8Sl6wGCBlBEBbE1vqV9OTKgE5AeAXORtvayga3BRKEYWPXgRkBqQuYFLlXd1BB3cWGG2u8Qvz0Y6brQxAdt/UCC4KP7RWBsDGlGCG7NlSLfrYp7FhoxmvfQkLulJyjKAxMxlJV2PLBr7bmVra4R6Ycr3k1xiw82+SU6crms4vGiU6Nmt0FMf384gRh3bmBtrHXepsVdZ10qfUSY4vUY6XEbXg4tGQPYoJImoD7aiC/khBZZQ+/x4RUa9tAV0DYcXjd0CVWpikEAm6TA1wU22Ma2YpQaDGyvMdhcwPzTrAVwSs5JAZHmXua9ODMNsXcPhRTHKKoHn0SFTys4snScJKy7YHC0s4C4wUCSYLI7sToGyQmysMl3XcHhR9NjS/Keg4BM3gXFEHjtaWMFd6omZ71HauMLg01PauL1itpxYnGUsg1ZSeAC6WpXVj7Y0ykbltYquBxeFZsLOIzSEhGUoT8w7y5BH9kyIZRh86qdaHR5dShEVRt+31smEzc6JucgOZv32vQdlAbaMrgcXRU9z+IvGD6BGnVym6xoOL4q3imrfrQzB/eIMfsmZp9T6pJMNYhhPdAa/6MxTlVZ7+h21tUv5l5xvVa28ovfgsVJXd3vrZYx0qALOCRedeapnOSy2MbVIcqhM/VGAm65rcFG8rb06Fi6vbzpZvPus7hLuYrE1mkubzc7ITkUyAtAoyyc7oQyzdQ0uCsl1uqwm1kGMt31rjBfCjYXp7kL+RxAmQxBcFD/SWH8AVR+Afp+mbT0AAAAASUVORK5CYII=" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">Gap analysis, live simulation, architecture deep-dive. Best for CTOs and engineering buyers.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/futurist-stack.html</div>
+    <a href="https://q-grid.net/pitch-deck.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="pitch deck deck">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Deck</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACr0lEQVR4nO1cW47kIAy0S/2fvsHc/1h7g3ACr2zzyuzHjKUVohOXRmkglAS2ZRwDw0JBFEQZREmJAmEGJSUKhBmUlH0lxh1v4jdRYX1Tasu3DpSqDAPPprz0cZxeYSIpTIdQedMhWvUXUwfady5Iys4S4+6y3iQnmZlVb/atA6Uqw0BSZohIXTEPkZP4S6tXgMJAUp6+Vv4DXTELy7xcfsBckJSdbUxanT308pDM2r1lsjQsGRiSciuJlfrV2Ft1ubRVsi6Ulw5YN7AYEOxPSaFVfkymupYL+9Or/pd6aQCFgaRw81fqqSx3oYVDLWvOmLVuSIkFgWdTXvooLOa7xNJiVrVgzNpbWsw+BLaeC5KypcRIRHMUXhgtvbE9a9LsEDlTlVHg2RRyg/Js2GxR3ljbzeSa7WHJwJCUu0iMhvtyT9XKw/C8MEwRSwaGpNxJYmIYu0iH8FfbS7JQ/7qvhGUDCwJRAiVloR+T68pYX02LZvqxBlAYeDaFqnX1wGyyNze5EZJlPLZOL7gRharX6ubUTK7a2PVjkzIeo21ViZ0pIjX6kj+Wgy2s9tZisG5muZe0vyp39mPSM2Du0+b8WPNm6cf2ViX236/knrhQ9/XWgz3HyXa8Rz3aOH2BJQNDUu4iMepL4YjKpi9Kr9aetWXbuSApH3HuguuZMZnOkulTvZl5tlQlrdALbmZj3GtuTsfZtr/NrtzY2rUR2ncuSMpn3EsiK1SXNU6RLR8YknIzifG4dnQ5MOZJjHquLPeSluvlnpRi+THPmLkTa7tLuon5WXP5GfhFn6T8Z4mx+66WGat33+xwrGZoFamXKPBsyst/esSlH5VTYDbfH5eaQNt2LkjKvhIr49oRs20k+X5lg1/mraEapSqjwLMpnP8b6i6qRFKCQJRASQljjZD/AsaZjW6YqDUIAAAAAElFTkSuQmCC" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Pitch Deck</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/pitch-deck.html</div>
     </a>
-
-    <!-- Master decks -->
-    <a href="/master-pitch-decks.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">PRINT</div>
-          <h3 class="font-display font-bold text-lg">Master Pitch Deck Suite</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAACdUlEQVR4nO1by43cMAx9lATs0Qa2gCnF00FKWqQzu5QUEEA6LmCDAT/j2b05ATZWYr6DYGt4IEQ/8ZHSEOMglnTUEgjTFIuF+FzQyHFXClEB3VvxJ0cJwqCDLQPMNbMCkww6N0PmarY5M5lP9zWFKQTOnkaEqWamN15BdFttzkiHWKx09udSPr3llZYRxMBWGK2sX+9AClP84WJtxPOgjHphojHWtUtu8f5OU91AQAajvQIY5LfWha9hmpRRCtkJWWmFqQIPiShQlqVYV5z8ZRVnj0IpZFRb9+GLHUhhiuNgFeoKU/Cat4YVpur3HzgUPLqIFj4UWDzvNZg86e4Y9VYv0UqyEwqj3onuw7snr2XciN6q0sqphi58vbhp0ZEwALyMPyUy1SsvGYA2gpdvMne6r+nypmAW9njTKX/IW0o6K78ib3WVt2DpiR/aQhT8A5G3uoqWQZtMyi1NYzKlUiO41Ve0quq/hwicPr36k+6J6Wxf0+VN4QpeKfTc/6TekrlnVuOIFvrRhJmx3Bg0zdp+f7HCWIQhE9rr2oGv6fKmxdV6KytNP8rKy1hZu7o0VciTIOqt7nrwvNxWq7wcTZq5Q5VCLOqtLqLlfUJNWSIwrHkhw1Pam4yfT/c1Xd60mKIwerWNWJsXsix7L8N3Q8Ripa7uPA3ewSAavS9vh1zWLEwd+HoU6f81zVYfA02upI1aZT2HzPw9bqh1dr6VLXn52UnkrX/EdJBjE6m3lptSTk9R/qYDYfobi9UkUHbdaSO7tRv1Vqd3dRV2gKKCXk2iT9hRtODQhq514x99Qi/EZHo+3dd0eVOKfwQhPpfDSGGKw/gFkPSilxxspSEAAAAASUVORK5CYII=" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">Multiple 16:9 slide decks with print-to-PDF support. Best for boardrooms and email attachments.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/master-pitch-decks.html</div>
+    <a href="https://q-grid.net/video-showcase.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="video showcase video">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Video</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACm0lEQVR4nO1cW47kIAwsl/afvv/t5gbJCbwC80rvfIx7pTRD2x8R0C4FcMmAY1oUTjnpRQAB8QrdCATEK3QjEJA1ZwyqkydLrZwUSfXIhScFPcKUXqEbge0gKRPJuFSfxzPlugIWH4tP6NRHQPDqjImIPErBniL6JTjL86qAsItb+NmQP091PUUBASSpPd/UMQZkV46hUMtoZs83dYwB2WzGVMsOv6yVdTOWwxSZYrZEdgUsPxaP0KVdJCAv+bHz4q7yKpkyn2y5/EeB7pcgIJ/OMZ3q2uikrb0X7u0YA7LTjMljHCdr85lPkeOk2RZNeaw+FqfQC0BA/mPPL+mom/zCqOzQTjG3JhcXR/9bGJAPnjHYZr4HXeve3oL8LRhbFWrwf9mxMCArcyxL+3hUKriUjYcmwTG38LMhmD8hZZl4ZayrBfuWlIJjvMUu3AiCTqHLytgcV2fdtIbylo4xILvMGAZ5vnVlEwnDj61tSq4KgTGnOquyt+90qmRrK2bsx9Y2JX8Fx9CrJpNzCz+2vCm5KgTNOw1/dfm1tfS9mcZ+bB/r8zaItPC+RfIH347WopozyiJH8V677Pe9UlsyT84ZK1lktmjmllw+miZv6RgDssuMoUctetD1KYIxNGvLsmNhQJb2Y2ls9S07cRQsz2fk/PCWjjEg295LSqN6CWLYGTOFH+MtduHO95K+ZCabHQfmFROLj8UndOojIHh1xmRcOyqerST21DPmmX+cUmEZdnEKvQDsDUlqwQqrGc2sGnfffpkpV4WIZb2e0r8r1Zak7a4l39KxHwh/ohSQt5wrMWXs18TXdlukXh6xe5f1OBCm9Ao/G4Jv/u+iR8nmnJ84V1ZZ1pRcFSLx31C7mJIBcQq9AATELfdM8l+kEb8Xdhql1AAAAABJRU5ErkJggg==" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Video Showcase</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/video-showcase.html</div>
     </a>
-
-    <!-- Campaign infographic -->
-    <a href="/futurist-campaign.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">MARKETING</div>
-          <h3 class="font-display font-bold text-lg">Futurist Campaign Infographic</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAACcklEQVR4nO1bUY7cIAx9dpD2MyPNAfYoyc16pr1BcpS5QfhcKZErGzObrapqW6kFNfYHE+B9WH4YbMOQ4Iuy8leRQEA5jIVYLsjkMgOgORO5M1FCnUrhMOhkyxjExDl63UF0AzDJro3K1o2uAQXce7I2Rt7j2c3udAhjobPlcpDTM75TEwV+KYyrQ9PPBgX5Lljn4R8owAHFb7Ilp5FxA9YZhGm7a1fncti1Cwsk3/+KDDtNb2mnabvvZXAtP+plzXXly0OTe49JPkg0JpTiTD84HV/eWNyBBXJNq+Zx16GDiF7fSZYSLEZM2A9bEJFdGxFZMAimzZoPgAb02yCyNNeVLw+FE6VupelwoUw5OmfHBuHLG4s7Ycul0rOM7mpWxvAut9aVLw9F2QnLJniibP/sdMFWF8sFdijVcqAfWX5QFUCcW12xpVKY0Q1PpcxovBG+1Rtbm9fgjTKPMsZzN86tnthC8aPz6KhnmTanyINb68oBhclq6bB5lHH0eCnkEZF+2d0Jh7HQeGWlUh1EfhECrEQIIfUtjTd0TMWKHNxaV748FPXcUo/6yK1GqQWN2pXYCdHJjQlNbzeoRyVMj7TrlWQF5KTVeB1rritfHgo5Sc2y/CFGrWWUryWMxa2XCyof9mxGU61SiDfean03YsKuogyoEPJNr7YSZJ0/7vx9Fu115ctDkxNVKNO740VAkxwk03bT02uos3x5Y3Ffr2gOkucrGvJL5ec7AP4rCnBA8YfGGgSr3RbfjKODaLbEOPKt7uqEeN48en23VqMi3+oJepTXF/4ivrqVVaMsJqRv8bK6D7Yo/hGExhRwQPFfGus7rTS4DosG6U0AAAAASUVORK5CYII=" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">Social strategy playbook with charts and phase breakdown. Best for marketing teams and community.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/futurist-campaign.html</div>
+    <a href="https://q-grid.net/card.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="business card network">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Network</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACmklEQVR4nO1cYY70IAjFl/nf3v92c4N6Ar4A0trJJjskXxzX4aXpuJaXqBBE1C1MQVREGURJiQJhBiUlCoQZlJR5R6yc2L28t89W6AUoVRkGkkIbG4hI3lubP8tO/FS76gQoRywMJIXMU7nv4meh6g8RHy8CyBELAlECLU0pu7ovZnNftGlhgoa9AbwjlJTPj1gtfIjXEgOr4rvMj32+Yb8Db8gkZfyIPeznymBsYlJcdzG2unMt9qlLcWBIw5CUVUaMPJJX6OT4w9MJ8DFtX5CUaf0Y36su36UFe4Y3DElZZcTIkhV9yoKPKwbrg7EmeUzbFyRldhsjtyjPhsmf/qlhSxvDEL1gNUptebCWr/DEfqss5W5sGNewGBCUp6TQKD/GNjmKj6KX6VIK7uJcBkMahqSsZmPswVhXeLE0f2NIw5CUVUaMzmj/MiSPyu7blK2S08bW0T6GUKhZ0ZkH85xYM60+RWb1aWPraB8jbUzwEoNpeHZbaWY8Nk4vWNOPKfpyn9loRsjpx0BhIClFsxPNU9HNcfVnFP3IInLEgsB3Ux62l1S2Qx4tXBkzlTj3ksrGZeq+ICmTn7tg3Z0sWrCjF2pRWqO2Z/WUqgwD302haxfJF48W6vergEtyy3gMQ/SCNdeViisN2+crun1zztzFOtrHB8+PGW6VmR9rmFaV+DP3ko7uVH+XMROZZ8ZjNLsqJ475i5+yvtaVVY70S72F+n5wkebtC5Iys42duJ3eFzOThMY5m7K8UpVRIMygpSm12P3K82qSTJTq1mwCpT/Ul9+BN2SS8r/vJZHkWr1waGbMD2ZUu2mZeokC3015yKslVwViUbVwfxep7QKomdHMfUFSphyxkv8bKghECZSUMJCUIBAlrEX5B0UvzehIjAMVAAAAAElFTkSuQmCC" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Business Card</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/card.html</div>
     </a>
-
-    <!-- Business card -->
-    <a href="/card.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">NETWORKING</div>
-          <h3 class="font-display font-bold text-lg">Digital Business Card</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAACZUlEQVR4nO1bS27jMAx9lA106QA9QI9iXy1HmhvYR5kDFLCXBWRwwI8St7NpBwhMTMiFEEtcEHyi+CgqxPimLOW7mkCqlnQWcrtgI5fJfvXmE5pkcJG5dFaJsF06VgEGZoyrTG89+CoYjbq0hrE1VYF7RPH1shMWGTBUwU2CLp0VY7v0x4/ttRKGFQR0FePvvj7egJKq+Edn7cTzRoRx3Ykmja30a7jYYv/qKjC891jeas/LRdLVIGtbCFtTFU4hRMa1469Dg5F5TmeVs3dW79GjsgG8vMn5N3wQA/UWdI8zIFXLj5y1yWm49SBSJgjhhEIRl1ZsuUpJCBCFE+7EywTQuGpA7T2NDGGHOnSJFoLs191qK5ogiUovNC6AskOetXbO6jgGWmDmCgNl1olBPwUtudrwz2QZkdCy6FF4Dgg6ZD6Us20tT68KZiXqEkI3jJS8+92hScZWiO0iGPGttvIqy0LNi64G3ny6reXpVWEx9Pnow3iPMlnLvBUttuB5y37pQjsOM29Fqo6JHA+bUozqoRuZ1XGsmycaf0mzBNoi0fLr3bm86NC4vkawtTy9Kg55S48+S17iFzkT21yyjBDbxUotxcOJ+mcu7yqJVhS07mLB5GHVuHwb5tNtLU+vir/6W/dnM1Z+Zb0V9c1T9d6JNPlbBuuYr5cwtj63aq+jPZuRVzStv9UxGTsEpC8ZwtZULUd3aGxJ5cX8IU9pWu1sCyX9iiC3utCUJedfg8ybJfbwKVnG4yD4MVoqipYNlstsIftb0XrHKsD2IozCMVKhaXvJkzAMWpT/CMLJEJRUxX/prD/CaMSFgSqEOgAAAABJRU5ErkJggg==" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">85×55mm print-ready card with QR. AirDrop or tap-to-open on any phone.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/card.html</div>
+    <a href="https://q-grid.net/futurist-stack.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="stack page technical">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Technical</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACpklEQVR4nO1cXc7cIAw0o30nN+j9j9UbhBO4whgCu31xH6g/1qNVBAkjQWz5D7KJyYgCK4MoKFbAzKCgWAEzg4Li942lgUvulUSl9rT9PgDbJmYErAQKyo6X/KqXfLdO6teUuV7rI/4YgC0TQ1AOe2NpNmJEfFft4rs22v1nAHlfiwUwjRYE5Z/s2ArNAkoisWYfAJmBoHzxG3u93xDnmLpz5J+0FgTFs45x70sMdnNJXC69rgMoRGkGvptCzJP6ZP77bxrAt9u1IChu7RhP/dFmqWB8GDEKUdIOueAwSrp6Teyq+ePzsFkwefRfJmYErAQKyjY7VlSFagDWq2RzUpkykwRmqeYCIUor8N2U12iNuitPLrKlAKM2y/smhqAcFfNnDbhq0VVSAL0pv4F2nyPmP0f62EIhURtp9RSyaVq7ObLOVvOnyCvJrSjhlUKqRZPJGu15zIPb7VoQFOd2jEW7tDvrm5bFZHQOHcMWueCwmD/1/aMW5HPLNPNNRXfBNQXQmr/btSAobt8Y/9YzFfU6qvrTAYzafar92DYxI2AlUFA2+kqeDvOMAGzeSNKUM4evxBa54DxfmdQ/DiNW3SJPXrKVYWnfxBCU0/Yrc7VfUskfujSKrkvNn/yuBUHxXIPlqUS2OMph2cajO0RpBb6b8up27KmGJdk8ek5ciImrdqwlm37XgqD4PXcxcEnM375FUodJo90zAmybmBGwEigoO32lYNlO6onkUvPP4SuxRS44c088L3V+VbZFuyh0jPyKEj/lm5HUYrBWgC1X62owFmd79skFB1N41GBvSr+eAmxF5vhOnH6OKN3GY7yW9998KEftgtyKEq4pRdPKlmPq6f01HpvSTOybmA0wjqeg0I43luK/oYyAlUBBMQNBMQJWwlmUPyFDkb2CU7I+AAAAAElFTkSuQmCC" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Stack Page</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/futurist-stack.html</div>
     </a>
-
-    <!-- Live scan -->
-    <a href="/scan" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">INTERACTIVE</div>
-          <h3 class="font-display font-bold text-lg">Quantum Readiness Scan</h3>
-        </div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAAB+0lEQVR4nO1aQY6DMAwch0g9BmkfsE+Bn632SfuD8pR9wEpwrBTklZ0EwYleKEmJD1EcRsJyzXiSlBj7NpgnQEBFJauZKCATE0XrMRP1E5E+Sas27+gLRzWsBkwWGNqGqZdZp6vjeXHt2zugKJQ3AL7L8N3KXD6I/tS43htlN17jCZgJ3fhxclzmarl3DwLcn2VMZ8dlLoNiZh8XuhGg3onrmJWCco++ZNQcBA0w3TgN0nV1tc09+n3LFQVe2SgLThRP0j7B7rlGb0pHTZHzqUcjaZdey48o92vdH1v3Pmr5u+Q+zNz6M6h1f1juR1X1mnafXOfTIOxTOefI3LMOIfdKPKJ4kltzfxjfOx9Epe5hleDTD5B+hZy7VcEorGkdG75fDblGb4pG2XCS0P1YT93YEg8EMDDLAwJjsj7f6E3RKERGx8I0KnE49lp0le+PPs/peLYUznNCyUvR48Yk3SDfyjFFo6z2WoS+ujpT+PAyCPucE5e52r2VexCGT93S6jZXTHe9GUdfPt+LqaBXgo/nOUr1VecczPckYkdnjGlW0pehkQdV57zm62hE5ywn+Sp2Dn7jlVF2480rN4j8cHuYa/Tmje6tmuUIs2EiutV7q9fdW1nQ12/8pw4zq9w/4o37dhV9z4vnhWnU5Q395xq9qahoNRPJnsvEP3KINz/NDQBXAAAAAElFTkSuQmCC" class="w-20 h-20 rounded bg-white p-1" alt="QR">
-      </div>
-      <p class="text-sm text-gray-400">Drop this QR at booths and on slides. Opens the live scan instantly on any phone.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/scan</div>
+    <a href="https://q-grid.net/master-pitch-decks.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="master decks print">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Print</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACnElEQVR4nO1cUW6sMAx0RvufvcHe/1i9AZzAlWMnwKpS6/eq1IBHiE1IRiWxNdghtDA5scLLIEqKF3AzKClewM2gpMSdsTLwbNdWKehh5UMHTLsxJ+AlUFJmTPJDTnXRShnntfDaapXLewdMuTEk5WIzVrqIlVKosrjWi3mRKjf/2lSOoo/FA7h6NyTlv2esMq1FdGxpasbcXetX/8r3wA/6JOWcM7aKd5l2vVhkLciNfQ/8oE9S/igeI9qvYJQqNfUt3hXm3hiScqkZWy1rlLI62IutMDLN0YFij8UHOPtTUuifdIy/auDjkZPcAXID96YQs0mWoLJUyeIxCcwa9q28hB0LkhLXx6g5lTpYlSWL4XtaFmytmHJjSMpVZoxUqSyXrIeCQCVOFcx6hh0LkhI5ryztzGvR56I9HesyFvmLtD7b9TSlF7g3hVTERiSmwjXisdFh9OHUsetYHzPjMYG5UI/zRyKgyHjMENaUiB6P8SEAs0SgO1vq2BlMiagU2vLHfZx/vLKlA5zPSkyxCy65dsHNkQ5N7WJ3rYzHgpsSJ8grq+y4kBeUdaGWQuqLy9FatCnuWJCU6Ov8tRX6M3FceStz5pVu4N6Uh/7Yspjq2LHH2HfRV88w5caQlKvpWH2XsoOg7Rf8l7BjQVLC6hjvN1d0KdPqts6v2/sFaUovcG8KbUplMrXttdhHYtbKqWOYYhdcjVJtFVY3JepexMPrJH10fuS3bxTdlIEpZfvsSDxKyvrxSDur1+V3SacwZdi88g2WYIqDPUecFn4sSMqJfKw077LK+rRNPpYIpCm9wL0pD/0Zcb8U9GuRfpajiRib14UdC5JyiryS+g6f/fvKzCt3ALmBe1NK/m+oq5gSSXECXgIlxY05k/wJyvyvuoBFeYkAAAAASUVORK5CYII=" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Master Decks</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/master-pitch-decks.html</div>
+    </a>
+    <a href="https://q-grid.net/futurist-campaign.html" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="campaign info marketing">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">Marketing</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACkUlEQVR4nO1cW47kIAw0pfknN9j7H2tuACfwyrzi8DPj1QrRxKWebuK4pIAtYwyZwGREhpVB5BQrYGaQU6yAmUFO2XfEwsAlonCJpN3PInwqYNmDGQErgZyybJAjVzRZDpy6m0XmNClg3YPZAKM+OYUWjlhQQUxQnEpLhgK5Kc3AuylfsyBL+JK/mDgH/qS+wCmf4WMdTBQiU27BSwFkBpzy4hH7qj9TvJLLfElMixxmBSx5MDjlqBHLbdUo7cjiVxeFP9JoWlqB9u6LDTDqk1Pon+IYa0EONQ3TwmeUg9vFCFgJdBwljArYRVKp6IGLv6WIcRfQfF251i6nUEiKFKl8l0adK9tHo1QzSMpl2/YFTtnXx7i4Wa219obcK56ma7AC9zEz8G4K8YThUTW49UvRbJJt+wKnbD1Xph61tKepOVT5HpY8GJxyyohRzbLuHcmeifXsq+t5PtawrSmxK4XuwKUvx/54T8k8jm1vSuxKoRavlKeNnH+SeD62tymxtY9RL1lMt0r4mpJ/9nzsHOtjqY/Rw51q454lhxNG9zEssQsOzPnpWROrxQqdm411Qdq2L3DK7ucusmxThrFfWU71hJjGuYt+nAxLHgxOOWzEwtV2LWveNc6+Dr2mcH1AXyyASbvAKWbwE6MmpssXj3byQbYC76bQ7T/KnUaef++Sj1dL0rZ9gVP2zcdiq8CG8pGsrOdjFax0yE1pBt5Noce6chQoRuFCF/x9rlxnF5z9XhKrd0ZqWKvytQ8Gpxw7YpHv0/vVr+qr4mXm5PRRffkZ+IWOU/5ffexOveRrRDCJZsXZeoYGMgNOefGI0bSubMK+FT4dixX4uvIc62MJJfj/hjrFlHCKEbASyClmrBnkv61d544GAsJ+AAAAAElFTkSuQmCC" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Campaign Info</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/futurist-campaign.html</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/software-defined-quantum-compliance.pdf" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="software-defined quantum compliance pdf">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">PDF</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAHsAQAAAAA4UaPNAAAD6klEQVR4nO2dYY7iMAyFbWv+lxvs/Y/FDdoTeOU4cV2Y1Uouo6HkPSGmLflESY3HcZzCSie0yRmaCHhZUkdNwMuSOmoCXpbU0dlxUk2eflFa1BUv2XM73hukxrpe+rML8Hm7bkl2vhLfiJl9Q1V92x7+7UiN6R1Ovi45wRLwq/c8M/OtbW3dwvmP0sb2aAczszemtzj5qqRMNgG/aNd9PewzES8rLWpWvqxM5A6df+TdBXhVUiabgCct5t7NjTeH77se83wnoVMS4FVJmaTZ8S//sw9NN9YczLRdbkPXaKMf8tmBz9l19Jy3+c8jNVbkbSY1G7m6n9d8oDn27uqPQ1dvqZ/z2QX4lF1Hnn7vSfjk6ntC0l8amfmI6tVfgp+f1GzkA/w8tx3dbjqSky2MX303InwP7C23Q+7wL/3ZBfiUXUeHWVd35mkS9mFmNly9uuDnJzUb+QR8afOt95af3MYkrJv3vXn4W5+Bjcb0PidflFRBF/AL+3kKbz+8euRn9rS8Re8RxtM4guteltRRE/BX5G02C+bt4fmZzcoLeFGblm3bLg/+te+h58uSOmoCXpfmjE1K14dXP7SO3QXxvJzodYLR/nLPbz0P78F8fvk4Ym1fBC9I6MJ1L0vqqAl4XdqMuUfpY6Y1bLs/h/wrMFoinj8hOQMT8BeNYXWYdNj4IYc5fP7eZsWFK0vqqAn4C8aw3J596OqD1r2obOOoK/Zm3MMb9HxZUkdNwOvS5M970P4QxkSzFOdQP4KeL0vqqAl4XTrMe59y3dPvh/WAkZnfjX9Fz5clddQEvC6NJd5h0iliP9g5PY1qV/R8WVJHTcDr0lxdEwdzSBMBT+QqkZ83wequ3HVLWwD4EMz4SvBWV8N/1Bd996XfyM+/yYWrSybG6SEhaUoJ+Rz8hJNHvc31r7tMjNPhrjUpdNlz8rmWeJRWKuJ5uvR1l4lxSpOsaRL2qZZ+L0KIsa1iDDut2chn5OcpefV/1SQ8rh9cL/3ZBfiUXUd50HpYHjWqbg5ZStf4FwCbn9Vs5GNiG00Zy5yTPKTrR9JeYfPzmo1cHedQWwAYd2p1a+/LAJdv05Xy6yd/QnIGJuBX9vOU7+yRp59S2fzu4Q95HvnVkxfgVUmZ/Bicx62G7UbcvuHzUBvbDYojdb9Zw47c3uXkq5Iy2QT82n6eUo1ZumXTUwNH9rwlrntZUkdNwF/ZddqCea9G6EfubBZ+56e7Vkr9nU3Ay5I6agJOewmxF960G930XxthO+IBj7eJ8IbQdXXJCZaA/8jvSS2HkrO8m1L6cuq9CXhZUkdnxxm/lTnldRfgVUmZbAJeltRRmhz/C0LDZfOqMSU0AAAAAElFTkSuQmCC" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Software-Defined Quantum Compliance</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/pdfs/software-defined-quantum-compliance.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/gridera-master-presentation-suites.pdf" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="gridera master decks pdf">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">PDF</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbwAAAG8AQAAAACNyy1yAAADBElEQVR4nO2cYY7cIAyFDep/5v636w3gBK6MY2KSjpPdllFn+j5FUZaARus8OcYmJKZv0fL3xhFhYACMEwDjBMA4/5xx0uDR21qSxkc/tFFbpm54jgEwzgrjEDNTYUUuKm3XSr/lz9YNjyMAxllonGROdZy5dqFWuSVnbR++F48jAlp9iXEK60s/PYh/pq0lpYW/eJd8u+cBDPwM4/w4NrQkr/9SxYsWpvbQYJXf+H/MGPhJWuXRUGoi4pa4PeRcOJl0Z8W+0f+YMfBz5laDwtExwNzqcwSQ38uvsm/ob3xpbD0YsKhAj7/xixkDnwPjRGgOavtDc1PjVu2H5al8H+SsQiC5hTEA94B0CNWnW0lFO7r1eABaDYFWV8arhSdfatLtLtTuWtQKv3oFtLq2bkVWlvISFZx0xxD41RBo9RU1VlLG29+1j3gAMcAV0OpKrVb1lr1lnk/x2bUiXr0AWl2oVXLHRjUX6iZZYwhigBBodXktgN1Miuc8wNZhD2LxOAJgnOVzK7L5/uRLiwUJIwxADHABtLpKq4KtANyv+VgUQH71Nvl+1xkMjFBxDr865MqW9j8nWvs1rBoA46xaD5D6Yiqt+Ms6QIP7qgDpMBYD2GoBPI4QaHVtDMDDkc6pKnZJLeRX75Fv9juBgZd+Vdasbq5VVq5OXwGkUnWpVSpVHW+/DasGwDiLawF1n1L5ciqdkq6IV6+AVlfWAshV/+fFAOTmX1hndY98s98JDIw4hqN+vl/3eHXvj/UA10ByK+dWxqEEQGPxqq8XoBZwAbS6LGdFhs2e/KcrZB1kktXpjXgcATDOS9YEFhe7slsN6CpZcoVaQAS0uvCb6zR/WK0pLHIFgjS+GfzTX8wY+BwY5yvGUU22pD5W91qTDVjMr2LvtRvkO51+BwZ+Zd+Vjoiypa0EYGWC7by5X1g1AMZZaBx2qVTdzVJwwep2a9/YCo8jAMZZFq+2PRMwlVeb7BQkkYCEBH3voLHhFR5HBLS6wjgJe7A/B5ILgHECYJyA/8E4vwBm+b3TyLvhLwAAAABJRU5ErkJggg==" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">GRIDERA Master Decks</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/pdfs/gridera-master-presentation-suites.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/krown-qortrace.pdf" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="krown / qortrace one-pager pdf">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">PDF</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACnklEQVR4nO1cQbIjIQiFV9mbG+T+x/o3sE/AlKJoZxYzzMI4Bhb9O4ZXRcMrQZp8FnLKBS+CKCBegRtBAfEK3AgKyL4eY5NnWRr3F6vSXQHLDHMKvAAKyDInJ1EpdHqS5LImudwr62YFiri4BQEh3amUTrp3JWHmwqqfaXNThfCYW/DdkMfvS5yELxaiwrYk/BnDEJBTOSZESrAmvSRbbhgCcpjHRETLMLpKitRKTPJYHwq0+7N4BC7tKgH5J49d7dRYEuWrEExF7/WAaQoUTnYLvhvy0Px4E82PNWPqV/J/PAsCsqXHqHQkrDWRKpvq9ZYi05wxscQwBOQUj9FgVyfSYNSdZsGxvUOJnXMlpyw1P3Il0u1cmTJdz0awpYYF5LTeBSfRAoxTHmTT1KkNjeBYk21DiV0hNCquXo+14qw3Lt4KNol67JzoYwmE+lvIqQOmfLPCrB8EevGPJYYhIKd4jGybKh9u58da8/ezgO11Ehw7J/pYAiHLjG9bmV2Nfp1vWGIYAnLYPkZWj9mupd/W+7lmk+DYOdHHEgjNWfLOpXeFroYlhiEg53mM66tJfpUmhr5OUqaVl+NSOxsxo/iJuBzSH0tZm2Pl2mcUtTer82PWHJN1hiEgZ54raVRilj3tY1/EEsMQkNPOlV1ana83c3t2nECxxDAE5CSP8fSzo1KAvcowv66rUhvpj3n+tXE5rR6rogP884pKWWrvMfPGz4KAbN0fo9HSf5/qMc3W3IhQegVuBB0NSaNdZtlTydbHsPEZw/4s+AudgGzgsYsbzaroPmZT/VI+Rii9gu+GPPTPNJRYe7CjRVZPlG0lRz1G+4YSu0JodMCsJLOBMavNLIFK1GNYEhccBOH431CnhBIBcQq8AAqIW9Y4+ReolNW/6ZELPgAAAABJRU5ErkJggg==" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">Krown / QorTrace One-Pager</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/pdfs/krown-qortrace.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/ovhcloud.pdf" target="_blank" class="card qr-tile rounded-2xl p-3 flex flex-col items-center text-center" data-label="ovhcloud one-pager pdf">
+      <div class="text-gridera-green font-mono text-[9px] uppercase mb-2">PDF</div>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACh0lEQVR4nO1c0a7kIAjFk3m3f7D//3f6BWwUpXbu7AO5G8O0nDSTtuNJVQgg1CYmIyqsDKKgWAEzg4JiBcwMCorfGUuKo91KKVFt5+2yph8NsK1jRsBKoKBsm+TMAlEnLu0O1X4iWBpQyMUMBIXEUnUjpgr2Ni3agGLGzMCzKa8P9+rxv5+CoDx4xl5v181+5e40/6ls2NIxBOVmOsbzmkW7iLgelFldJn/BWBAUlzNGM5LvyPz5WBpwCVFagWdTXlcbRVyTHKTHtQH5HQuC4teO5fNQiPmSk/Fb2mXYMdohF9zPV7Loz6pgU+Vao6lgFL6S3IoS/uMxloyrqJNo1GLHFmXDlo4hKLe1Y2VE/qJp0mB6SQpfSX5FCecxf8qcctHkWIPEY5olq0dvVhyPBUFxa8f4pylTHyoqF/HYCZAZeDaFNMhfAzBNi50qJ64zRzyGLXLB3fL89WgJseE0S/ePZ008XasA5HcsCIrrdWUe0f4Z9su/b0uAHHYMW+SCG8b8NWkpnEcM1n3k8p5PWxeQ57EgKJ7z/Je4a6YpzqhsWDAKO0ahyXbw1K4zq38N9eWvRf1gfwiC8uAZo7UWqYp0WWYKtJRZ3I4FQfGcu1BomuKtlrQkyrClYwjKXd8fY3WO1/MlKsOWjiEot8qP5bEBabwBK8tMWU72AlPkx75BlHBOSbq58ujb3zRIKy0f23ZcSmbj+IKxWABT646g/HbGWCIx2br751JOir1vHaFjv96XlFnTreOli1za5pGa5nYSmB9CQXnyjL0+7EvqJUvRKLk/i5hH1CvJryjhmlLH1yzEIUoMtpbFufSPYEQ8tlkuN6Gk+DbUXUSJoBgBK4GCYsaeSf4LT7/mN9MWKd0AAAAASUVORK5CYII=" class="w-full max-w-[140px] rounded bg-white p-1 mb-3" alt="QR">
+      <div class="text-xs font-bold leading-tight mb-1">OVHcloud One-Pager</div>
+      <div class="text-[9px] text-gray-500 font-mono break-all">q-grid.net/pdfs/ovhcloud.pdf</div>
     </a>
   </div>
 
-    <!-- Video showcase -->
-    <a href="/video-showcase.html" class="card rounded-2xl p-6 hover:border-gridera-green/50 transition-all block">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-gridera-green font-mono text-xs mb-1">VIDEO</div>
-          <h3 class="font-display font-bold text-lg">Agentic PQC Video Showcase</h3>
-        </div>
-        <div class="w-20 h-20 rounded bg-gridera-green/20 flex items-center justify-center text-3xl">▶</div>
-      </div>
-      <p class="text-sm text-gray-400">Three hosted MP4 demos. No external video platform required. Share via QR or AirDrop link.</p>
-      <div class="mt-4 text-xs font-mono text-gray-500">q-grid.net/video-showcase.html</div>
-    </a>
-
-  <footer class="mt-12 text-center text-xs text-gray-500 font-mono">
-    TAURUS AI CORP. · admin@taurusai.io · q-grid.net · Blockchain Futurist Toronto 2026
+  <footer class="fixed bottom-0 left-0 right-0 bg-[#080A0F]/90 backdrop-blur-lg border-t border-white/10 py-3 px-4 text-center text-[10px] text-gray-500 font-mono">
+    TAURUS AI CORP. · Effin Fernandez · admin@taurusai.io · q-grid.net
   </footer>
 </div>
+
+<script>
+const search = document.getElementById('search');
+search.addEventListener('input', e => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.qr-tile').forEach(tile => {
+    tile.classList.toggle('search-hidden', !tile.dataset.label.includes(term));
+  });
+});
+// Show install hint on iOS Safari if not standalone
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+if (isIOS && !isStandalone) {
+  document.getElementById('install-hint').classList.remove('hidden');
+}
+</script>
 </body>
 </html>
