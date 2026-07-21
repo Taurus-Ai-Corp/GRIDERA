@@ -29,7 +29,7 @@ export default function AssetPage() {
           </>
         }
         description="Secure, compliant, and quantum-ready management of digital assets. Built for treasuries, token issuers, and institutions that need immutable audit trails under NIST FIPS 203/204."
-        cta={{ label: 'Request Demo', href: 'mailto:admin@taurusai.io?subject=GRIDERA%20Asset%20Demo' }}
+        cta={{ label: 'Request Demo', href: 'https://calendly.com/taurusai/gridera-executive-briefing' }}
         secondary={{ label: 'Explore Capabilities', href: '#capabilities' }}
       />
 
@@ -68,7 +68,12 @@ export default function AssetPage() {
           <p className="text-[16px] text-[var(--graphite-med)] leading-[1.6] max-w-[520px] mx-auto mb-8">
             Get a tailored demo of GRIDERA Asset, including custody architecture, policy engine, and compliance reporting.
           </p>
-          <a href="mailto:admin@taurusai.io?subject=GRIDERA%20Asset%20Demo" className="btn-primary">
+          <a
+            href="https://calendly.com/taurusai/gridera-executive-briefing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+          >
             Request Demo →
           </a>
         </div>

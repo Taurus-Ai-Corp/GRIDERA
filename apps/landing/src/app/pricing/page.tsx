@@ -58,7 +58,7 @@ const TIERS = [
     annualTotal: null,
     priceLabel: '$6,999–$8,999/mo',
     cta: 'Contact Sales',
-    ctaHref: 'mailto:sales@q-grid.net',
+    ctaHref: 'https://calendly.com/taurusai/gridera-executive-briefing',
     popular: false,
     features: [
       'Unlimited seats',
@@ -325,7 +325,9 @@ function PQCCard({ svc }: { svc: (typeof PQC_SERVICES)[number] }) {
       </div>
       <p className="text-[13px] text-[var(--graphite-med)] leading-[1.6]">{svc.description}</p>
       <a
-        href="mailto:sales@q-grid.net"
+        href="https://calendly.com/taurusai/gridera-executive-briefing"
+        target="_blank"
+        rel="noopener noreferrer"
         className="btn-secondary mt-6 inline-flex text-[11px] group-hover:text-[var(--accent)] group-hover:border-[var(--accent)]"
       >
         Inquire about this service →
@@ -420,7 +422,9 @@ export default function PricingPage() {
                 <strong className="text-[var(--graphite)]">Canada/US:</strong> base USD pricing
                 above.{' '}
                 <a
-                  href="mailto:sales@q-grid.net"
+                  href="https://calendly.com/taurusai/gridera-executive-briefing"
+        target="_blank"
+        rel="noopener noreferrer"
                   className="text-[var(--accent)] hover:underline"
                 >
                   Contact sales
@@ -466,7 +470,9 @@ export default function PricingPage() {
                   Scoped proposal within 48 hours. Fixed-fee or T&amp;M contracts available.
                 </p>
               </div>
-              <a href="mailto:sales@q-grid.net" className="btn-primary shrink-0">
+              <a href="https://calendly.com/taurusai/gridera-executive-briefing"
+        target="_blank"
+        rel="noopener noreferrer" className="btn-primary shrink-0">
                 Schedule Discovery Call →
               </a>
             </div>
@@ -517,7 +523,9 @@ export default function PricingPage() {
             <a href="/scan" className="btn-primary">
               Start Your Free Trial →
             </a>
-            <a href="mailto:sales@q-grid.net" className="btn-secondary">
+            <a href="https://calendly.com/taurusai/gridera-executive-briefing"
+        target="_blank"
+        rel="noopener noreferrer" className="btn-secondary">
               Talk to Sales
             </a>
           </div>

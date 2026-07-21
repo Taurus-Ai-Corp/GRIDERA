@@ -326,7 +326,9 @@ function QrepDashboard({ qrep }: { qrep: QrepCompact }) {
           </div>
           <div className="flex flex-col gap-3 shrink-0">
             <a
-              href="mailto:admin@taurusai.io?subject=QREP%20Remediation%20Inquiry"
+              href="https://calendly.com/taurusai/gridera-executive-briefing"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary text-center justify-center"
             >
               Remediate Now →
@@ -650,7 +652,9 @@ function ComplyLanding() {
               Get Your QREP Free →
             </a>
             <a
-              href="mailto:admin@taurusai.io?subject=QREP%20Enterprise%20Inquiry"
+              href="https://calendly.com/taurusai/gridera-executive-briefing"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-secondary text-center justify-center"
             >
               Enterprise Inquiry →
