@@ -1,512 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taurus AI Corp — Interactive Pitch Deck & Investor Q&A</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        hedera: {
-                            green: '#00EB87',
-                            darkGreen: '#00B867',
-                            glow: 'rgba(0, 235, 135, 0.25)',
-                            bg: '#080A0F',
-                            card: '#10141E',
-                            border: 'rgba(0, 235, 135, 0.2)'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #080A0F;
-            color: #F3F4F6;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 235, 135, 0.1) 0%, transparent 60%),
-                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
-            overflow: hidden;
-            height: 100vh;
-        }
-        .slide {
-            display: none;
-            height: calc(100vh - 120px);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .slide.active {
-            display: flex;
-            opacity: 1;
-        }
-        .glass-card {
-            background: rgba(16, 20, 30, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-card-accent {
-            background: rgba(16, 20, 30, 0.9);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 235, 135, 0.3);
-            box-shadow: 0 0 30px rgba(0, 235, 135, 0.1);
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #FFFFFF 0%, #00EB87 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        /* Custom scrollbar for Q&A slides */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(0, 235, 135, 0.3);
-            border-radius: 3px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRIDERA — Post-Quantum Compliance for Regulated Enterprise</title>
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gridera: { green: '#00EB87', darkGreen: '#00B867', bg: '#080A0F', card: '#10141E', border: 'rgba(0,235,135,0.2)' }
+      },
+      fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+    }
+  }
+}
+</script>
+<style>
+body { background-color: #080A0F; color: #F3F4F6; overflow: hidden; height: 100vh; }
+.slide { display: none; height: calc(100vh - 120px); opacity: 0; transition: opacity 0.3s ease-in-out; }
+.slide.active { display: flex; opacity: 1; }
+.glass-card { background: rgba(16,20,30,0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+.glass-card-accent { background: rgba(16,20,30,0.9); backdrop-filter: blur(16px); border: 1px solid rgba(0,235,135,0.3); box-shadow: 0 0 30px rgba(0,235,135,0.1); }
+.text-gradient { background: linear-gradient(135deg, #FFFFFF 0%, #00EB87 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.custom-scroll::-webkit-scrollbar { width: 6px; }
+.custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+.custom-scroll::-webkit-scrollbar-thumb { background: rgba(0,235,135,0.3); border-radius: 3px; }
+</style>
 </head>
 <body class="font-sans antialiased select-none">
 
-    <!-- Top Navigation Bar -->
-    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between glass-card">
-        <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-hedera-green/10 border border-hedera-green flex items-center justify-center">
-                <span class="font-display font-bold text-hedera-green text-lg">₮</span>
-            </div>
-            <div>
-                <span class="font-display font-bold text-sm text-white tracking-wider">TAURUS<span class="text-hedera-green">AI</span> CORP</span>
-                <span class="text-[9px] font-mono block text-gray-400">GRIDERA™ EXECUTIVE PITCH</span>
-            </div>
-        </div>
+<header class="h-16 border-b border-white/10 px-6 flex items-center justify-between glass-card">
+  <div class="flex items-center space-x-3">
+    <img src="/gridera-logo.png" alt="GRIDERA" class="w-8 h-8 rounded border border-white/10">
+    <div>
+      <span class="font-display font-bold text-sm text-white tracking-wider">TAURUS<span class="text-gridera-green">AI</span> CORP</span>
+      <span class="text-[9px] font-mono block text-gray-400">GRIDERA™ EXECUTIVE PITCH</span>
+    </div>
+  </div>
+  <div class="flex items-center space-x-4">
+    <span class="text-xs font-mono text-gray-400" id="slide-indicator">Slide 1 of 10</span>
+    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-gridera-green/10 text-gridera-green border border-gridera-green/30">Canada Crypto Week 2026</span>
+  </div>
+</header>
 
-        <div class="flex items-center space-x-4">
-            <span class="text-xs font-mono text-gray-400" id="slide-indicator">Slide 1 of 10</span>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-hedera-green/10 text-hedera-green border border-hedera-green/30">
-                Canada Crypto Week 2026
-            </span>
-        </div>
-    </header>
+<main class="max-w-7xl mx-auto px-6 pt-6">
 
-    <!-- SLIDE CONTAINER -->
-    <main class="max-w-7xl mx-auto px-6 pt-6">
+<!-- SLIDE 1 -->
+<section class="slide active flex-col justify-center items-center text-center">
+  <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-gridera-border text-xs font-mono text-gridera-green mb-6">
+    <span>Linux Foundation Hiero Core</span><span>•</span><span>NIST PQC (ML-DSA-65)</span>
+  </div>
+  <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6 leading-tight">
+    Quantum deadlines are here.<br><span class="text-gradient">Is your audit trail ready?</span>
+  </h1>
+  <p class="text-lg text-gray-400 max-w-2xl mb-8 leading-relaxed">
+    Federal mandates now name post-quantum cryptography. Most enterprises still run classical signatures across cloud, on-prem, and chain. <strong class="text-white">GRIDERA™</strong> is the upstream PQC filtration layer that turns compliance from a panic into a pipeline.
+  </p>
+  <div class="flex gap-4 font-mono text-xs text-gray-400">
+    <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10">Presenter: Effin Fernandez, Founder</span>
+    <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10">admin@taurusai.io</span>
+  </div>
+</section>
 
-        <!-- SLIDE 1: Title & Vision -->
-        <section class="slide active flex-col justify-center items-center text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-hedera-border text-xs font-mono text-hedera-green mb-6">
-                <span>Linux Foundation Hiero Core</span>
-                <span>•</span>
-                <span>NIST PQC (ML-DSA-65)</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6 leading-tight">
-                Quantum-Safe. AI-Governed. <br>
-                <span class="text-gradient">Sovereign Web3 Mesh.</span>
-            </h1>
-            <p class="text-lg text-gray-400 max-w-2xl mb-8 leading-relaxed">
-                Legacy blockchains run on classical public-key infrastructure vulnerable to quantum decryption. <strong class="text-white">GRIDERA™</strong> delivers the first Post-Quantum, AI-Governed Infrastructure Stack.
-            </p>
-            <div class="flex gap-4 font-mono text-xs text-gray-400">
-                <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10">Presenter: Effin Fernandez, Founder & CEO</span>
-                <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10">Contact: admin@taurusai.io</span>
-            </div>
-        </section>
+<!-- SLIDE 2 -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">01. THE COMPLIANCE GAP</div>
+  <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Why PQC migration is harder than it looks</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-500">
+      <h3 class="text-lg font-bold text-white mb-2">Inventory chaos</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Keys, certificates, vendor libraries, and smart contracts live in silos. You cannot migrate what you cannot find. Most audits miss the upstream surface that feeds downstream compliance reports.
+      </p>
+    </div>
+    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-yellow-500">
+      <h3 class="text-lg font-bold text-white mb-2">Jurisdiction whiplash</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        CNSA 2.0, EU AI Act, DPDP India, HK VASP, UAE VARA — each names different deadlines, algorithms, and evidence formats. Point solutions solve one region and fail the rest.
+      </p>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 2: The Multi-Trillion Dollar Blindspot -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">01. THE SYSTEMIC RISK</div>
-            <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">The Multi-Trillion Dollar Web3 Blindspot</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-500">
-                    <h3 class="text-lg font-bold text-white mb-2">Cryptographic Debt</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">
-                        Ethereum, Solana, and Polygon run exclusively on classical signatures (<code>secp256k1</code> / <code>Ed25519</code>). Shor's algorithm on quantum hardware will break these instantly, rendering trillions in locked on-chain assets completely insecure.
-                    </p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-yellow-500">
-                    <h3 class="text-lg font-bold text-white mb-2">Regulatory Compliance Disconnect</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">
-                        Upcoming federal mandates (<strong>US CNSA 2.0</strong> & <strong>EU AI Act</strong>) mandate post-quantum encryption and verifiable AI model provenance. Legacy chains cannot natively audit or govern AI agent actions before state settlement.
-                    </p>
-                </div>
-            </div>
-        </section>
+<!-- SLIDE 3 -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">02. WHAT GRIDERA DOES</div>
+  <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Upstream filtration. Multi-jurisdiction routing. Signed evidence.</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card p-6 rounded-2xl border border-white/10">
+      <div class="text-gridera-green font-mono text-xs mb-2">LAYER 01</div>
+      <h3 class="text-xl font-bold text-white mb-2">PQC Discovery</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">Scan domains, repos, wallets, and dependencies to build a live inventory of classical-crypto exposure with risk scoring.</p>
+    </div>
+    <div class="glass-card p-6 rounded-2xl border border-white/10">
+      <div class="text-gridera-green font-mono text-xs mb-2">LAYER 02</div>
+      <h3 class="text-xl font-bold text-white mb-2">Compliance Router</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">Route findings against EU, North America, India, UAE, and HK rulebooks. Export regulator-ready evidence packs per jurisdiction.</p>
+    </div>
+    <div class="glass-card p-6 rounded-2xl border border-white/10">
+      <div class="text-gridera-green font-mono text-xs mb-2">LAYER 03</div>
+      <h3 class="text-xl font-bold text-white mb-2">HCS Audit Anchor</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">Sign every report and migration step with ML-DSA-65 and anchor the proof to Hedera Consensus Service for tamper-evident history.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 3: The GRIDERA Solution -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">02. THE PARADIGM SHIFT</div>
-            <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">The GRIDERA™ Sovereign Architecture</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="text-hedera-green font-mono text-xs mb-2">LAYER 01</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Lattice Cryptography</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">NIST-approved ML-DSA-65 signatures & ML-KEM key exchange wrappers removing single points of cryptographic failure.</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="text-hedera-green font-mono text-xs mb-2">LAYER 02</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Linux Foundation Hiero</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">High-throughput, deterministic hashgraph consensus delivering instant state finality backed by global open-source governance.</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="text-hedera-green font-mono text-xs mb-2">LAYER 03</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Verifiable AI Shield</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Local model execution (qwen3-coder / llama3.2) auditing multi-agent swarm decisions prior to ledger commitment.</p>
-                </div>
-            </div>
-        </section>
+<!-- SLIDE 4 -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">03. THE SHIFT</div>
+  <h2 class="text-3xl font-display font-bold text-white mb-6">From check-box compliance to continuous readiness</h2>
+  <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
+    <table class="w-full text-left border-collapse text-xs">
+      <thead class="bg-white/5 font-mono text-gray-300"><tr><th class="p-4">Capability</th><th class="p-4">Typical audit tool</th><th class="p-4 text-gridera-green">GRIDERA</th></tr></thead>
+      <tbody class="divide-y divide-white/5 text-gray-300">
+        <tr><td class="p-4 font-semibold text-white">Crypto inventory</td><td class="p-4 text-gray-400">Static PDF snapshot</td><td class="p-4 text-gridera-green font-bold">Live, continuous discovery</td></tr>
+        <tr><td class="p-4 font-semibold text-white">Jurisdiction mapping</td><td class="p-4 text-gray-400">Manual spreadsheet</td><td class="p-4 text-gridera-green font-bold">Automated rule engine</td></tr>
+        <tr><td class="p-4 font-semibold text-white">Evidence provenance</td><td class="p-4 text-gray-400">Email attachments</td><td class="p-4 text-gridera-green font-bold">HCS-signed evidence packs</td></tr>
+        <tr><td class="p-4 font-semibold text-white">Downstream audit feed</td><td class="p-4 text-gray-400">Disconnected</td><td class="p-4 text-gridera-green font-bold">CBOM + QorTrace-ready JSON</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-        <!-- SLIDE 4: Gap Analysis & Competitive Matrix -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">03. MARKET POSITIONING</div>
-            <h2 class="text-3xl font-display font-bold text-white mb-6">Why Legacy L1s Cannot Compete</h2>
-            <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
-                <table class="w-full text-left border-collapse text-xs">
-                    <thead class="bg-white/5 font-mono text-gray-300">
-                        <tr>
-                            <th class="p-4">Feature</th>
-                            <th class="p-4">Ethereum / Solana / Polygon</th>
-                            <th class="p-4 text-hedera-green">Taurus AI Corp (GRIDERA™)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5 text-gray-300">
-                        <tr>
-                            <td class="p-4 font-semibold text-white">Signature Engine</td>
-                            <td class="p-4 text-red-400">Classical (secp256k1 / Ed25519)</td>
-                            <td class="p-4 text-hedera-green font-bold">Lattice-Based (ML-DSA-65)</td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-semibold text-white">Quantum Migration Path</td>
-                            <td class="p-4 text-gray-400">Requires hard forks & state explosion</td>
-                            <td class="p-4 text-hedera-green font-bold">Native / Turnkey Built-in</td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-semibold text-white">AI Agent Guardrails</td>
-                            <td class="p-4 text-gray-400">Off-chain, unverified wrappers</td>
-                            <td class="p-4 text-hedera-green font-bold">Real-time local LLM audit logs</td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-semibold text-white">Consensus Governance</td>
-                            <td class="p-4 text-gray-400">Foundation-controlled tokenomics</td>
-                            <td class="p-4 text-hedera-green font-bold">Linux Foundation Decentralized Trust</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+<!-- SLIDE 5 -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">04. COMMERCIAL MODEL</div>
+  <h2 class="text-3xl font-display font-bold text-white mb-6">Three revenue lines, one platform</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-gridera-green">
+      <h3 class="text-lg font-bold text-white mb-2">GRIDERA|Comply</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">SaaS seat licenses for compliance teams: continuous PQC discovery, jurisdiction routing, and evidence generation.</p>
+    </div>
+    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-gridera-green">
+      <h3 class="text-lg font-bold text-white mb-2">PQC Verification APIs</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">Usage-based signatures and scans for wallet, contract, and domain verification at scale.</p>
+    </div>
+    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-gridera-green">
+      <h3 class="text-lg font-bold text-white mb-2">Hiero Infrastructure Nodes</h3>
+      <p class="text-xs text-gray-400 leading-relaxed">Dedicated validation and HCS submission nodes for regulated consortia that need sovereign hosting.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 5: Business Model & Monetization -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">04. MONETIZATION MODEL</div>
-            <h2 class="text-3xl font-display font-bold text-white mb-6">Enterprise Revenue Streams</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-hedera-green">
-                    <h3 class="text-lg font-bold text-white mb-2">B2B SaaS Licensing</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Subscription fees paid by sovereign wealth funds and fintech institutions utilizing the GRIDERA AI compliance routing engine.</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-hedera-green">
-                    <h3 class="text-lg font-bold text-white mb-2">PQC Verification APIs</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Micro-transaction fees for wrapping off-chain payload calls in NIST ML-DSA-65 post-quantum signature schemes.</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-hedera-green">
-                    <h3 class="text-lg font-bold text-white mb-2">Hiero Infrastructure Nodes</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Operating specialized high-security validation nodes serving global Linux Foundation Decentralized Trust enterprise partners.</p>
-                </div>
-            </div>
-        </section>
+<!-- SLIDE 6 -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">05. ROADMAP</div>
+  <h2 class="text-3xl font-display font-bold text-white mb-6">What we are shipping now</h2>
+  <div class="space-y-4">
+    <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-gridera-green">
+      <div><span class="text-xs font-mono text-gridera-green">Q3 2026</span><h4 class="text-sm font-bold text-white">Canada Crypto Week live scans + threat-radar feed</h4></div>
+      <span class="text-xs font-mono px-3 py-1 rounded bg-gridera-green/10 text-gridera-green">Active</span>
+    </div>
+    <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-white/20">
+      <div><span class="text-xs font-mono text-gray-400">Q4 2026</span><h4 class="text-sm font-bold text-white">Pilot agreements with regulated VASPs and cloud providers</h4></div>
+      <span class="text-xs font-mono px-3 py-1 rounded bg-white/5 text-gray-400">Target</span>
+    </div>
+    <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-white/20">
+      <div><span class="text-xs font-mono text-gray-400">Q1 2027</span><h4 class="text-sm font-bold text-white">Expanded jurisdiction modules (HK, Singapore, UK)</h4></div>
+      <span class="text-xs font-mono px-3 py-1 rounded bg-white/5 text-gray-400">Target</span>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 6: Roadmap & Execution -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">05. MILESTONES & ROADMAP</div>
-            <h2 class="text-3xl font-display font-bold text-white mb-6">Execution Horizon (2026–2027)</h2>
-            <div class="space-y-4">
-                <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-hedera-green">
-                    <div>
-                        <span class="text-xs font-mono text-hedera-green">Q3 2026 (CURRENT)</span>
-                        <h4 class="text-sm font-bold text-white">Canada Crypto Week Launch & Live Quantum Hack Demo</h4>
-                    </div>
-                    <span class="text-xs font-mono px-3 py-1 rounded bg-hedera-green/10 text-hedera-green">Active</span>
-                </div>
-                <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-white/20">
-                    <div>
-                        <span class="text-xs font-mono text-gray-400">Q4 2026</span>
-                        <h4 class="text-sm font-bold text-white">Linux Foundation Hiero PQC Module Open-Source Merge</h4>
-                    </div>
-                    <span class="text-xs font-mono px-3 py-1 rounded bg-white/5 text-gray-400">Upcoming</span>
-                </div>
-                <div class="glass-card p-4 rounded-xl flex items-center justify-between border-l-4 border-l-white/20">
-                    <div>
-                        <span class="text-xs font-mono text-gray-400">Q1 2027</span>
-                        <h4 class="text-sm font-bold text-white">Sovereign Compliance Rollout (CNSA 2.0 & EU AI Act Pilots)</h4>
-                    </div>
-                    <span class="text-xs font-mono px-3 py-1 rounded bg-white/5 text-gray-400">Target</span>
-                </div>
-            </div>
-        </section>
+<!-- SLIDE 7: LIVE DEMO + VIDEO -->
+<section class="slide flex-col justify-center">
+  <div class="text-xs font-mono text-gridera-green mb-2">06. LIVE DEMO</div>
+  <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Try the Quantum Readiness Scan</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full max-h-[60vh]">
+    <div class="glass-card p-4 rounded-2xl border border-gridera-green/30 flex flex-col">
+      <h3 class="text-sm font-bold text-white mb-2">Interactive: q-grid.net/scan</h3>
+      <iframe src="https://q-grid.net/scan" class="w-full flex-1 rounded-lg border border-white/10 min-h-[200px]" loading="lazy" title="GRIDERA Quantum Readiness Scan"></iframe>
+      <p class="text-[10px] text-gray-400 mt-2">Enter any domain or wallet address. No login required.</p>
+    </div>
+    <div class="glass-card p-4 rounded-2xl border border-white/10 flex flex-col">
+      <h3 class="text-sm font-bold text-white mb-2">Founder Video Pitch</h3>
+      <div id="video-placeholder" class="w-full flex-1 rounded-lg border border-white/10 bg-black/40 flex items-center justify-center min-h-[200px]">
+        <div class="text-center"><div class="text-4xl mb-2">▶</div><p class="text-xs text-gray-400">90-second founder pitch placeholder.<br>Replace with Loom or YouTube embed.</p></div>
+      </div>
+      <p class="text-[10px] text-gray-400 mt-2">Video embed ready.</p>
+    </div>
+  </div>
+</section>
 
+<!-- SLIDE 8 -->
+<section class="slide flex-col justify-start pt-2">
+  <div class="flex justify-between items-center mb-4">
+    <div><span class="text-xs font-mono text-gridera-green">07. INVESTOR Q&A — TECHNICAL</span><h2 class="text-2xl font-display font-bold text-white">Technical Objections</h2></div>
+    <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 1 of 3</span>
+  </div>
+  <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-gridera-green">
+      <h3 class="text-sm font-bold text-white mb-1">Q: Can Ethereum or Solana just fork to PQC?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> Not quickly. Larger signatures increase storage and bandwidth. That is why GRIDERA does not try to rebuild consensus; we filter, wrap, and migrate payloads upstream so downstream systems receive clean, regulator-checkable inputs.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-gridera-green">
+      <h3 class="text-sm font-bold text-white mb-1">Q: Is quantum still far away?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> "Harvest now, decrypt later" is happening today. Compliance deadlines are not waiting for a quantum computer. CNSA 2.0 and EU guidance already set transition windows.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-gridera-green">
+      <h3 class="text-sm font-bold text-white mb-1">Q: How do you keep throughput usable?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> We sign evidence, not every micro-transaction. HCS gives us sub-second finality on proof anchors without bloating the chain with large payloads.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 7: Live Demo & Video Pitch -->
-        <section class="slide flex-col justify-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">06.5. LIVE DEMO</div>
-            <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Try the live Quantum Readiness Scan</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full max-h-[60vh]">
-                <div class="glass-card p-4 rounded-2xl border border-hedera-green/30 flex flex-col">
-                    <h3 class="text-sm font-bold text-white mb-2">Interactive: q-grid.net/scan</h3>
-                    <iframe src="https://q-grid.net/scan" class="w-full flex-1 rounded-lg border border-white/10 min-h-[200px]" loading="lazy" title="GRIDERA Quantum Readiness Scan"></iframe>
-                    <p class="text-[10px] text-gray-400 mt-2">Enter any domain or wallet address. No login required.</p>
-                </div>
-                <div class="glass-card p-4 rounded-2xl border border-white/10 flex flex-col">
-                    <h3 class="text-sm font-bold text-white mb-2">Video Pitch</h3>
-                    <div id="video-placeholder" class="w-full flex-1 rounded-lg border border-white/10 bg-black/40 flex items-center justify-center min-h-[200px]">
-                        <div class="text-center">
-                            <div class="text-4xl mb-2">▶</div>
-                            <p class="text-xs text-gray-400">Record a 90-second founder pitch<br>and replace this placeholder.</p>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-gray-400 mt-2">Loom / YouTube embed ready.</p>
-                </div>
-            </div>
-        </section>
+<!-- SLIDE 9 -->
+<section class="slide flex-col justify-start pt-2">
+  <div class="flex justify-between items-center mb-4">
+    <div><span class="text-xs font-mono text-gridera-green">08. INVESTOR Q&A — BUSINESS</span><h2 class="text-2xl font-display font-bold text-white">Business Model & Moat</h2></div>
+    <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 2 of 3</span>
+  </div>
+  <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
+      <h3 class="text-sm font-bold text-white mb-1">Q: Why build on Hiero instead of your own L1?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> Enterprises trust governed open-source standards. Hiero is the Linux Foundation path. We own the compliance routing IP that sits on top.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
+      <h3 class="text-sm font-bold text-white mb-1">Q: What stops others from copying this?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> The moat is the jurisdiction rule engine + the signed evidence corpus accumulated per client. The switching cost rises with every audit cycle.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
+      <h3 class="text-sm font-bold text-white mb-1">Q: Who pays first?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> Regulated VASPs, banks running crypto custody pilots, and cloud providers selling sovereign compliance appliances. We have active conversations with each segment this week.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- SLIDE 7: The Ask & Capital Allocation -->
-        <section class="slide flex-col justify-center text-center items-center">
-            <div class="text-xs font-mono text-hedera-green mb-2">06. INVESTMENT OPPORTUNITY</div>
-            <h2 class="text-4xl font-display font-bold text-white mb-4">Capital Allocation Strategy</h2>
-            <p class="text-sm text-gray-400 max-w-xl mb-8">Earmarked to accelerate hardware-accelerated PQC rollouts, global compliance certifications, and foundational developer ecosystem grants.</p>
-            <div class="glass-card-accent p-8 rounded-3xl max-w-md w-full text-left space-y-4">
-                <div class="flex justify-between text-xs font-mono">
-                    <span class="text-gray-400">PQC Hardware Acceleration</span>
-                    <span class="text-hedera-green font-bold">40%</span>
-                </div>
-                <div class="w-full bg-black/50 h-2 rounded-full overflow-hidden">
-                    <div class="bg-hedera-green h-full w-[40%]"></div>
-                </div>
-                
-                <div class="flex justify-between text-xs font-mono">
-                    <span class="text-gray-400">Regulatory Certifications</span>
-                    <span class="text-hedera-green font-bold">35%</span>
-                </div>
-                <div class="w-full bg-black/50 h-2 rounded-full overflow-hidden">
-                    <div class="bg-hedera-green h-full w-[35%]"></div>
-                </div>
+<!-- SLIDE 10 -->
+<section class="slide flex-col justify-start pt-2">
+  <div class="flex justify-between items-center mb-4">
+    <div><span class="text-xs font-mono text-gridera-green">09. INVESTOR Q&A — EXECUTION</span><h2 class="text-2xl font-display font-bold text-white">Execution & Founder Strategy</h2></div>
+    <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 3 of 3</span>
+  </div>
+  <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400">
+      <h3 class="text-sm font-bold text-white mb-1">Q: You are a solo founder. How do you scale?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> By composing open standards instead of inventing them. Consensus, cryptography, and provenance are outsourced to audited primitives. Our value is the compliance glue and the go-to-market focus.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400">
+      <h3 class="text-sm font-bold text-white mb-1">Q: What are the next 90 days?</h3>
+      <p class="text-xs text-gray-400 leading-relaxed"><strong class="text-gray-200">A:</strong> Close pilots from BF2026, ship the HK jurisdiction module, and land one sovereign-cloud reference deployment.</p>
+    </div>
+    <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400 text-center py-6">
+      <h3 class="text-lg font-display font-bold text-white mb-2">Ready to run your readiness scan?</h3>
+      <p class="text-xs text-gray-400 mb-4">Open q-grid.net/scan on your phone or book a 15-minute walkthrough.</p>
+      <a href="mailto:admin@taurusai.io" class="inline-block px-6 py-2.5 rounded-lg bg-gridera-green text-black font-display font-bold text-xs hover:bg-gridera-darkGreen transition-all">Email admin@taurusai.io</a>
+    </div>
+  </div>
+</section>
 
-                <div class="flex justify-between text-xs font-mono">
-                    <span class="text-gray-400">Ecosystem Developer Grants</span>
-                    <span class="text-hedera-green font-bold">25%</span>
-                </div>
-                <div class="w-full bg-black/50 h-2 rounded-full overflow-hidden">
-                    <div class="bg-hedera-green h-full w-[25%]"></div>
-                </div>
-            </div>
-        </section>
+</main>
 
-        <!-- SLIDE 8: INVESTOR Q&A MATRIX — PART 1 (Technical & Cryptographic) -->
-        <section class="slide flex-col justify-start pt-2">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <span class="text-xs font-mono text-hedera-green">07. INVESTOR Q&A MATRIX</span>
-                    <h2 class="text-2xl font-display font-bold text-white">Technical & Cryptographic Objections</h2>
-                </div>
-                <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 1 of 3</span>
-            </div>
+<footer class="fixed bottom-0 left-0 right-0 h-16 border-t border-white/10 px-6 flex items-center justify-between glass-card">
+  <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono hover:bg-white/10 transition-all disabled:opacity-30">← Previous</button>
+  <div class="flex space-x-1" id="dot-indicators"></div>
+  <button id="next-btn" onclick="nextSlide()" class="px-5 py-2 rounded-lg bg-gridera-green text-black font-display font-bold text-xs hover:bg-gridera-darkGreen transition-all">Next →</button>
+</footer>
 
-            <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-hedera-green">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "Why can't Ethereum or Solana simply soft-fork to PQC?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> Signature bloat. ML-DSA-65 signatures are ~2.4 KB (vs. 64 bytes for ECDSA). Injecting 30x larger signatures into EVM or SVM memory models destroys transaction throughput and triggers catastrophic state bloat. It requires complete L1 consensus restructuring, not a simple soft-fork.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-hedera-green">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "Isn't quantum computing still 10 to 15 years away?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> <em class="text-white">"Harvest Now, Decrypt Later" (HNDL)</em> attacks are happening today. Sovereign state actors are capturing encrypted on-chain state right now to decrypt the moment quantum hardware scales. Federal compliance standards (US CNSA 2.0) mandate PQC transition deadlines starting between 2026 and 2030.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-hedera-green">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "How does GRIDERA maintain high throughput with larger PQC signatures?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> By offloading signature verification down to Linux Foundation Hiero's deterministic hashgraph consensus layer, paired with local-first edge execution models that batch state proofs before state commitment.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SLIDE 9: INVESTOR Q&A MATRIX — PART 2 (Business Model & Competition) -->
-        <section class="slide flex-col justify-start pt-2">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <span class="text-xs font-mono text-hedera-green">08. INVESTOR Q&A MATRIX</span>
-                    <h2 class="text-2xl font-display font-bold text-white">Business Model & Competitive Moat</h2>
-                </div>
-                <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 2 of 3</span>
-            </div>
-
-            <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "Why anchor this into Linux Foundation Hiero instead of building your own L1?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> Institutional trust. Enterprise clients and sovereign funds will not trust a new, unproven L1 consensus model. Anchoring into the Linux Foundation Decentralized Trust gives us instant enterprise governance, zero frontrunning (no MEV), and zero-variance finality.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "What stops Hedera/Hiero from building this PQC layer themselves?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> We are building this <em class="text-white">with</em> the ecosystem. Taurus AI Corp owns the proprietary GRIDERA routing IP and ARQ Quantum wrappers that sit on top of Hiero, acting as the primary enterprise gateway for AI compliance.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-indigo-500">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "Who is your immediate paying customer on Day 1?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> Financial institutions deploying autonomous AI agents that require compliance under the EU AI Act and national data protection frameworks (such as India's DPDP Act) before executing tokenized transactions.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SLIDE 10: INVESTOR Q&A MATRIX — PART 3 (Solo Founder Execution Risk) -->
-        <section class="slide flex-col justify-start pt-2">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <span class="text-xs font-mono text-hedera-green">09. INVESTOR Q&A MATRIX</span>
-                    <h2 class="text-2xl font-display font-bold text-white">Execution & Solo Founder Strategy</h2>
-                </div>
-                <span class="text-xs font-mono bg-white/10 px-3 py-1 rounded text-gray-300">Part 3 of 3</span>
-            </div>
-
-            <div class="space-y-3 custom-scroll overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "You are a solo founder. How do you handle execution risk?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> By leveraging global open-source infrastructure. I am not reinventing consensus algorithms—I am orchestrating Linux Foundation Hiero standards and open NIST primitives. This lean capital efficiency allows me to outpace bloated 50-person foundations locked in governance gridlock.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400">
-                    <h3 class="text-sm font-bold text-white mb-1">Q: "What are the key milestones for the next 6 months?"</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        <strong class="text-gray-200">A:</strong> 1) Complete the Canada Crypto Week live-fire showcase. 2) Formalize the open-source PQC module pull request with Linux Foundation Hiero. 3) Secure initial institutional pilot agreements for the GRIDERA compliance engine.
-                    </p>
-                </div>
-
-                <div class="glass-card p-4 rounded-xl border-l-4 border-l-emerald-400 text-center py-6">
-                    <h3 class="text-lg font-display font-bold text-white mb-2">Ready to Secure the Post-Quantum Future?</h3>
-                    <p class="text-xs text-gray-400 mb-4">Connect directly to schedule a private alpha demonstration or review the core repository.</p>
-                    <a href="mailto:admin@taurusai.io" class="inline-block px-6 py-2.5 rounded-lg bg-hedera-green text-black font-display font-bold text-xs hover:bg-hedera-darkGreen transition-all">
-                        Contact Effin Fernandez (CEO)
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Bottom Navigation Controls -->
-    <footer class="fixed bottom-0 left-0 right-0 h-16 border-t border-white/10 px-6 flex items-center justify-between glass-card">
-        <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono hover:bg-white/10 transition-all disabled:opacity-30">
-            ← Previous
-        </button>
-
-        <div class="flex space-x-1" id="dot-indicators">
-            <!-- JS dynamically injects pagination dots -->
-        </div>
-
-        <button id="next-btn" onclick="nextSlide()" class="px-5 py-2 rounded-lg bg-hedera-green text-black font-display font-bold text-xs hover:bg-hedera-darkGreen transition-all">
-            Next →
-        </button>
-    </footer>
-
-    <!-- Slide Switcher & Keyboard Event Handler -->
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const indicator = document.getElementById('slide-indicator');
-        const dotContainer = document.getElementById('dot-indicators');
-
-        // Initialize Pagination Dots
-        slides.forEach((_, idx) => {
-            const dot = document.createElement('button');
-            dot.className = `w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-hedera-green w-6' : 'bg-white/20'}`;
-            dot.onclick = () => goToSlide(idx);
-            dotContainer.appendChild(dot);
-        });
-
-        function updateSlideUI() {
-            slides.forEach((slide, idx) => {
-                if (idx === currentSlide) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
-            });
-
-            // Update Indicator Text
-            indicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
-
-            // Update Dots
-            const dots = dotContainer.querySelectorAll('button');
-            dots.forEach((dot, idx) => {
-                if (idx === currentSlide) {
-                    dot.className = 'w-6 h-2 rounded-full bg-hedera-green transition-all';
-                } else {
-                    dot.className = 'w-2 h-2 rounded-full bg-white/20 transition-all';
-                }
-            });
-
-            // Button state
-            document.getElementById('prev-btn').disabled = currentSlide === 0;
-            document.getElementById('next-btn').textContent = currentSlide === slides.length - 1 ? 'Finish' : 'Next →';
-        }
-
-        function nextSlide() {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                updateSlideUI();
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlideUI();
-            }
-        }
-
-        function goToSlide(idx) {
-            currentSlide = idx;
-            updateSlideUI();
-        }
-
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'Space') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
-            }
-        });
-
-        // Initialize UI
-        updateSlideUI();
-    </script>
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const indicator = document.getElementById('slide-indicator');
+const dotContainer = document.getElementById('dot-indicators');
+slides.forEach((_, idx) => {
+  const dot = document.createElement('button');
+  dot.className = `w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-gridera-green w-6' : 'bg-white/20'}`;
+  dot.onclick = () => goToSlide(idx);
+  dotContainer.appendChild(dot);
+});
+function updateSlideUI() {
+  slides.forEach((slide, idx) => slide.classList.toggle('active', idx === currentSlide));
+  indicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+  const dots = dotContainer.querySelectorAll('button');
+  dots.forEach((dot, idx) => dot.className = idx === currentSlide ? 'w-6 h-2 rounded-full bg-gridera-green transition-all' : 'w-2 h-2 rounded-full bg-white/20 transition-all');
+  document.getElementById('prev-btn').disabled = currentSlide === 0;
+  document.getElementById('next-btn').textContent = currentSlide === slides.length - 1 ? 'Finish' : 'Next →';
+}
+function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlideUI(); } }
+function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlideUI(); } }
+function goToSlide(idx) { currentSlide = idx; updateSlideUI(); }
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') nextSlide(); else if (e.key === 'ArrowLeft') prevSlide(); });
+updateSlideUI();
+</script>
 </body>
 </html>

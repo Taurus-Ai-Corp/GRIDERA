@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDERA — BF2026 Asset</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#F7F5F1',
+                            surface: '#FFFFFF',
+                            ink: '#0E0E10',
+                            mute: '#6B6B6F',
+                            rule: '#E6E3DE',
+                            accent: '#2E5C3E',
+                            accentSoft: '#E8F0EA',
+                            agentic: '#EAF2FB',
+                            agenticBorder: '#C7D9ED',
+                            warn: '#8B4A2A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #E6E3DE; /* Darker outside the slides */
+            color: #0E0E10;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Slide Container Setup for 16:9 Aspect Ratio */
+        .slide-wrapper {
+            width: 100%;
+            max-width: 1280px; /* 720p base */
+            margin: 0 auto 2rem auto;
+            background-color: #F7F5F1;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #E6E3DE;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deck-container {
+            display: none;
+        }
+        .deck-container.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Reusable Slide Components */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem 3rem 1rem 3rem;
+            border-bottom: 1px solid #E6E3DE;
+        }
+        
+        .slide-content {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-footer {
+            padding: 1rem 3rem;
+            border-top: 1px solid #E6E3DE;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6B6B6F;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* SVG Infographic Styles */
+        .svg-box {
+            background: #FFFFFF;
+            border: 1px solid #E6E3DE;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        /* Print CSS for perfect PDF export */
+        @media print {
+            @page {
+                size: 16in 9in; /* Force 16:9 Landscape PDF */
+                margin: 0;
+            }
+            body {
+                background-color: #F7F5F1 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .deck-container {
+                display: block !important; /* Print all slides or active depending on choice, default to active */
+            }
+            .slide-wrapper {
+                width: 16in !important;
+                height: 9in !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                page-break-after: always !important;
+                break-after: page !important;
+            }
+        }
+    </style>
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+</head>
+<body class="font-sans antialiased">
+
+    <!-- NO-PRINT UI DASHBOARD -->
+    <div class="no-print sticky top-0 z-50 bg-brand-surface border-b border-brand-rule p-4 shadow-sm flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <div class="font-mono font-bold text-brand-ink text-sm tracking-widest">TAURUS AI CORP. // PRESENTATION ARCHITECT</div>
+            <div class="flex space-x-2">
+                <button onclick="showDeck('deck1')" id="btn-deck1" class="px-4 py-2 text-xs font-mono font-bold rounded bg-brand-accent text-white border border-brand-accent transition-colors">DECK 1: INVESTOR CORE</button>
+                <button onclick="showDeck('deck2')" id="btn-deck2" class="px-4 py-2 text-xs font-mono font-bold rounded bg-brand-bg text-brand-mute border border-brand-rule hover:text-brand-ink transition-colors">DECK 2: AGENTIC PILOT</button>
+                <button onclick="showDeck('deck3')" id="btn-deck3" class="px-4 py-2 text-xs font-mono font-bold rounded bg-brand-bg text-brand-mute border border-brand-rule hover:text-brand-ink transition-colors">DECK 3: DUE DILIGENCE</button>
+            </div>
+        </div>
+        <button onclick="window.print()" class="px-6 py-2 text-xs font-mono font-bold rounded bg-brand-warn text-white shadow-sm hover:opacity-90 transition-opacity flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            <span>EXPORT TO PDF</span>
+        </button>
+    </div>
+
+    <div class="p-8">
+
+        <!-- =========================================================================
+             DECK 1: THE INVESTOR CORE PITCH (MACRO STRATEGY)
+        ========================================================================== -->
+        <div id="deck1" class="deck-container active">
+            
+            <!-- Slide 1.1: Title -->
+            <div class="slide-wrapper">
+                <div class="slide-content justify-center items-center text-center relative">
+                    <div class="absolute top-12 right-12 text-right">
+                        <div class="font-mono text-xs text-brand-mute">CONFIRMED ATTENDANCE</div>
+                        <div class="font-sans font-bold text-sm text-brand-ink">Blockchain Futurist 2026</div>
+                        <div class="font-sans text-xs text-brand-accent">Rebel Entertainment Complex, Toronto</div>
+                    </div>
+
+                    <div class="font-mono text-sm tracking-widest text-brand-accent font-bold mb-4">TAURUS AI CORP. // GRIDERA</div>
+                    <h1 class="text-6xl font-extrabold text-brand-ink tracking-tight mb-6 max-w-4xl leading-tight">
+                        The Post-Quantum Identity & Audit Layer for Sovereign Capital.
+                    </h1>
+                    <p class="text-xl text-brand-mute max-w-2xl mb-8">
+                        Securing the multi-trillion dollar transition to agentic commerce through NIST FIPS 204 PQC mandates and EU AI Act compliance.
+                    </p>
+                    <div class="inline-block border-l-4 border-brand-accent bg-brand-accentSoft px-6 py-4 text-left">
+                        <div class="font-mono text-xs font-bold text-brand-accent mb-1">PRESENTER</div>
+                        <div class="font-sans font-bold text-brand-ink">Effin Fernandez, Founder</div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>GRIDERA EXECUTIVE BRIEFING</span>
+                    <span>SLIDE 1.1 // DECK 1</span>
+                </div>
+            </div>
+
+            <!-- Slide 1.2: The Pain Point -->
+            <div class="slide-wrapper">
+                <div class="slide-header">
+                    <div class="font-mono font-bold tracking-widest text-sm text-brand-accent">THE MACRO PROBLEM</div>
+                    <div class="font-mono text-xs text-brand-warn font-bold">CRITICAL MARKET GAP</div>
+                </div>
+                <div class="slide-content flex-row gap-12">
+                    <div class="w-1/2 flex flex-col justify-center">
+                        <h2 class="text-4xl font-bold text-brand-ink mb-6">Software is spending human money without a quantum-safe audit trail.</h2>
+                        <p class="text-brand-mute text-lg mb-6 leading-relaxed">
+                            Agentic commerce is live. Yet, Ethereum, Solana, and legacy networks rely on classical ECDSA/Ed25519 signatures. As Shor's algorithm approaches, these are structurally compromised.
+                        </p>
+                        <p class="text-brand-mute text-lg leading-relaxed">
+                            Simultaneously, the <strong class="text-brand-ink">EU AI Act</strong> and <strong class="text-brand-ink">Pan-Canadian AI Strategy</strong> mandate strict, checkable audit logs for AI decisions affecting capital. Legacy chains cannot provide this.
+                        </p>
+                    </div>
+                    <div class="w-1/2 flex flex-col justify-center gap-4">
+                        <div class="border border-brand-warn bg-[#FBFDFB] p-6 rounded-lg border-l-4">
+                            <div class="font-mono text-xs text-brand-warn font-bold mb-2">CRYPTOGRAPHIC DEBT</div>
+                            <div class="font-sans font-bold text-lg text-brand-ink mb-1">Classical Keys Fail</div>
+                            <div class="font-sans text-sm text-brand-mute">Existing agent wallets are fundamentally non-compliant with imminent NIST FIPS 203/204 mandates.</div>
+                        </div>
+                        <div class="border border-brand-rule bg-brand-surface p-6 rounded-lg border-l-4 border-brand-accent">
+                            <div class="font-mono text-xs text-brand-accent font-bold mb-2">REGULATORY DEBT</div>
+                            <div class="font-sans font-bold text-lg text-brand-ink mb-1">EU AI Act Enforcement 2026</div>
+                            <div class="font-sans text-sm text-brand-mute">Unverifiable AI agent decisions face immediate commercial blockades without immutable provenance logs.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>MARKET ANALYSIS</span>
+                    <span>SLIDE 1.2 // DECK 1</span>
+                </div>
+            </div>
+
+            <!-- Slide 1.3: The GRIDERA Solution Infographic -->
+            <div class="slide-wrapper">
+                <div class="slide-header">
+                    <div class="font-mono font-bold tracking-widest text-sm text-brand-accent">THE GRIDERA ARCHITECTURE</div>
+                    <div class="font-mono text-xs text-brand-mute">TECHNICAL INFOGRAPHIC</div>
+                </div>
+                <div class="slide-content">
+                    <div class="svg-box h-full flex items-center justify-center relative bg-brand-surface">
+                        <!-- Pure SVG/CSS Infographic -->
+                        <div class="w-full max-w-4xl grid grid-cols-3 gap-8 text-center relative z-10">
+                            <!-- Left: Agent -->
+                            <div class="bg-brand-agentic border border-brand-agenticBorder p-6 rounded-xl flex flex-col items-center">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 border border-brand-rule font-mono font-bold">AI</div>
+                                <h3 class="font-bold text-brand-ink mb-2">Autonomous Agent</h3>
+                                <p class="text-xs text-brand-mute">Executes trades via API</p>
+                                <div class="mt-4 text-[10px] font-mono bg-white px-2 py-1 rounded text-brand-warn border border-brand-warn">Vulnerable: ECDSA</div>
+                            </div>
+
+                            <!-- Middle: GRIDERA -->
+                            <div class="bg-brand-accentSoft border-2 border-brand-accent p-6 rounded-xl flex flex-col items-center transform scale-110 shadow-lg relative">
+                                <div class="absolute -top-3 bg-brand-accent text-white text-[10px] font-mono font-bold px-3 py-1 rounded-full">GRIDERA SHIELD</div>
+                                <h3 class="font-bold text-brand-ink mb-4 mt-2">PQC Identity & Audit Layer</h3>
+                                <ul class="text-left text-xs space-y-3 w-full">
+                                    <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-accent"></span><strong>ML-DSA-65</strong> Birth Certificates</li>
+                                    <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-accent"></span><strong>ML-KEM-768</strong> Key Encapsulation</li>
+                                    <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-accent"></span><strong>COMPLY Engine</strong> (EU/NA Rules)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Right: Hedera HCS -->
+                            <div class="bg-gray-50 border border-brand-rule p-6 rounded-xl flex flex-col items-center">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 border border-brand-rule font-mono font-bold">Ħ</div>
+                                <h3 class="font-bold text-brand-ink mb-2">Hedera HCS</h3>
+                                <p class="text-xs text-brand-mute">Deterministic Ledger</p>
+                                <div class="mt-4 text-[10px] font-mono bg-white px-2 py-1 rounded text-brand-accent border border-brand-accent">Regulator Checkable Log</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Connecting Arrows -->
+                        <div class="absolute top-1/2 left-0 w-full flex justify-between px-48 z-0">
+                            <div class="w-24 h-0.5 bg-brand-accent border-t-2 border-dashed border-brand-accent relative">
+                                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-brand-accent transform rotate-45"></div>
+                            </div>
+                            <div class="w-24 h-0.5 bg-brand-accent border-t-2 border-dashed border-brand-accent relative">
+                                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-brand-accent transform rotate-45"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>SYSTEM ARCHITECTURE</span>
+                    <span>SLIDE 1.3 // DECK 1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             DECK 2: THE AGENTIC DAY PARTNERSHIP (MICRO EXECUTION)
+        ========================================================================== -->
+        <div id="deck2" class="deck-container">
+            
+            <!-- Slide 2.1: Pilot Proposal Title -->
+            <div class="slide-wrapper">
+                <div class="slide-content justify-center relative">
+                    <div class="absolute top-12 left-12">
+                        <div class="font-mono text-xs text-brand-mute">TARGETED PROPOSAL</div>
+                        <div class="font-sans font-bold text-sm text-brand-ink">Agentic Day Canada</div>
+                        <div class="font-sans text-xs text-brand-mute">HelloAgentic-Mel · Lalla Asmaa Alaoui</div>
+                    </div>
+                    
+                    <div class="max-w-3xl">
+                        <div class="font-mono text-sm tracking-widest text-brand-accent font-bold mb-4 flex items-center gap-4">
+                            <span>GRIDERA</span> 
+                            <span class="text-brand-rule">✕</span> 
+                            <span>AGENTIC DAY TORONTO</span>
+                        </div>
+                        <h1 class="text-5xl font-extrabold text-brand-ink tracking-tight mb-6 leading-tight">
+                            The First PQC Agent Birth Certificate Pilot.
+                        </h1>
+                        <p class="text-lg text-brand-mute mb-8 border-l-4 border-brand-accent pl-4">
+                            Bridging the Pan-Canadian AI Strategy with verifiable agentic commerce. We propose a 4-week pilot to issue a NIST ML-DSA-65 identity directly to an x402-compliant agent wallet.
+                        </p>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>PARTNERSHIP BRIEF</span>
+                    <span>SLIDE 2.1 // DECK 2</span>
+                </div>
+            </div>
+
+            <!-- Slide 2.2: The Execution Matrix -->
+            <div class="slide-wrapper">
+                <div class="slide-header">
+                    <div class="font-mono font-bold tracking-widest text-sm text-brand-accent">THE PILOT EXECUTION</div>
+                    <div class="font-mono text-xs text-brand-warn font-bold">4-WEEK DELIVERY</div>
+                </div>
+                <div class="slide-content flex-row gap-8">
+                    <!-- Left: Step by Step -->
+                    <div class="w-1/2 flex flex-col justify-center space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div class="w-8 h-8 rounded bg-brand-accentSoft text-brand-accent font-mono font-bold flex items-center justify-center shrink-0">1</div>
+                            <div>
+                                <h3 class="font-bold text-brand-ink text-lg">Integrate (x402 + Agnic.AI)</h3>
+                                <p class="text-sm text-brand-mute mt-1">GRIDERA issues an ML-DSA-65 keypair and Hedera HCS birth-certificate to a demo agent operating through an x402 standard wallet.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-8 h-8 rounded bg-brand-accentSoft text-brand-accent font-mono font-bold flex items-center justify-center shrink-0">2</div>
+                            <div>
+                                <h3 class="font-bold text-brand-ink text-lg">Log (Hedera HCS Action Trail)</h3>
+                                <p class="text-sm text-brand-mute mt-1">Every payment authorization and API call is signed and anchored to a dedicated Hedera HCS topic, producing a tamper-evident log.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-8 h-8 rounded bg-brand-accent text-white font-mono font-bold flex items-center justify-center shrink-0">3</div>
+                            <div>
+                                <h3 class="font-bold text-brand-ink text-lg">Showcase (Agentic Day Stage)</h3>
+                                <p class="text-sm text-brand-mute mt-1">Co-present a live "PQC agent payment receipt" at the Blockchain Futurist Conference—cryptographic proof of who paid and what was authorized.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right: Value Add -->
+                    <div class="w-1/2 flex flex-col justify-center">
+                        <div class="bg-brand-surface border border-brand-rule rounded-xl p-8 shadow-sm">
+                            <h3 class="font-mono font-bold text-xs text-brand-mute mb-4">VALUE CREATION FOR AGENTIC DAY</h3>
+                            <ul class="space-y-4">
+                                <li class="border-b border-brand-rule pb-2">
+                                    <div class="font-bold text-brand-ink text-sm">Concrete Institutional Trust</div>
+                                    <div class="text-xs text-brand-mute">Moving the conversation from retail crypto to enterprise-grade Pan-Canadian AI infrastructure.</div>
+                                </li>
+                                <li class="border-b border-brand-rule pb-2">
+                                    <div class="font-bold text-brand-ink text-sm">First-to-Market NIST Alignment</div>
+                                    <div class="text-xs text-brand-mute">Demonstrates the only agent wallet structure capable of surviving FIPS 204 enforcement.</div>
+                                </li>
+                                <li>
+                                    <div class="font-bold text-brand-ink text-sm">Investor Catalyst</div>
+                                    <div class="text-xs text-brand-mute">Validates investor appetite for trust infrastructure (Evalyze / Vahid Fakhr alignment).</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>EXECUTION ROADMAP</span>
+                    <span>SLIDE 2.2 // DECK 2</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             DECK 3: THE DUE DILIGENCE MATRIX (Q&A)
+        ========================================================================== -->
+        <div id="deck3" class="deck-container">
+            
+            <!-- Slide 3.1: Tech Objections -->
+            <div class="slide-wrapper">
+                <div class="slide-header">
+                    <div class="font-mono font-bold tracking-widest text-sm text-brand-accent">DUE DILIGENCE // TECH</div>
+                    <div class="font-mono text-xs text-brand-mute">HARD QUESTIONS</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid grid-cols-2 gap-8 h-full">
+                        <div class="bg-brand-surface border border-brand-rule p-8 rounded-xl flex flex-col">
+                            <div class="font-mono text-xs text-brand-warn font-bold mb-2">OBJECTION 01</div>
+                            <h3 class="text-xl font-bold text-brand-ink mb-4">"Why can't Ethereum just soft-fork to use PQC signatures?"</h3>
+                            <div class="text-sm text-brand-mute leading-relaxed space-y-4 flex-1">
+                                <p><strong class="text-brand-ink">Signature Bloat.</strong> ML-DSA-65 signatures are ~2.4 KB, compared to 64 bytes for ECDSA.</p>
+                                <p>Injecting 30x larger signatures into existing EVM state destroys transaction throughput (TPS) and triggers catastrophic chain bloat. Legacy chains require complete architectural rebuilds, not soft forks.</p>
+                                <p>GRIDERA bypasses this by offloading signature verification to our local engine and dropping compact, deterministic roots into the Hedera HCS.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-surface border border-brand-rule p-8 rounded-xl flex flex-col">
+                            <div class="font-mono text-xs text-brand-accent font-bold mb-2">OBJECTION 02</div>
+                            <h3 class="text-xl font-bold text-brand-ink mb-4">"Isn't the quantum threat 10 years away?"</h3>
+                            <div class="text-sm text-brand-mute leading-relaxed space-y-4 flex-1">
+                                <p><strong class="text-brand-ink">Harvest Now, Decrypt Later (HNDL).</strong> Sovereign state actors are scraping encrypted financial state today.</p>
+                                <p>More importantly, compliance deadlines are immediate. NIST released FIPS 203, 204, and 205 in 2024. Enterprise and banking institutions are legally mandated to begin migrating infrastructure <strong class="text-brand-warn">today</strong> to meet 2030 absolute cutoff dates.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>TECHNICAL Q&A</span>
+                    <span>SLIDE 3.1 // DECK 3</span>
+                </div>
+            </div>
+
+            <!-- Slide 3.2: Market & Founder Risk -->
+            <div class="slide-wrapper">
+                <div class="slide-header">
+                    <div class="font-mono font-bold tracking-widest text-sm text-brand-accent">DUE DILIGENCE // MARKET & EXECUTION</div>
+                    <div class="font-mono text-xs text-brand-mute">HARD QUESTIONS</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid grid-cols-2 gap-8 h-full">
+                        <div class="bg-brand-surface border border-brand-rule p-8 rounded-xl flex flex-col">
+                            <div class="font-mono text-xs text-brand-accent font-bold mb-2">OBJECTION 03</div>
+                            <h3 class="text-xl font-bold text-brand-ink mb-4">"What stops Hedera from building this PQC layer natively?"</h3>
+                            <div class="text-sm text-brand-mute leading-relaxed space-y-4 flex-1">
+                                <p><strong class="text-brand-ink">They are a consensus layer, we are the compliance routing engine.</strong></p>
+                                <p>L1s provide the ledger. GRIDERA owns the proprietary integration IP that bridges local edge AI models (like Ollama/vLLM) and hardware security modules (HSMs) directly to those rails.</p>
+                                <p>Our ultimate goal is to become the premier licensed enterprise gateway sitting on top of Hiero, validating the ecosystem, not competing with it.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-surface border border-brand-rule p-8 rounded-xl flex flex-col">
+                            <div class="font-mono text-xs text-brand-warn font-bold mb-2">OBJECTION 04</div>
+                            <h3 class="text-xl font-bold text-brand-ink mb-4">"You are a Solo Founder. Execution risk is too high."</h3>
+                            <div class="text-sm text-brand-mute leading-relaxed space-y-4 flex-1">
+                                <p><strong class="text-brand-ink">Capital efficiency via Open Source leverage.</strong></p>
+                                <p>I am not reinventing L1 consensus. I am orchestrating the Linux Foundation Hiero standards and NIST FIPS 204 open primitives into a cohesive enterprise product.</p>
+                                <p>We have live, ship-truth infrastructure today (q-grid.net/scan). Being lean allows us to bypass the governance gridlock that cripples 50-person L1 foundation teams.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>BUSINESS Q&A</span>
+                    <span>SLIDE 3.2 // DECK 3</span>
+                </div>
+            </div>
+
+            <!-- Slide 3.3: Closing CTA -->
+            <div class="slide-wrapper">
+                <div class="slide-content justify-center items-center text-center">
+                    <div class="font-mono text-sm tracking-widest text-brand-accent font-bold mb-6">TAURUS AI CORP.</div>
+                    <h2 class="text-5xl font-extrabold text-brand-ink mb-6">Test Your Quantum Readiness.</h2>
+                    <p class="text-brand-mute text-lg mb-8 max-w-xl">
+                        GRIDERA is live across NA, EU, IN, and UAE. Scan to view the live ML-DSA-65 audit trail architecture.
+                    </p>
+                    
+                    <div class="flex items-center gap-8 mb-8">
+                        <div class="w-32 h-32 bg-white border-2 border-brand-ink p-2 shadow-lg">
+                            <!-- SVG Placeholder for QR Code (as in the brief) -->
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <rect width="100" height="100" fill="#fff"/>
+                                <path d="M10,10 h20 v20 h-20 z M50,10 h40 v20 h-40 z M10,40 h20 v20 h-20 z M40,40 h50 v20 h-50 z M10,70 h30 v20 h-30 z M60,70 h30 v20 h-30 z" fill="#0E0E10"/>
+                                <rect x="15" y="15" width="10" height="10" fill="#0E0E10"/>
+                                <rect x="15" y="75" width="10" height="10" fill="#0E0E10"/>
+                                <rect x="75" y="75" width="10" height="10" fill="#0E0E10"/>
+                            </svg>
+                        </div>
+                        <div class="text-left font-mono text-xs text-brand-mute space-y-1">
+                            <div class="text-brand-ink font-bold text-sm">q-grid.net/scan</div>
+                            <div>admin@taurusai.io</div>
+                            <div class="mt-2 text-brand-accent">Ship-truth only.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>CLOSING & CONTACT</span>
+                    <span>SLIDE 3.3 // DECK 3</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- UI Logic for switching decks -->
+    <script>
+        function showDeck(deckId) {
+            // Hide all
+            document.querySelectorAll('.deck-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Reset buttons
+            document.querySelectorAll('button[id^="btn-deck"]').forEach(btn => {
+                btn.className = "px-4 py-2 text-xs font-mono font-bold rounded bg-brand-bg text-brand-mute border border-brand-rule hover:text-brand-ink transition-colors";
+            });
+            
+            // Show selected
+            document.getElementById(deckId).classList.add('active');
+            
+            // Highlight active button
+            const activeBtn = document.getElementById('btn-' + deckId);
+            activeBtn.className = "px-4 py-2 text-xs font-mono font-bold rounded bg-brand-accent text-white border border-brand-accent transition-colors";
+        }
+    </script>
+</body>
+</html>
