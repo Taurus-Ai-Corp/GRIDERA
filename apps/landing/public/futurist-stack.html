@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDERA — BF2026 Asset</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hedera: {
+                            green: '#00EB87',
+                            darkGreen: '#00B867',
+                            glow: 'rgba(0, 235, 135, 0.25)',
+                            bg: '#080A0F',
+                            card: '#10141E',
+                            border: 'rgba(0, 235, 135, 0.15)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080A0F;
+            color: #F3F4F6;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 235, 135, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+        }
+        .glass-panel {
+            background: rgba(16, 20, 30, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-accent {
+            background: rgba(16, 20, 30, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 235, 135, 0.3);
+            box-shadow: 0 0 30px rgba(0, 235, 135, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #00EB87 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    </style>
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+</head>
+<body class="font-sans antialiased selection:bg-hedera-green selection:text-black grid-pattern">
+
+    <!-- Navigation Header -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-hedera-green/10 border border-hedera-green flex items-center justify-center shadow-[0_0_15px_rgba(0,235,135,0.3)]">
+                    <span class="font-display font-bold text-hedera-green text-xl">₮</span>
+                </div>
+                <div>
+                    <span class="font-display font-bold text-lg tracking-wider text-white">TAURUS<span class="text-hedera-green">AI</span></span>
+                    <span class="text-[10px] font-mono block text-gray-400 tracking-widest uppercase">GRIDERA™ Infrastructure</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#gap-analysis" class="hover:text-hedera-green transition-colors">Gap Analysis</a>
+                <a href="#architecture" class="hover:text-hedera-green transition-colors">Architecture</a>
+                <a href="#live-demo" class="hover:text-hedera-green transition-colors">Live Simulation</a>
+                <a href="#deck" class="hover:text-hedera-green transition-colors">Pitch Deck</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <span class="hidden lg:inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-hedera-green/10 text-hedera-green border border-hedera-green/30">
+                    <span class="w-2 h-2 rounded-full bg-hedera-green animate-ping mr-2"></span> CCW 2026 Toronto
+                </span>
+                <a href="#contact" class="px-5 py-2.5 rounded-lg bg-hedera-green text-black font-display font-bold text-sm hover:bg-hedera-darkGreen transition-all shadow-[0_0_20px_rgba(0,235,135,0.4)]">
+                    Book Pitch
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-36 pb-20 px-6 max-w-7xl mx-auto relative">
+        <div class="text-center max-w-4xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-hedera-border text-xs font-mono text-hedera-green">
+                <span>Linux Foundation Decentralized Trust (Hiero)</span>
+                <span>•</span>
+                <span>NIST FIPS 204 Compliant</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight text-white leading-tight">
+                Quantum-Safe. AI-Governed. <br>
+                <span class="text-gradient">Sovereign Infrastructure.</span>
+            </h1>
+
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Ethereum, Solana, and Polygon run on classical ECDSA signatures vulnerable to quantum decryption. <strong class="text-white">GRIDERA™</strong> merges lattice-based cryptography, local AI governance, and Hiero consensus into an unbreakable stack.
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#live-demo" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-hedera-green text-black font-display font-bold text-base hover:shadow-[0_0_30px_rgba(0,235,135,0.5)] transition-all">
+                    Run Quantum Hack Simulation
+                </a>
+                <a href="#architecture" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-white font-display font-medium text-base hover:border-hedera-green/50 transition-all">
+                    Explore Architecture
+                </a>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-hedera-green">
+                <div class="text-xs font-mono text-gray-400 mb-1">Cryptographic Standard</div>
+                <div class="text-2xl font-display font-bold text-white mb-2">ML-DSA-65 & ML-KEM</div>
+                <p class="text-xs text-gray-400">NIST-approved lattice algorithms replacing secp256k1 & Ed25519 single points of failure.</p>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-indigo-500">
+                <div class="text-xs font-mono text-gray-400 mb-1">Consensus Engine</div>
+                <div class="text-2xl font-display font-bold text-white mb-2">Linux Foundation Hiero</div>
+                <p class="text-xs text-gray-400">Deterministic, enterprise open-source hashgraph consensus with zero transaction variance.</p>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-400">
+                <div class="text-xs font-mono text-gray-400 mb-1">AI Governance Guardrails</div>
+                <div class="text-2xl font-display font-bold text-white mb-2">EU AI Act Compliant</div>
+                <p class="text-xs text-gray-400">Real-time local LLM agent execution logs signed and anchored prior to state settlement.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gap Analysis Table Section -->
+    <section id="gap-analysis" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-white">The Structural Gap in Web3</h2>
+            <p class="text-gray-400 mt-2">Why legacy Layer-1 blockchains cannot survive upcoming federal compliance deadlines.</p>
+        </div>
+
+        <div class="overflow-x-auto glass-panel rounded-2xl border border-white/10">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-white/10 bg-white/5 text-xs font-mono text-gray-300">
+                        <th class="p-5">Dimension</th>
+                        <th class="p-5">Legacy L1s (ETH, SOL, MATIC)</th>
+                        <th class="p-5 text-hedera-green">Taurus AI Corp (GRIDERA™ Stack)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 text-sm">
+                    <tr>
+                        <td class="p-5 font-semibold text-white">Quantum Security</td>
+                        <td class="p-5 text-red-400">Vulnerable to Shor's algorithm (ECDSA)</td>
+                        <td class="p-5 text-hedera-green font-medium">Native Lattice PQC (ML-DSA-65)</td>
+                    </tr>
+                    <tr>
+                        <td class="p-5 font-semibold text-white">AI Agent Integration</td>
+                        <td class="p-5 text-gray-400">Centralized wrappers, zero provenance</td>
+                        <td class="p-5 text-hedera-green font-medium">Verifiable local LLM signed execution logs</td>
+                    </tr>
+                    <tr>
+                        <td class="p-5 font-semibold text-white">Regulatory Alignment</td>
+                        <td class="p-5 text-gray-400">Retail speculative focus</td>
+                        <td class="p-5 text-hedera-green font-medium">EU AI Act & CNSA 2.0 Federal Compliance</td>
+                    </tr>
+                    <tr>
+                        <td class="p-5 font-semibold text-white">Consensus Backing</td>
+                        <td class="p-5 text-gray-400">Foundation-controlled tokenomics</td>
+                        <td class="p-5 text-hedera-green font-medium">Linux Foundation Decentralized Trust (Hiero)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Interactive Live Simulation Terminal -->
+    <section id="live-demo" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="glass-panel-accent rounded-3xl p-8 md:p-12">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-hedera-green/20 text-hedera-green font-mono text-xs mb-2">
+                        <span>LIVE DEMO SIMULATION</span>
+                    </div>
+                    <h2 class="text-3xl font-display font-bold text-white">Quantum Attack vs. Post-Quantum Defense</h2>
+                    <p class="text-gray-400 text-sm mt-1">Simulating Shor's algorithm on ECDSA vs. ML-DSA-65 Lattice-Based execution on Hiero.</p>
+                </div>
+                <button id="run-sim-btn" onclick="runSimulation()" class="px-6 py-3 rounded-xl bg-hedera-green text-black font-display font-bold text-sm hover:bg-hedera-darkGreen transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(0,235,135,0.4)]">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                    Execute Terminal Test
+                </button>
+            </div>
+
+            <!-- Terminal Screen -->
+            <div class="bg-black/80 rounded-2xl p-6 font-mono text-xs md:text-sm border border-white/10 shadow-2xl h-80 overflow-y-auto" id="terminal-screen">
+                <div class="text-gray-500">// Taurus AI Corp. Quantum Security Test Environment v2.6</div>
+                <div class="text-gray-500">// Initializing connection to Linux Foundation Hiero Test Engine...</div>
+                <div class="text-hedera-green mt-2">[SYSTEM READY] Click "Execute Terminal Test" to simulate quantum key extraction.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pitch Deck Slide Viewer -->
+    <section id="deck" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-white">Investor Deck Blueprint</h2>
+            <p class="text-gray-400 mt-2">Executive summary presentation for Blockchain Futurist Conference 2026.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 01</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">The Title & Thesis</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">GRIDERA™ by Taurus AI Corp: Surviving the Converged Threat of Quantum Decryption & Unregulated AI.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 02</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">The $Trillion Blindspot</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">Legacy L1s face immediate compliance failure and cryptographic debt under US CNSA 2.0 & EU AI Act mandates.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 03</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">The GRIDERA Stack</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">Integrating Lattice Cryptography (NIST PQC), Linux Foundation Hiero consensus, and local AI agent guardrails.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 04</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">Proprietary IP Vault</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">Enterprise footprint via TAURUS AI CORP - FZCO & ARQ Quantum LLC holding proprietary lattice encryption wrappers.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 05</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">Market Go-To-Market</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">Direct target acquisition of sovereign finance institutions requiring verified post-quantum security guarantees.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative group hover:border-hedera-green/50 transition-all">
+                <div class="text-xs font-mono text-hedera-green mb-2">SLIDE 06</div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">The Investor Ask</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">Funding allocations targeted at hardware-accelerated PQC rollouts and global sovereign compliance trials.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Pitch Booking Form -->
+    <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="glass-panel p-8 md:p-12 rounded-3xl border border-white/10 text-center">
+            <h2 class="text-3xl font-display font-bold text-white mb-3">Connect with Effin Fernandez</h2>
+            <p class="text-gray-400 text-sm mb-8">Founder & CEO, Taurus AI Corp. | Attending Canada Crypto Week 2026</p>
+
+            <form action="mailto:admin@taurusai.io" method="post" enctype="text/plain" class="space-y-4 text-left max-w-lg mx-auto">
+                <div>
+                    <label class="block text-xs font-mono text-gray-400 mb-1">YOUR NAME / INSTITUTION</label>
+                    <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-hedera-green text-sm" placeholder="e.g. Venture Capital Partner">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-gray-400 mb-1">EMAIL ADDRESS</label>
+                    <input type="email" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-hedera-green text-sm" placeholder="partner@fund.vc">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-gray-400 mb-1">INTEREST</label>
+                    <select class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-hedera-green text-sm">
+                        <option>Private Investor Allocation</option>
+                        <option>Linux Foundation / Hiero Partnering</option>
+                        <option>Side-Event Stage Share / Speaker Slot</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-4 rounded-xl bg-hedera-green text-black font-display font-bold text-sm hover:bg-hedera-darkGreen transition-all shadow-[0_0_20px_rgba(0,235,135,0.4)]">
+                    Send Meeting Request
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-white/5 text-center text-xs font-mono text-gray-500">
+        <p>© 2026 TAURUS AI CORP. All rights reserved. Powered by Linux Foundation Decentralized Trust (Hiero Engine).</p>
+    </footer>
+
+    <!-- Interactive Simulation Script -->
+    <script>
+        function runSimulation() {
+            const terminal = document.getElementById('terminal-screen');
+            const btn = document.getElementById('run-sim-btn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+
+            terminal.innerHTML = `
+                <div class="text-gray-500">// INITIALIZING SHOR'S QUANTUM FACTORING SIMULATION...</div>
+                <div class="text-yellow-400 mt-1">[TARGET]: Classical ECDSA Keypair (secp256k1)</div>
+                <div class="text-gray-400">[QUANTUM ENGINE]: Calculating period via QFT on 4096-qubit array...</div>
+            `;
+
+            setTimeout(() => {
+                terminal.innerHTML += `
+                    <div class="text-red-400 mt-2">[CRITICAL VULNERABILITY]: Private key extracted in 1.42s!</div>
+                    <div class="text-red-500 font-bold">> Legacy transaction payload COMPROMISED.</div>
+                    <div class="text-gray-500 mt-3">// SWITCHING DEFENSE PROTOCOL TO GRIDERA™ STACK...</div>
+                `;
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 1200);
+
+            setTimeout(() => {
+                terminal.innerHTML += `
+                    <div class="text-hedera-green mt-2">[ACTIVE PROTECTION]: Wrapping payload in NIST ML-DSA-65 (Dilithium) Lattice Signature...</div>
+                    <div class="text-hedera-green">[PROVENANCE CHECK]: Verifying local Ollama model (llama3.2) decision log against EU AI Act guardrails...</div>
+                    <div class="text-hedera-green">[CONSENSUS]: Committing state change to Linux Foundation Hiero Ledger...</div>
+                `;
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 2600);
+
+            setTimeout(() => {
+                terminal.innerHTML += `
+                    <div class="text-emerald-400 font-bold mt-3">[SUCCESS]: Transaction settled securely. 0% Quantum Decryption Risk.</div>
+                    <div class="text-gray-500">// Simulation Complete. System operational.</div>
+                `;
+                terminal.scrollTop = terminal.scrollHeight;
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

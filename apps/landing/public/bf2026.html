@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#080A0F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GRIDERA">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<title>GRIDERA — BF2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { gridera: { green: '#00EB87', bg: '#080A0F', card: '#10141E' } },
+      fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+    }
+  }
+}
+</script>
+<style>
+html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+body { background-color: #080A0F; color: #F3F4F6; overscroll-behavior-y: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+img, video { max-width: 100%; height: auto; content-visibility: auto; }
+button, a { touch-action: manipulation; }
+.card { background: rgba(16,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); will-change: transform; transform: translateZ(0); }
+.qr-tile { transition: transform 0.12s ease; min-height: 200px; }
+.qr-tile:active { transform: scale(0.97); }
+.search-hidden { display: none !important; }
+input { font-size: 16px; } /* prevents iOS zoom */
+</style>
+</head>
+<body class="font-sans min-h-screen p-3 pb-28">
+<div class="max-w-6xl mx-auto">
+  <header class="sticky top-0 z-50 bg-[#080A0F]/95 backdrop-blur-lg border-b border-white/10 py-4 mb-5 -mx-3 px-3">
+    <div class="flex items-center gap-3 mb-3">
+      <img src="/gridera-logo.png" alt="GRIDERA" class="w-11 h-11 rounded-lg border border-white/10">
+      <div>
+        <div class="font-display text-xl font-bold">GRIDERA<span class="text-gridera-green">™</span></div>
+        <div class="font-mono text-[10px] text-gray-400">Tap any QR · Search to filter · Add to Home Screen</div>
+      </div>
+    </div>
+    <input id="search" type="text" placeholder="Search links..." 
+      class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-base text-white placeholder-gray-500 focus:outline-none focus:border-gridera-green">
+    <div id="install-hint" class="hidden mt-3 text-[11px] text-gridera-green font-mono">
+      📱 Add to Home Screen: tap Safari share → "Add to Home Screen"
+    </div>
+  </header>
+
+  <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    
+    <a href="https://q-grid.net/scan" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="quantum scan interactive">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Interactive</div>
+      <img src="/QR_CODES/scan.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Quantum Scan</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/scan</div>
+    </a>
+    <a href="https://q-grid.net/pitch-deck.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="pitch deck deck">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Deck</div>
+      <img src="/QR_CODES/pitch-deck.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Pitch Deck</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pitch-deck.html</div>
+    </a>
+    <a href="https://q-grid.net/video-showcase.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="video showcase video">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Video</div>
+      <img src="/QR_CODES/video-showcase.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Video Showcase</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/video-showcase.html</div>
+    </a>
+    <a href="https://q-grid.net/product-proof.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="product proof demo">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Demo</div>
+      <img src="/QR_CODES/product-proof.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Product Proof</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/product-proof.html</div>
+    </a>
+    <a href="https://q-grid.net/how-we-do-it.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="how we do it walkthrough">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Walkthrough</div>
+      <img src="/QR_CODES/how-we-do-it.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">How We Do It</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/how-we-do-it.html</div>
+    </a>
+    <a href="https://q-grid.net/card.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="business card network">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Network</div>
+      <img src="/QR_CODES/card.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Business Card</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/card.html</div>
+    </a>
+    <a href="https://q-grid.net/futurist-stack.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="stack page technical">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Technical</div>
+      <img src="/QR_CODES/futurist-stack.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Stack Page</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/futurist-stack.html</div>
+    </a>
+    <a href="https://q-grid.net/master-pitch-decks.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="master decks print">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Print</div>
+      <img src="/QR_CODES/master-decks.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Master Decks</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/master-pitch-decks.html</div>
+    </a>
+    <a href="https://q-grid.net/futurist-campaign.html" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="campaign info marketing">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">Marketing</div>
+      <img src="/QR_CODES/campaign.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Campaign Info</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/futurist-campaign.html</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/software-defined-quantum-compliance.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="software-defined quantum compliance pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/software-defined.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Software-Defined Quantum Compliance</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/software-defined-quantum-compliance.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/gridera-master-presentation-suites.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="gridera master decks pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/gridera-master.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">GRIDERA Master Decks</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/gridera-master-presentation-suites.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/krown-qortrace.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="krown / qortrace one-pager pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/krown-qortrace.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Krown / QorTrace One-Pager</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/krown-qortrace.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/ovhcloud.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="ovhcloud one-pager pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/ovhcloud.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">OVHcloud One-Pager</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/ovhcloud.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/autonomous-quantum-compliance.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="autonomous quantum compliance pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/autonomous-quantum-compliance.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Autonomous Quantum Compliance</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/autonomous-quantum-compliance.pdf</div>
+    </a>
+    <a href="https://q-grid.net/pdfs/resilient-infrastructure-strategy.pdf" target="_blank" class="card qr-tile rounded-2xl p-4 flex flex-col items-center text-center min-h-[200px]" data-label="resilient infrastructure strategy pdf">
+      <div class="text-gridera-green font-mono text-[10px] uppercase mb-2">PDF</div>
+      <img src="/QR_CODES/resilient-infrastructure-strategy.png" class="w-full max-w-[150px] rounded bg-white p-2 mb-3" alt="QR" loading="lazy" decoding="async">
+      <div class="text-sm font-bold leading-tight mb-1">Resilient Infrastructure Strategy</div>
+      <div class="text-[10px] text-gray-500 font-mono break-all">q-grid.net/pdfs/resilient-infrastructure-strategy.pdf</div>
+    </a>
+  </div>
+
+  <footer class="fixed bottom-0 left-0 right-0 bg-[#080A0F]/95 backdrop-blur-lg border-t border-white/10 py-4 px-4 text-center text-[11px] text-gray-500 font-mono">
+    TAURUS AI CORP. · Effin Fernandez · admin@taurusai.io · q-grid.net
+  </footer>
+</div>
+
+<script>
+const search = document.getElementById('search');
+search.addEventListener('input', e => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.qr-tile').forEach(tile => {
+    tile.classList.toggle('search-hidden', !tile.dataset.label.includes(term));
+  });
+});
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+if (isIOS && !isStandalone) {
+  document.getElementById('install-hint').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

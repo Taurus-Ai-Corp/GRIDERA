@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GRIDERA — BF2026 QR Sheet</title>
+<link rel="icon" type="image/png" href="/gridera-logo.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { gridera: { green: '#00EB87', bg: '#080A0F', card: '#10141E' } },
+      fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+    }
+  }
+}
+</script>
+<style>
+@page { size: A4 portrait; margin: 12mm; }
+body { background-color: #080A0F; color: #F3F4F6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tile { background: rgba(16,20,30,0.9); border: 1px solid rgba(255,255,255,0.08); page-break-inside: avoid; }
+</style>
+</head>
+<body class="font-sans p-4">
+<div class="max-w-[210mm] mx-auto">
+  <header class="flex items-center gap-3 mb-6">
+    <img src="/gridera-logo.png" class="w-10 h-10 rounded border border-white/10">
+    <div>
+      <div class="font-display text-xl font-bold">GRIDERA<span class="text-gridera-green">™</span> QR Sheet</div>
+      <div class="font-mono text-[10px] text-gray-400">Print, cut, tape to booth, hand to prospects, AirDrop the PDF.</div>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-2 gap-4">
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAFcAQAAAACsbTuBAAAB90lEQVR4nO1aUarEIAxMwv7b+99ub6AnyEOjNbbwEB7bJ+sMRdpmPkIcNCay0jSSzHOJQPZANDwQjW+IBp84iFIemdnMg2kln6ch81QC+R66oAYiMnlQ0KyQYzAhdHuqjuvKkKGxjG++mdbyeQ4yySsA2eM1fBFRiFkTtnRcbQjd1trQlBWh6dB1fRaQn9SG+n8hbyocol5NmBSPPbSR+u7BZStpY/SmZXwWkB+JBl/2Di6j2ktZQDpQ+9pPotxOKFwOrdRyUX23ikctdyzk8zRknkogj8jFi9jqGLFoo727yobREGePr48G2ex3VcT+xz/FtIjPAvKjZ9ignFzuUaoclpRW62fdEJDXjIbGnGloGa0QWteTJoxn3JiGzFMJ5D/vKeQSjyHfGEZMisfXR4Pq+nA+Zz/F0gzjIN/YWBtqemj7SG2+ukQUuejOuSilg1s/hVIteZw1Ul3IZwH5MW2ovYZyf2MYS2Olt1QwKR5bRIPd5S59MyWuFdFLyXQln6ch81QC+b6ntL4J2xg0P9asN0Nt2SPOHrvkG+wUkmVQs4529avuL4v4LCD/TzRCP8bapzvMYlI89rsTmFqG0deQAzXzhWdQnrv3FfJh1j7Z7o6iZr53H7Yi9OpoL4JZZxZ9WNr93tdvwL2vFWdQQHZANDw+F40fwNcIoyDJexkAAAAASUVORK5CYII=" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">scan</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/scan</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/scan</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACr0lEQVR4nO1cW47kIAy0S/2fvsHc/1h7g3ACr2zzyuzHjKUVohOXRmkglAS2ZRwDw0JBFEQZREmJAmEGJSUKhBmUlH0lxh1v4jdRYX1Tasu3DpSqDAPPprz0cZxeYSIpTIdQedMhWvUXUwfady5Iys4S4+6y3iQnmZlVb/atA6Uqw0BSZohIXTEPkZP4S6tXgMJAUp6+Vv4DXTELy7xcfsBckJSdbUxanT308pDM2r1lsjQsGRiSciuJlfrV2Ft1ubRVsi6Ulw5YN7AYEOxPSaFVfkymupYL+9Or/pd6aQCFgaRw81fqqSx3oYVDLWvOmLVuSIkFgWdTXvooLOa7xNJiVrVgzNpbWsw+BLaeC5KypcRIRHMUXhgtvbE9a9LsEDlTlVHg2RRyg/Js2GxR3ljbzeSa7WHJwJCUu0iMhvtyT9XKw/C8MEwRSwaGpNxJYmIYu0iH8FfbS7JQ/7qvhGUDCwJRAiVloR+T68pYX02LZvqxBlAYeDaFqnX1wGyyNze5EZJlPLZOL7gRharX6ubUTK7a2PVjkzIeo21ViZ0pIjX6kj+Wgy2s9tZisG5muZe0vyp39mPSM2Du0+b8WPNm6cf2ViX236/knrhQ9/XWgz3HyXa8Rz3aOH2BJQNDUu4iMepL4YjKpi9Kr9aetWXbuSApH3HuguuZMZnOkulTvZl5tlQlrdALbmZj3GtuTsfZtr/NrtzY2rUR2ncuSMpn3EsiK1SXNU6RLR8YknIzifG4dnQ5MOZJjHquLPeSluvlnpRi+THPmLkTa7tLuon5WXP5GfhFn6T8Z4mx+66WGat33+xwrGZoFamXKPBsyst/esSlH5VTYDbfH5eaQNt2LkjKvhIr49oRs20k+X5lg1/mraEapSqjwLMpnP8b6i6qRFKCQJRASQljjZD/AsaZjW6YqDUIAAAAAElFTkSuQmCC" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">pitch</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/pitch-deck.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/pitch-deck.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACkUlEQVR4nO1cW47kIAw0pfknN9j7H2tuACfwyrzi8DPj1QrRxKWebuK4pIAtYwyZwGREhpVB5BQrYGaQU6yAmUFO2XfEwsAlonCJpN3PInwqYNmDGQErgZyybJAjVzRZDpy6m0XmNClg3YPZAKM+OYUWjlhQQUxQnEpLhgK5Kc3AuylfsyBL+JK/mDgH/qS+wCmf4WMdTBQiU27BSwFkBpzy4hH7qj9TvJLLfElMixxmBSx5MDjlqBHLbdUo7cjiVxeFP9JoWlqB9u6LDTDqk1Pon+IYa0EONQ3TwmeUg9vFCFgJdBwljArYRVKp6IGLv6WIcRfQfF251i6nUEiKFKl8l0adK9tHo1QzSMpl2/YFTtnXx7i4Wa219obcK56ma7AC9zEz8G4K8YThUTW49UvRbJJt+wKnbD1Xph61tKepOVT5HpY8GJxyyohRzbLuHcmeifXsq+t5PtawrSmxK4XuwKUvx/54T8k8jm1vSuxKoRavlKeNnH+SeD62tymxtY9RL1lMt0r4mpJ/9nzsHOtjqY/Rw51q454lhxNG9zEssQsOzPnpWROrxQqdm411Qdq2L3DK7ucusmxThrFfWU71hJjGuYt+nAxLHgxOOWzEwtV2LWveNc6+Dr2mcH1AXyyASbvAKWbwE6MmpssXj3byQbYC76bQ7T/KnUaef++Sj1dL0rZ9gVP2zcdiq8CG8pGsrOdjFax0yE1pBt5Noce6chQoRuFCF/x9rlxnF5z9XhKrd0ZqWKvytQ8Gpxw7YpHv0/vVr+qr4mXm5PRRffkZ+IWOU/5ffexOveRrRDCJZsXZeoYGMgNOefGI0bSubMK+FT4dixX4uvIc62MJJfj/hjrFlHCKEbASyClmrBnkv61d544GAsJ+AAAAAElFTkSuQmCC" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">campaign</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/futurist-campaign.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/futurist-campaign.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACnElEQVR4nO1cUW6sMAx0RvufvcHe/1i9AZzAlWMnwKpS6/eq1IBHiE1IRiWxNdghtDA5scLLIEqKF3AzKClewM2gpMSdsTLwbNdWKehh5UMHTLsxJ+AlUFJmTPJDTnXRShnntfDaapXLewdMuTEk5WIzVrqIlVKosrjWi3mRKjf/2lSOoo/FA7h6NyTlv2esMq1FdGxpasbcXetX/8r3wA/6JOWcM7aKd5l2vVhkLciNfQ/8oE9S/igeI9qvYJQqNfUt3hXm3hiScqkZWy1rlLI62IutMDLN0YFij8UHOPtTUuifdIy/auDjkZPcAXID96YQs0mWoLJUyeIxCcwa9q28hB0LkhLXx6g5lTpYlSWL4XtaFmytmHJjSMpVZoxUqSyXrIeCQCVOFcx6hh0LkhI5ryztzGvR56I9HesyFvmLtD7b9TSlF7g3hVTERiSmwjXisdFh9OHUsetYHzPjMYG5UI/zRyKgyHjMENaUiB6P8SEAs0SgO1vq2BlMiagU2vLHfZx/vLKlA5zPSkyxCy65dsHNkQ5N7WJ3rYzHgpsSJ8grq+y4kBeUdaGWQuqLy9FatCnuWJCU6Ov8tRX6M3FceStz5pVu4N6Uh/7Yspjq2LHH2HfRV88w5caQlKvpWH2XsoOg7Rf8l7BjQVLC6hjvN1d0KdPqts6v2/sFaUovcG8KbUplMrXttdhHYtbKqWOYYhdcjVJtFVY3JepexMPrJH10fuS3bxTdlIEpZfvsSDxKyvrxSDur1+V3SacwZdi88g2WYIqDPUecFn4sSMqJfKw077LK+rRNPpYIpCm9wL0pD/0Zcb8U9GuRfpajiRib14UdC5JyiryS+g6f/fvKzCt3ALmBe1NK/m+oq5gSSXECXgIlxY05k/wJyvyvuoBFeYkAAAAASUVORK5CYII=" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">master</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/master-pitch-decks.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/master-pitch-decks.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACpklEQVR4nO1cXc7cIAw0o30nN+j9j9UbhBO4whgCu31xH6g/1qNVBAkjQWz5D7KJyYgCK4MoKFbAzKCgWAEzg4Li942lgUvulUSl9rT9PgDbJmYErAQKyo6X/KqXfLdO6teUuV7rI/4YgC0TQ1AOe2NpNmJEfFft4rs22v1nAHlfiwUwjRYE5Z/s2ArNAkoisWYfAJmBoHzxG3u93xDnmLpz5J+0FgTFs45x70sMdnNJXC69rgMoRGkGvptCzJP6ZP77bxrAt9u1IChu7RhP/dFmqWB8GDEKUdIOueAwSrp6Teyq+ePzsFkwefRfJmYErAQKyjY7VlSFagDWq2RzUpkykwRmqeYCIUor8N2U12iNuitPLrKlAKM2y/smhqAcFfNnDbhq0VVSAL0pv4F2nyPmP0f62EIhURtp9RSyaVq7ObLOVvOnyCvJrSjhlUKqRZPJGu15zIPb7VoQFOd2jEW7tDvrm5bFZHQOHcMWueCwmD/1/aMW5HPLNPNNRXfBNQXQmr/btSAobt8Y/9YzFfU6qvrTAYzafar92DYxI2AlUFA2+kqeDvOMAGzeSNKUM4evxBa54DxfmdQ/DiNW3SJPXrKVYWnfxBCU0/Yrc7VfUskfujSKrkvNn/yuBUHxXIPlqUS2OMph2cajO0RpBb6b8up27KmGJdk8ek5ciImrdqwlm37XgqD4PXcxcEnM375FUodJo90zAmybmBGwEigoO32lYNlO6onkUvPP4SuxRS44c088L3V+VbZFuyh0jPyKEj/lm5HUYrBWgC1X62owFmd79skFB1N41GBvSr+eAmxF5vhOnH6OKN3GY7yW9998KEftgtyKEq4pRdPKlmPq6f01HpvSTOybmA0wjqeg0I43luK/oYyAlUBBMQNBMQJWwlmUPyFDkb2CU7I+AAAAAElFTkSuQmCC" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">stack</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/futurist-stack.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/futurist-stack.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACmklEQVR4nO1cYY70IAjFl/nf3v92c4N6Ar4A0trJJjskXxzX4aXpuJaXqBBE1C1MQVREGURJiQJhBiUlCoQZlJR5R6yc2L28t89W6AUoVRkGkkIbG4hI3lubP8tO/FS76gQoRywMJIXMU7nv4meh6g8RHy8CyBELAlECLU0pu7ovZnNftGlhgoa9AbwjlJTPj1gtfIjXEgOr4rvMj32+Yb8Db8gkZfyIPeznymBsYlJcdzG2unMt9qlLcWBIw5CUVUaMPJJX6OT4w9MJ8DFtX5CUaf0Y36su36UFe4Y3DElZZcTIkhV9yoKPKwbrg7EmeUzbFyRldhsjtyjPhsmf/qlhSxvDEL1gNUptebCWr/DEfqss5W5sGNewGBCUp6TQKD/GNjmKj6KX6VIK7uJcBkMahqSsZmPswVhXeLE0f2NIw5CUVUaMzmj/MiSPyu7blK2S08bW0T6GUKhZ0ZkH85xYM60+RWb1aWPraB8jbUzwEoNpeHZbaWY8Nk4vWNOPKfpyn9loRsjpx0BhIClFsxPNU9HNcfVnFP3IInLEgsB3Ux62l1S2Qx4tXBkzlTj3ksrGZeq+ICmTn7tg3Z0sWrCjF2pRWqO2Z/WUqgwD302haxfJF48W6vergEtyy3gMQ/SCNdeViisN2+crun1zztzFOtrHB8+PGW6VmR9rmFaV+DP3ko7uVH+XMROZZ8ZjNLsqJ475i5+yvtaVVY70S72F+n5wkebtC5Iys42duJ3eFzOThMY5m7K8UpVRIMygpSm12P3K82qSTJTq1mwCpT/Ul9+BN2SS8r/vJZHkWr1waGbMD2ZUu2mZeokC3015yKslVwViUbVwfxep7QKomdHMfUFSphyxkv8bKghECZSUMJCUIBAlrEX5B0UvzehIjAMVAAAAAElFTkSuQmCC" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">card</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/card.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/card.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAGMAQAAAADhQqjnAAACjUlEQVR4nO1cUYrFIAyMw/7bG+z9b1dPkEWN1srCksdSfL4ZStdaB54mjGnUDSpOJHgZIqR4ATdDSPECboaQsu6IhY5DJLV7CPl9CnMDoSm9gJsh21GiVtRyfxcOCd86N5C1++IDnO2FFHl1xIJpVC5UKdMzX1XHxgZCu7gBUm6oOha1zphWuAHiBkj54BH7+rVWRTQdIaqkoG/TF5Cyso9pr8jadYZ4ZkErOjY3EJrSC7gZsh0l2VdjLjen6gF//8y0BrJ2X3yAs72QIi/pmE51Lc7v5XsD0C5O4LMpkjMSPV8RNX9ONliNpSxaBuNcti8gZV0fk+JXJVlhj6e9qoXL2SJ9DI/YBXvqWDRn6z52uVnLwWZQx/axPh6hSHGbNktW+aqC1jWtwOqVPoZH7IL9dEy7cLV4zNTMYrCxjEd+GEjZZcRkXKZsSnWPxCoYjxmWNSVWpcisWnWK7PLVVI46trwpsSpFrnisaVd9tKu2GdxPOVfuY308HY/Fex6sx/l96mQ89pxdsNt6ZcoL3/WyFH/Kmy3ysnh5yveoQSSvY67bF5CydH4smnCN35hTPXWsgJ786t6eFDQdpmN5x8VRH03EbLdPKDUcZC/w2RS5dKytH43Z/nGxst6VMf8+1scjFNE7rmWj9i05L4ufy/YFpCydg50SrR09j8F9FwZ6shs6ONXoTpNrXZp2cpC9wGdTvuqfEuqf46bEHuSHfjSppC8W7gtIeZczI5pPi5yhpct03hCLR34YSNl4xELZxn/F/OW4pR2Fe7e+/AX82YKUfz+XpCUtZpmxcjopT5FVxEryn3YRN/DZFJm+K3/Zfd2XMrle+ZxdsBEl8H9D7WJKkOIEvAQhxY1nBvkHNkwKGGXzCgAAAAAASUVORK5CYII=" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">hub</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/bf2026.html</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/bf2026.html</div>
+      </div>
+    </div>
+    
+    <div class="tile rounded-xl p-4 flex items-center gap-4">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbwAAAG8AQAAAACNyy1yAAADG0lEQVR4nO1cbY7jIAy10f6nN+j9j7U3SE7gFTiA6YfDdMfVTvc9RRkmxar6eHKMMbDQS9jTa3ZEMHQAchyAHAcg558ih0SMZ821nWU8zCIblWvuJhvG0QHICSMnF3GqGvXOl6Mhv7n8ex0abqLFcDgAOYHkMDNfamvn46Km26vov1M3DIcHaPUd5PClvPEpC3NRrAp1CgC++xuXkda7zoDhh5KT66u/yrVcO+uT5k4DvnEVabnnDWD4GeT80j+T38zCeROict8v2rjr9oN+Y4Lh55Czlzi0vPQr1IWy3q8yPOrU7af9xleQXrIiGMb5VbEP+sRqN42KOWbFODoAOWH51VwzUZpc7fnVfASuet32R37VA7QaqFVqOf8jiari1OcylgNMBwyHA5ATpVWZlflAnzTarYHhcAByAvMAVOPS8tbfLyWhWub+NVWlH/VO+rCkBTAcDkBOmF+VsbraY1Sy4YF+pBGsAn7VA7QaWbuS20zKgKxuewUL4tVzQKvB8SqZ6hRTamUD2u5v4VddQKuxOSu5melLywz0WkEjZmjVBbQaqdXNCFLrAWgqW50yrtDqCaDV2LkV9ZKVptUHcSxigCWktW73gOE5OSpCvkoprs6lBkC6p9U8VasEaDIGqw5ATlh+da/lKbWYqqRVawEAq0dtbc5baY04AcPhAOQEr7GKSVKZjVe9gy1txdzKBbQauzdQTLbKRqdkKlgQr64hLfa7AwxPyDn2VbWI9NhUtdf11eZOy2aWHsc2w5eQYPgcIMfDWKXSUqv+0q8YGVdbhYWc1QkgufAYgEz4Sm2VqsCmXqHVc0CrgfnVjumzbKZdvQAb9QDngFbfdO6KmJmUtBjA5gHqQwyHA5ATXA8gZrH1rg5weFfkrM4BrUbmV2lM+W8iWLLHWyFeXUJa63YPGH6BnF61QvXoFY0E+nbs4zyWR4bLSDB8DpCztIelw+5b4boCq8dZ1DbrUixYdQHJveXclSy9QkDqvbnUo2Dgr78xwfA5QM6X8wDzlJ96TzMFA6sOQE4EOYwz2J8DknMAchyAHAf/Azl/AGGXu5Qko37XAAAAAElFTkSuQmCC" class="w-28 h-28 rounded bg-white p-1" alt="QR">
+      <div class="flex-1">
+        <div class="text-gridera-green font-mono text-[10px] uppercase mb-1">radar</div>
+        <div class="text-sm font-bold leading-tight mb-1">q-grid.net/.well-known/qortrace.json</div>
+        <div class="text-[10px] text-gray-500 font-mono break-all">https://q-grid.net/.well-known/qortrace.json</div>
+      </div>
+    </div>
+    
+  </div>
+
+  <footer class="mt-6 text-center text-[10px] text-gray-500 font-mono">
+    TAURUS AI CORP. · Blockchain Futurist Toronto 2026 · admin@taurusai.io
+  </footer>
+</div>
+</body>
+</html>
