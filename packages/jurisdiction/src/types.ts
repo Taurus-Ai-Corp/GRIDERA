@@ -1,4 +1,4 @@
-export type Jurisdiction = 'na' | 'eu' | 'in' | 'ae'
+export type Jurisdiction = 'na' | 'eu' | 'in' | 'ae' | 'ca'
 
 export interface Regulation {
   id: string
