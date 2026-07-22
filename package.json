@@ -14,6 +14,12 @@
     "lint:brand": "bash scripts/check-brand.sh --all",
     "type-check": "turbo run type-check",
     "test": "turbo run test",
+    "test:funnel-unit": "tsx --test scripts/funnel-smoke/lib.test.ts",
+    "smoke:funnel": "tsx scripts/funnel-smoke.ts",
+    "smoke:comply-flow": "tsx scripts/smoke-comply-flow.ts",
+    "probe:ca": "tsx scripts/ca-cell-probe.ts",
+    "agents:funnel-qa": "bash scripts/agents/funnel-qa.sh",
+    "agents:cell-health": "bash scripts/agents/cell-health.sh",
     "clean": "turbo run clean"
   },
   "devDependencies": {

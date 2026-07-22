@@ -33,7 +33,9 @@ GRIDERA is the first platform that combines automated PQC vulnerability scanning
 
 **Hedera HCS Audit Trails** — Immutable compliance records anchored to Hedera Consensus Service. Every assessment, status change, and report generation event gets a verifiable `hedera_tx_id`.
 
-**Multi-Jurisdiction Routing** — Single codebase deployed across four geographic regions (NA/EU/IN/UAE), each with jurisdiction-specific regulatory rules: EU AI Act, OSFI B-13, RBI DPSC, TDRA.
+**Multi-Jurisdiction Routing** — Single codebase deployed across geographic cells (NA/EU/IN/UAE/CA), each with jurisdiction-specific regulatory rules: EU AI Act, OSFI B-13, CCCS PQC, RBI DPSC, TDRA.
+
+**Product map** — Canonical CORE/LABS taxonomy (pipe brand `GRIDERA|Verb`): [docs/GRIDERA-PRODUCT-TAXONOMY.md](docs/GRIDERA-PRODUCT-TAXONOMY.md).
 
 **Sovereign AI Reports** — AI-generated compliance reports that can run entirely on-premises via Ollama/vLLM/TensorRT-LLM. Data never leaves your infrastructure.
 
