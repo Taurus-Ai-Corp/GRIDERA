@@ -192,6 +192,9 @@ GRIDERA\|Pay, non-CA cells as **first** ship target, archive revenue engine, ent
 | CA interim | `pnpm probe:ca` |
 | CA strict go-live | `CA_STRICT=1 pnpm probe:ca` |
 | Scan→Comply contract | `pnpm smoke:comply-flow` |
+| A1 document types | `@taurus/jurisdiction` `resolveReportDocumentType('ca', …)` |
+| Executive view | `GET /api/executive` · UI `/dashboard/executive` |
+| Jurisdiction pack | `GET /api/compliance-matrix?view=jurisdiction-pack` |
 
 ---
 

@@ -49,6 +49,8 @@ export type UpdateAssessmentInput = z.infer<typeof updateAssessmentSchema>
 export const createReportSchema = z.object({
   assessmentId: z.string().uuid('assessmentId must be a valid UUID'),
   mode: z.enum(['template', 'cloud', 'sovereign']).optional().default('template'),
+  // Bound to JurisdictionConfig.documentTypes at route (caConfig for CA cell)
+  documentType: z.string().min(1).max(80).optional(),
   // sovereignEndpoint is validated as a URL only when mode=sovereign; empty string means not set
   sovereignEndpoint: z.union([z.string().url(), z.literal('')]).optional(),
   sovereignModel: z.string().max(100).optional(),

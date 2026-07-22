@@ -17,12 +17,21 @@ import {
   Activity,
   Settings,
   LogOut,
+  LineChart,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { JurisdictionBadge } from './jurisdiction-badge'
 
+const CELL = (process.env['NEXT_PUBLIC_JURISDICTION'] ?? 'eu').toLowerCase() as
+  | 'eu'
+  | 'na'
+  | 'in'
+  | 'ae'
+  | 'ca'
+
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Executive', href: '/dashboard/executive', icon: LineChart },
   { label: 'AI Systems', href: '/dashboard/systems', icon: Server },
   { label: 'Assessments', href: '/dashboard/assessments', icon: ClipboardCheck },
   { label: 'Reports', href: '/dashboard/reports', icon: FileText },
@@ -47,7 +56,7 @@ export function Sidebar() {
           <span className="font-heading text-base font-bold text-graphite">
             GRIDERA <span className="text-graphite-faint">|</span> <span className="text-accent">COMPLY</span>
           </span>
-          <JurisdictionBadge jurisdiction="eu" size="sm" />
+          <JurisdictionBadge jurisdiction={CELL} size="sm" />
         </div>
       </div>
 

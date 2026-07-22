@@ -27,6 +27,8 @@ export interface ReportInput {
   scoringResult: ScoringResult
   jurisdiction: string
   reportId: string
+  /** From JurisdictionConfig.documentTypes (A1 bind) */
+  documentType?: string
 }
 
 // ─── Section title lookup ────────────────────────────────────────────────────
@@ -71,7 +73,7 @@ function priorityDeadline(priority: string): string {
 }
 
 export function generateTemplateReport(input: ReportInput): string {
-  const { system, assessment, scoringResult, jurisdiction, reportId } = input
+  const { system, assessment, scoringResult, jurisdiction, reportId, documentType } = input
   const { score, riskLevel, categoryScores, recommendations, keyFindings } = scoringResult
   const responses = assessment.responses ?? {}
 
@@ -80,6 +82,9 @@ export function generateTemplateReport(input: ReportInput): string {
     month: 'long',
     year: 'numeric',
   })
+  const docTypeLine = documentType
+    ? `**Document type:** \`${documentType}\` (jurisdiction pack)\n\n`
+    : ''
 
   // Category scores table rows
   const categoryRows = euAssessmentSections
@@ -119,13 +124,13 @@ export function generateTemplateReport(input: ReportInput): string {
           .join('\n\n')
       : 'No immediate recommendations. Maintain current compliance posture and schedule annual review.'
 
-  return `# EU AI Act Conformity Assessment Report
+  return `# Compliance Assessment Report
 
 **Report ID:** ${reportId}
 **Generated:** ${generatedDate}
 **System:** ${system.name}
 **Jurisdiction:** ${jurisdiction === 'eu' ? 'European Union' : capitalise(jurisdiction)}
-**Framework:** EU AI Act (Regulation 2024/1689)
+${docTypeLine}**Framework:** ${jurisdiction === 'ca' ? 'Canadian pack (PIPEDA / OSFI / CCCS / AIDA)' : 'EU AI Act (Regulation 2024/1689)'}
 
 ---
 
