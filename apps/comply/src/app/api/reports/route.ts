@@ -13,6 +13,8 @@ import { aiGuard } from '@/lib/ai-guard'
 import { createStamp } from '@taurus/pqc-crypto'
 import { logAuditEvent } from '@/lib/audit-logger'
 import { createReportSchema } from '@/lib/validation'
+import { resolveReportDocumentType, type Jurisdiction } from '@taurus/jurisdiction'
+import { getServerJurisdiction } from '@/lib/jurisdiction'
 
 // GET /api/reports — list all reports for the current user
 export async function GET() {
@@ -78,7 +80,22 @@ export async function POST(req: Request) {
       )
     }
 
-    const { assessmentId, mode = 'template', sovereignEndpoint, sovereignModel } = parsed.data
+    const { assessmentId, mode = 'template', sovereignEndpoint, sovereignModel, documentType: requestedDocType } =
+      parsed.data
+
+    const { jurisdiction: cellJurisdiction } = await getServerJurisdiction()
+    let documentType: string
+    try {
+      documentType = resolveReportDocumentType(
+        cellJurisdiction as Jurisdiction,
+        requestedDocType,
+      )
+    } catch (e) {
+      return NextResponse.json(
+        { error: e instanceof Error ? e.message : 'Invalid documentType' },
+        { status: 400 },
+      )
+    }
 
     const db = getDb()
     if (!db) {
@@ -115,7 +132,14 @@ export async function POST(req: Request) {
       const cloudBaseUrl = process.env['REPORT_AI_BASE_URL']
       const cloudModel = process.env['REPORT_AI_MODEL']
 
-      const reportInput = { system, assessment, scoringResult, jurisdiction: system.jurisdiction ?? 'eu', reportId }
+      const reportInput = {
+        system,
+        assessment,
+        scoringResult,
+        jurisdiction: system.jurisdiction ?? cellJurisdiction,
+        reportId,
+        documentType,
+      }
       const reportConfig = { mode, cloudApiKey, cloudBaseUrl, cloudModel, sovereignEndpoint, sovereignModel }
       const usesLLM = (mode === 'cloud' || mode === 'sovereign') && (cloudApiKey || sovereignEndpoint)
 
@@ -176,6 +200,7 @@ export async function POST(req: Request) {
         content,
         mode: (cloudApiKey || sovereignEndpoint ? mode : 'template') as 'template' | 'cloud' | 'sovereign',
         model: resolvedModel,
+        documentType,
         pqcHash,
         pqcSignature,
         pqcPublicKey,
@@ -276,8 +301,9 @@ export async function POST(req: Request) {
       system: systemForReport,
       assessment: assessmentForReport,
       scoringResult,
-      jurisdiction: systemRow.jurisdiction ?? 'eu',
+      jurisdiction: systemRow.jurisdiction ?? cellJurisdiction,
       reportId,
+      documentType,
     }
     const dbReportConfig = { mode, cloudApiKey, cloudBaseUrl, cloudModel, sovereignEndpoint, sovereignModel }
     const dbUsesLLM = (mode === 'cloud' || mode === 'sovereign') && (cloudApiKey || sovereignEndpoint)

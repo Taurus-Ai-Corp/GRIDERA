@@ -11,6 +11,8 @@ export interface Report {
   content: string // markdown
   mode: 'template' | 'cloud' | 'sovereign'
   model?: string
+  /** Bound to JurisdictionConfig.documentTypes (e.g. pqc_readiness_report) */
+  documentType?: string
   pqcHash?: string
   pqcSignature?: string
   pqcPublicKey?: string

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 interface JurisdictionBadgeProps {
-  jurisdiction: 'eu' | 'na' | 'in' | 'ae'
+  jurisdiction: 'eu' | 'na' | 'in' | 'ae' | 'ca'
   size?: 'sm' | 'md'
   className?: string
 }
@@ -14,6 +14,7 @@ const JURISDICTION_STYLES: Record<
   na: { bg: 'bg-[#DC2626]', label: 'NA' },
   in: { bg: 'bg-[#EA580C]', label: 'IN' },
   ae: { bg: 'bg-[#059669]', label: 'AE' },
+  ca: { bg: 'bg-[#DC2626]', label: 'CA' },
 }
 
 export function JurisdictionBadge({
