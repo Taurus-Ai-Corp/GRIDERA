@@ -1,0 +1,48 @@
+name: Funnel smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 12:00 UTC ≈ 08:00 America/Toronto (EDT)
+    - cron: '0 12 * * *'
+  pull_request:
+    paths:
+      - 'apps/landing/**'
+      - 'apps/comply/**'
+      - 'scripts/funnel-smoke/**'
+      - 'scripts/funnel-smoke.ts'
+      - 'scripts/ca-cell-probe.ts'
+      - '.github/workflows/funnel-smoke.yml'
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Funnel smoke unit tests
+        run: pnpm test:funnel-unit
+
+  production-smoke:
+    # Network probes against live production — run on schedule / manual only
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: unit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Production funnel smoke
+        run: pnpm smoke:funnel
+      - name: CA cell probe (interim OK)
+        run: pnpm probe:ca
+        # exit 0 with WARN is fine; CA_STRICT not set
