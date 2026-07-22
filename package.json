@@ -20,6 +20,7 @@
     "probe:ca": "tsx scripts/ca-cell-probe.ts",
     "agents:funnel-qa": "bash scripts/agents/funnel-qa.sh",
     "agents:cell-health": "bash scripts/agents/cell-health.sh",
+    "agents:hierarchy": "bash scripts/agents/hierarchy-compare.sh",
     "clean": "turbo run clean"
   },
   "devDependencies": {

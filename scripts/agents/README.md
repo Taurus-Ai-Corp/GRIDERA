@@ -5,6 +5,7 @@
 | **A Funnel QA** | `./scripts/agents/funnel-qa.sh` | Calendly CTAs, /ca redirect, EU auth, scan contract |
 | **B Cell health** | `./scripts/agents/cell-health.sh` | CA probe + EU 401 spine |
 | **C Market intel** | `market-intel.md` (prompt) | Weekly competitive brief |
+| **Hierarchy compare** | `./scripts/agents/hierarchy-compare.sh` | Plan §1–§2 vs monorepo + taxonomy |
 
 ## Local
 
