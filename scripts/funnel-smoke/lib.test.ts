@@ -11,6 +11,7 @@ import {
   parseAuthProbe,
   parseRedirectLocation,
   assertPipeBrandLine,
+  parseKexProbe,
 } from './lib.ts'
 
 describe('extractCalendlyHref', () => {
@@ -74,5 +75,51 @@ describe('assertPipeBrandLine', () => {
       () => assertPipeBrandLine('Ship GRIDERA Comply to EU'), // brand-allow
       /pipe/,
     )
+  })
+})
+
+describe('parseKexProbe', () => {
+  it('reports quantum-safe when the server negotiated a hybrid PQC group', () => {
+    const r = parseKexProbe({
+      group: 'X25519MLKEM768',
+      hybridPqcSupported: true,
+      detected: true,
+    })
+    assert.equal(r.quantumSafe, true)
+    assert.equal(r.reason, 'hybrid_pqc')
+    assert.equal(r.group, 'X25519MLKEM768')
+  })
+
+  it('reports classical_only when the server genuinely lacks hybrid PQC', () => {
+    const r = parseKexProbe({ group: 'x25519', hybridPqcSupported: false })
+    assert.equal(r.quantumSafe, false)
+    assert.equal(r.reason, 'classical_only')
+  })
+
+  // The regression guard. A runtime older than OpenSSL 3.5 cannot negotiate
+  // ML-KEM, so the scanner returns null rather than false. Collapsing null into
+  // false would silently report quantum-safe infrastructure as classical.
+  it('distinguishes "our runtime cannot tell" from "the server does not support it"', () => {
+    const incapable = parseKexProbe({ group: null, hybridPqcSupported: null })
+    assert.equal(incapable.reason, 'runtime_incapable')
+
+    const classical = parseKexProbe({ group: 'x25519', hybridPqcSupported: false })
+    assert.equal(classical.reason, 'classical_only')
+
+    assert.notEqual(incapable.reason, classical.reason)
+  })
+
+  it('treats a missing hybridPqcSupported field as runtime_incapable, not safe', () => {
+    const r = parseKexProbe({ group: 'X25519MLKEM768' })
+    assert.equal(r.quantumSafe, false)
+    assert.equal(r.reason, 'runtime_incapable')
+  })
+
+  it('handles malformed payloads without throwing', () => {
+    for (const bad of [null, undefined, 'nope', 42]) {
+      const r = parseKexProbe(bad)
+      assert.equal(r.quantumSafe, false)
+      assert.equal(r.reason, 'malformed')
+    }
   })
 })

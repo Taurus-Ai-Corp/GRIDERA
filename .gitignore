@@ -26,3 +26,12 @@ coverage/
 .vercel
 .DS_Store
 .claude/settings.json
+
+.verify-screens/
+
+# Sync-tool conflict copies ("resolve 2.ts", "project 2.json"). Documents/ is a
+# sync root, so these appear silently next to the real file. One landed in
+# packages/db/src/ holding a stale copy of the residency-routing logic — tsc
+# globs src/**, so it compiled locally while CI never saw it. Same class as
+# commit e2e7956 "remove accidental duplicate ca config file".
+* 2.*
