@@ -1,0 +1,41 @@
+{
+  "name": "@taurus/auth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./middleware": {
+      "import": "./dist/middleware.js",
+      "types": "./dist/middleware.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.7.0",
+    "@taurus/pqc-crypto": "workspace:*",
+    "argon2": "^0.41.1",
+    "otpauth": "^9.5.1"
+  },
+  "peerDependencies": {
+    "next": "^16.2.1"
+  },
+  "devDependencies": {
+    "@taurus/tsconfig": "workspace:*",
+    "@types/node": "^25.5.0",
+    "next": "^16.2.1",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  }
+}
