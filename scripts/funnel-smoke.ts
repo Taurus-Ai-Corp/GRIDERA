@@ -7,6 +7,7 @@
  *  2. /ca redirects to CA Comply cell
  *  3. eu.q-grid.net sign-in bad creds → healthy 401
  *  4. Optional: /api/scan → valid scanId (contract)
+ *  5. /api/scan → hybrid PQC key exchange still detected (Node 24 runtime guard)
  *
  * Run:  pnpm smoke:funnel
  * CI:   workflow_dispatch or schedule (needs network)
@@ -17,6 +18,7 @@ import {
   isValidScanId,
   parseAuthProbe,
   parseRedirectLocation,
+  parseKexProbe,
 } from './funnel-smoke/lib.ts'
 
 const LANDING = process.env['LANDING_URL'] ?? 'https://q-grid.net'
@@ -93,6 +95,34 @@ async function checkScanContract(): Promise<Check> {
   }
 }
 
+/**
+ * Guards the Node 20 → 24 runtime bump. ML-KEM negotiation needs OpenSSL 3.5+,
+ * so a runtime regression makes the scanner blind to hybrid PQC — QRS silently
+ * drops (43 → 33 on q-grid.net) while every other check stays green, because
+ * the scan contract only asserts that `overall` is a number.
+ *
+ * Scanned against our own domain: it is the reference figure quoted publicly,
+ * and unlike a third party's TLS config it cannot change without us doing it.
+ */
+async function checkPqcKexDetection(): Promise<Check> {
+  const name = 'scan → hybrid PQC key exchange detected'
+  const res = await fetch(`${LANDING}/api/scan`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ domain: 'q-grid.net' }),
+  })
+  if (!res.ok) return { name, ok: false, detail: `HTTP ${res.status}` }
+
+  const data = (await res.json()) as { keyExchange?: unknown }
+  const kex = parseKexProbe(data.keyExchange)
+  const detail =
+    kex.reason === 'runtime_incapable'
+      ? 'scanner runtime cannot negotiate ML-KEM — check Vercel Node version is 24.x, not 20.x'
+      : `${kex.reason} group=${kex.group ?? '∅'}`
+
+  return { name, ok: kex.quantumSafe, detail }
+}
+
 async function main() {
   console.log(`Funnel smoke: LANDING=${LANDING} EU=${COMPLY_EU}`)
   const checks = await Promise.all([
@@ -100,6 +130,7 @@ async function main() {
     checkCaRedirect(),
     checkEuAuth(),
     checkScanContract(),
+    checkPqcKexDetection(),
   ])
 
   let failed = 0

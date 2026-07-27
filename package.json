@@ -21,7 +21,8 @@
     "agents:funnel-qa": "bash scripts/agents/funnel-qa.sh",
     "agents:cell-health": "bash scripts/agents/cell-health.sh",
     "agents:hierarchy": "bash scripts/agents/hierarchy-compare.sh",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "assert:test-scripts": "tsx scripts/assert-test-scripts.ts"
   },
   "devDependencies": {
     "tsx": "^4.21.0",

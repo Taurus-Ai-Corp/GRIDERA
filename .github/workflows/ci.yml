@@ -17,5 +17,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm type-check
+      # Guards the silent-skip: `turbo run test` ignores packages with no test
+      # script, so an untested package would otherwise pass CI invisibly.
+      # Must run BEFORE pnpm test — it explains what pnpm test is not covering.
+      - run: pnpm assert:test-scripts
       - run: pnpm test
       - run: pnpm build

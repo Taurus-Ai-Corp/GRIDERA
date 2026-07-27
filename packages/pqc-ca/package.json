@@ -1,12 +1,15 @@
 {
-  "name": "@taurus/hedera",
+  "name": "@taurus/pqc-ca",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" }
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
     "build": "tsc",
@@ -16,10 +19,11 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@hiero-ledger/sdk": "^2.82.0"
+    "@taurus/pqc-crypto": "workspace:*"
   },
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
+    "@types/node": "^25.5.0",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }
