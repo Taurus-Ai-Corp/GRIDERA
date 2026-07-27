@@ -1,9 +1,20 @@
 name: CI
 on:
+  # Feature branches too, not just main. Previously CI ran only on push-to-main
+  # and PRs against main, so a branch could accumulate work for days with zero
+  # signal and first learn it was broken at PR time — which is exactly what
+  # happened on PR #41.
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
     branches: [main]
+
+# A branch that has an open PR fires both `push` and `pull_request`; GitHub has
+# no native way to suppress one. This at least cancels superseded runs when
+# commits land in quick succession, which is the common case while iterating.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
