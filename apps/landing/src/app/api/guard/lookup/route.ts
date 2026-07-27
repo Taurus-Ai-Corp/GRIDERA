@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createDb } from '@taurus/db'
-import { checkoutSessionCache } from '../webhook/route'
+import { checkoutSessionCache } from '@/lib/checkout-cache'
 
 function getDb() {
   const databaseUrl = process.env['DATABASE_URL']

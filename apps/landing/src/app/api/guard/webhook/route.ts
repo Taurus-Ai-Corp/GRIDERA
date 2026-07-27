@@ -9,6 +9,7 @@ import {
   revokeGuardKey,
 } from '@taurus/db/guard-keys'
 import { getStripe, getResend } from '@/lib/billing'
+import { checkoutSessionCache } from '@/lib/checkout-cache'
 import type Stripe from 'stripe'
 
 // Executor URL used in examples and emails.
@@ -31,10 +32,8 @@ function getDb() {
 // route reads it so the success page can display the key once. TTL is enforced
 // in lookup with a 5-minute expiry. This is acceptable for the MVP but should be
 // replaced by an encrypted/signed token or Redis before scaling horizontally.
-export const checkoutSessionCache = new Map<
-  string,
-  { apiKey: string; email: string; tier: 'sandbox' | 'smb' | 'enterprise'; createdAt: number }
->()
+// Moved to src/lib/checkout-cache.ts — App Router route files may not export
+// arbitrary values, only route handlers and recognised route config.
 
 function generateApiKey(): string {
   const bytes = new Uint8Array(32)
@@ -92,11 +91,10 @@ async function emailApiKey({
   })
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// `export const config = { api: { bodyParser: false } }` was removed here: that
+// is Pages Router syntax and App Router ignores it entirely. The raw body needed
+// for Stripe signature verification is already read explicitly via req.text()
+// below, so the handler was never relying on it.
 
 export async function POST(req: Request) {
   try {
