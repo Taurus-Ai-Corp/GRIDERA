@@ -27,9 +27,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Build the workspace so packages/*/dist exists (the tool imports the
-      # published @taurus/pqc-engine surface, not source).
-      - run: pnpm build
+      # Build only the two packages the tool imports (and their deps), so
+      # packages/{pqc-crypto,pqc-engine}/dist exists. Deliberately NOT `pnpm
+      # build` — that builds all 15 packages including an unrelated guard
+      # build-order flake, which this action does not depend on.
+      - run: pnpm --filter "@taurus/pqc-engine..." build
 
       # tools/ is outside the pnpm workspace globs, so link the two packages
       # the tool depends on into its node_modules (these symlinks are gitignored).
