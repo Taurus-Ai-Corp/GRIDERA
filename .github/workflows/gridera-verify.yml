@@ -1,0 +1,51 @@
+name: gridera-verify
+
+# Verify cryptographic evidence integrity on every push and every pull request
+# (PRs are what gate merges). This runs the gridera-verify test suite against
+# real ML-DSA-65 crypto, and — once the repo carries its own signed+anchored
+# CBOM bundle at .gridera/ — verifies that bundle too.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gridera-verify:
+    name: gridera-verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Build the workspace so packages/*/dist exists (the tool imports the
+      # published @taurus/pqc-engine surface, not source).
+      - run: pnpm build
+
+      # tools/ is outside the pnpm workspace globs, so link the two packages
+      # the tool depends on into its node_modules (these symlinks are gitignored).
+      - name: Link workspace packages into tool
+        run: |
+          mkdir -p tools/gridera-verify/node_modules/@taurus
+          ln -sf ../../../../packages/pqc-crypto tools/gridera-verify/node_modules/@taurus/pqc-crypto
+          ln -sf ../../../../packages/pqc-engine tools/gridera-verify/node_modules/@taurus/pqc-engine
+
+      - name: Self-test — ML-DSA-65 signature + Hedera anchor verification
+        run: cd tools/gridera-verify && node --test verify.test.mjs
+
+      - name: Verify repo evidence bundle (if present)
+        run: |
+          if [ -f .gridera/cbom.signed.json ]; then
+            node tools/gridera-verify/src/verify.mjs --bundle-dir .gridera --network testnet
+          else
+            echo "::notice::No root .gridera/ bundle yet — repo self-verification is a dogfood follow-on (see tools/gridera-verify/README.md)."
+          fi
