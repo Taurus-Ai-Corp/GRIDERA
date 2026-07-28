@@ -41,7 +41,9 @@
     "typescript": "^5.5.0",
     "vitest": "^3.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@taurus/pqc-crypto": "workspace:*"
+  },
   "peerDependencies": {
     "@taurus/pqc-crypto": "workspace:*",
     "@taurus/hedera": "workspace:*"

@@ -1,0 +1,19 @@
+{
+  "name": "@taurus/gridera-verify",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CI action that verifies committed GRIDERA crypto evidence: ML-DSA-65 CBOM signature + Hedera anchor.",
+  "bin": {
+    "gridera-verify": "./src/verify.mjs"
+  },
+  "scripts": {
+    "test": "node --test verify.test.mjs",
+    "make-fixture": "node scripts/make-fixture.mjs",
+    "verify:sample": "node src/verify.mjs --bundle-dir fixtures/sample/.gridera --network testnet"
+  },
+  "dependencies": {
+    "@taurus/pqc-crypto": "workspace:*",
+    "@taurus/pqc-engine": "workspace:*"
+  }
+}

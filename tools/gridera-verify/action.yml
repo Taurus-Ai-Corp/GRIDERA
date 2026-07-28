@@ -1,0 +1,31 @@
+name: gridera-verify
+description: >-
+  Prove a repo's committed crypto evidence is authentic and anchored: verify the
+  ML-DSA-65 signature on a CycloneDX CBOM and confirm the CBOM's SHA-256 is
+  anchored on Hedera (public mirror-node). Fails the build if either check fails.
+author: TAURUS AI Corp (GRIDERA)
+branding:
+  icon: shield
+  color: green
+
+inputs:
+  bundle-dir:
+    description: Directory containing the committed cbom.signed.json + anchor.json bundle.
+    required: false
+    default: .gridera
+  network:
+    description: Hedera network for mirror-node resolution (testnet | mainnet | previewnet).
+    required: false
+    default: testnet
+
+runs:
+  using: composite
+  steps:
+    # NOTE: the consuming repo must make @taurus/pqc-engine + @taurus/pqc-crypto
+    # resolvable to Node (published to a registry or vendored) before this step.
+    # See README "Using this in an external repo".
+    - shell: bash
+      run: >-
+        node "$GITHUB_ACTION_PATH/src/verify.mjs"
+        --bundle-dir "${{ inputs.bundle-dir }}"
+        --network "${{ inputs.network }}"

@@ -1,0 +1,15 @@
+# Code owners — auto-requested for review on matching paths.
+# Docs: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+*                           @Taas-ai
+
+# Cryptography & evidence integrity — highest-sensitivity paths
+/packages/pqc-crypto/       @Taas-ai
+/packages/pqc-engine/       @Taas-ai
+/packages/hedera/           @Taas-ai
+/tools/gridera-verify/      @Taas-ai
+
+# CI, security policy, and repo governance
+/.github/                   @Taas-ai
+/SECURITY.md                @Taas-ai
