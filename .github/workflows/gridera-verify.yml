@@ -51,3 +51,11 @@ jobs:
           else
             echo "::notice::No root .gridera/ bundle yet — repo self-verification is a dogfood follow-on (see tools/gridera-verify/README.md)."
           fi
+
+      - name: Verify pilot-0 evidence bundle (if present)
+        run: |
+          if [ -f docs/evidence/pilot-0/cbom.signed.json ] && [ -f docs/evidence/pilot-0/anchor.json ]; then
+            node tools/gridera-verify/src/verify.mjs --bundle-dir docs/evidence/pilot-0 --network testnet
+          else
+            echo "::notice::No pilot-0 evidence bundle present — skipping."
+          fi
