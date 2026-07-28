@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { sign, verify } from '@taurus/pqc-crypto'
 import type { Algorithm, CertificateInfo, ScanResult } from './types.js'
 
@@ -216,8 +216,21 @@ export function generateCBOM(scan: ScanResult, meta: CbomMeta = {}): CycloneDXDo
   }
 }
 
-function canonicalBytes(cbom: CycloneDXDocument): Uint8Array {
+/**
+ * Canonical byte encoding of a CBOM — the EXACT bytes the ML-DSA-65 signature
+ * is computed over. Exported so no caller can re-derive (and drift from) it.
+ */
+export function canonicalBytes(cbom: CycloneDXDocument): Uint8Array {
   return new TextEncoder().encode(JSON.stringify(cbom))
+}
+
+/**
+ * SHA-256 (hex) over EXACTLY `canonicalBytes(cbom)` — the same byte sequence
+ * `signCBOM` signs. This is the single source of truth for the anchored hash,
+ * so the Hedera-anchored digest provably binds the bytes that were signed.
+ */
+export function cbomSha256(cbom: CycloneDXDocument): string {
+  return createHash('sha256').update(canonicalBytes(cbom)).digest('hex')
 }
 
 function bytesToHex(bytes: Uint8Array): string {

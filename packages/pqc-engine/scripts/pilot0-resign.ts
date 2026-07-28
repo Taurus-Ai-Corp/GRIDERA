@@ -27,7 +27,7 @@ import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import { generateKeyPair, sign } from '@taurus/pqc-crypto'
 import { scanDomain } from '../src/scanner.js'
-import { generateCBOM, signCBOM, verifyCBOM } from '../src/cbom.js'
+import { cbomSha256, generateCBOM, signCBOM, verifyCBOM } from '../src/cbom.js'
 import { calculateQrsScore } from '../src/qrs-score.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -90,7 +90,9 @@ async function main() {
       classicalTlsNote:
         'TLS remains classical and CDN-managed. This ML-DSA-65 signature covers the service attestation + CBOM, layered above classical TLS.',
     },
-    cbomSha256: sha256(cbomJson),
+    // Bind the anchored hash to the EXACT canonical bytes signCBOM signs
+    // (NOT the pretty-printed cbomJson written for humans below).
+    cbomSha256: cbomSha256(cbom),
     qrs: { overall: qrs.overall, riskLevel: qrs.riskLevel },
     attestedAt: new Date().toISOString(),
     attestedBy: 'TAURUS AI Corp (GRIDERA pilot-0, self-serve design partner #0)',
