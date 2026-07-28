@@ -1,0 +1,129 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:f11dfaff-fc90-44b9-ad24-6e025d0b326f",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-28T11:43:42.015Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "GRIDERA pqc-engine",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "target/q-grid-net",
+      "name": "q-grid.net"
+    }
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/algorithm/rsa-2048@0",
+      "name": "RSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "parameterSetIdentifier": "RSA-2048",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 0
+        }
+      },
+      "properties": [
+        {
+          "name": "gridera:grade",
+          "value": "WEAK"
+        },
+        {
+          "name": "gridera:severity",
+          "value": "high"
+        },
+        {
+          "name": "gridera:quantumVulnerable",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/certificate/0c-73-c2-9a-90-a0-cd-b8-5e-23-61-cb-56-fa-62-c6-1e-65-a2-2a@0",
+      "name": "q-grid.net",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "q-grid.net",
+          "issuerName": "YR2",
+          "certificateFormat": "X.509",
+          "notValidBefore": "2026-05-31T03:42:17.000Z",
+          "notValidAfter": "2026-08-29T03:42:16.000Z"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/certificate/2d-74-d6-df-d9-6e-ea-55-ad-7b-aa-fa-0d-3c-65-52-b2-da-dc-37@1",
+      "name": "YR2",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "YR2",
+          "issuerName": "Root YR",
+          "certificateFormat": "X.509",
+          "notValidBefore": "2025-09-03T00:00:00.000Z",
+          "notValidAfter": "2028-09-02T23:59:59.000Z"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/certificate/ab-9d-02-63-24-4d-d0-32-6e-b6-70-15-70-5a-66-7e-79-cf-e9-98@2",
+      "name": "Root YR",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Root YR",
+          "issuerName": "ISRG Root X1",
+          "certificateFormat": "X.509",
+          "notValidBefore": "2026-05-13T00:00:00.000Z",
+          "notValidAfter": "2032-09-02T23:59:59.000Z"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/certificate/ca-bd-2a-79-a1-07-6a-31-f2-1d-25-36-35-cb-03-9d-43-29-a5-e8@3",
+      "name": "ISRG Root X1",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "ISRG Root X1",
+          "issuerName": "ISRG Root X1",
+          "certificateFormat": "X.509",
+          "notValidBefore": "2015-06-04T11:04:38.000Z",
+          "notValidAfter": "2035-06-04T11:04:38.000Z"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "crypto/protocol/tls-tlsv1-3",
+      "name": "TLS (TLSv1.3)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls",
+          "version": "TLSv1.3"
+        }
+      }
+    }
+  ]
+}
