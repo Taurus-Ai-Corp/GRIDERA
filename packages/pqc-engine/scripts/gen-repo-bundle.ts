@@ -5,7 +5,7 @@
  * Pipeline:
  *   1. scanDomain('q-grid.net')            → live TLS/crypto scan
  *   2. generateCBOM(scan)                  → CycloneDX 1.6 CBOM
- *   3. generateKeyPair() + signCBOM        → detached ML-DSA-65 signature
+ *   3. loadPlatformSigningKey() + signCBOM → detached ML-DSA-65 signature
  *   4. cbomSha256(cbom) (canonical hash)   → the SAME bytes signCBOM signs
  *   5. HCS anchor on testnet (message includes the canonical hash hex string)
  *   6. write <repoRoot>/.gridera/cbom.signed.json + anchor.json
@@ -20,9 +20,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { generateKeyPair } from '@taurus/pqc-crypto'
 import { scanDomain } from '../src/scanner.js'
 import { cbomSha256, generateCBOM, signCBOM, verifyCBOM } from '../src/cbom.js'
+import { loadPlatformSigningKey } from '../src/platform-key.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(here, '../../..') // packages/pqc-engine/scripts → repo root
@@ -74,10 +74,13 @@ async function main() {
   console.log('[2/6] Generating CycloneDX 1.6 CBOM ...')
   const cbom = generateCBOM(scan, { targetName: domain })
 
-  // 3. Sign (detached ML-DSA-65)
-  console.log('[3/6] Signing CBOM with ML-DSA-65 ...')
-  const keys = generateKeyPair()
-  const signed = signCBOM(cbom, keys.secretKey, keys.publicKey)
+  // 3. Sign (detached ML-DSA-65) with the STABLE platform key (issue #46).
+  //    loadPlatformSigningKey() reads PLATFORM_PQC_{SECRET,PUBLIC}_KEY from the
+  //    env populated by loadEnvLocal() above — no ephemeral fallback.
+  console.log('[3/6] Signing CBOM with the platform ML-DSA-65 key ...')
+  const key = loadPlatformSigningKey()
+  console.log(`      signer fingerprint = ${key.fingerprint}`)
+  const signed = signCBOM(cbom, key.secretKey, key.publicKey)
   if (!verifyCBOM(signed)) throw new Error('CBOM signature failed self-verification')
 
   // 4. Canonical hash — EXACTLY the bytes signCBOM signs (Task 2 single source).
@@ -119,6 +122,7 @@ async function main() {
     domain,
     cbomSha256: hash, // canonical hex — verifier does message.includes(hash)
     signerPublicKey: signed.signature.publicKey,
+    signerFingerprint: key.fingerprint, // sha256(publicKeyHex) — pinnable identity
     anchoredAt: new Date().toISOString(),
   })
   const { txId, sequence } = await submitToHCS(client, topicId, message)

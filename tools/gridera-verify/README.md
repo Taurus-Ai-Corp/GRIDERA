@@ -10,10 +10,16 @@ independent checks:
 | # | Check | How |
 |---|-------|-----|
 | 1 | **Signature** | The ML-DSA-65 (NIST FIPS 204) signature on the CycloneDX CBOM verifies, via `verifyCBOM()` from `@taurus/pqc-engine`. No crypto is reimplemented here. |
+| 1b | **Signer pin** *(optional, `--signer`)* | The signer public key in the bundle matches a **pinned GRIDERA identity** — its full public-key hex, or its SHA-256 fingerprint. Only runs when `--signer` is supplied; **fail-closed** on mismatch. |
 | 2 | **Anchor** | SHA-256 of the canonical CBOM equals `anchor.cbomSha256` **and** the Hedera **public mirror-node** message at `(topicId, sequenceNumber)` carries that same SHA-256. |
 
-If either check fails the action exits non-zero. If both pass it prints a
+If any active check fails the action exits non-zero. If all pass it prints a
 success line and a [shields.io](https://shields.io/endpoint)-style badge JSON.
+
+> **Signature vs. signer pin.** The signature check proves the CBOM was not
+> tampered with *by whoever holds the key in the bundle* — but that key could be
+> anyone's. The signer pin proves that key **is GRIDERA's**. Without a pin, a
+> valid signature only means "internally consistent," not "signed by us."
 
 ---
 
@@ -52,6 +58,20 @@ sequence must contain this hash (base64-encoded on the wire).
 
 A working sample lives in [`fixtures/sample/.gridera/`](./fixtures/sample/.gridera).
 Regenerate it with `node scripts/make-fixture.mjs`.
+
+### `signer.json` — the published, pinnable signer identity (optional)
+```jsonc
+{
+  "algorithm": "ML-DSA-65",
+  "publicKey": "<hex, 1952 bytes>",
+  "fingerprintSha256": "2a2806f6…",   // sha256(publicKeyHex)
+  "note": "GRIDERA platform signer identity …"
+}
+```
+Written from the platform **public** key only (no secret) by
+`packages/pqc-engine/scripts/publish-signer.ts`. The public key + fingerprint
+are safe to commit — publishing them is what lets a third party pin the signer
+with `--signer` *before* they ever see a bundle. See *Signer pinning* below.
 
 ---
 
@@ -95,10 +115,34 @@ Serve it as a static endpoint and point a badge at it:
 
 ```bash
 node src/verify.mjs --bundle-dir .gridera --network testnet
+# pin the signer to GRIDERA's published identity (fingerprint form):
+node src/verify.mjs --bundle-dir .gridera --network testnet \
+  --signer sha256:2a2806f674f00719d17b646c2d68c3f291f5e307a2860cff21d490bb1a45cbeb
+# the full public-key hex is also accepted as --signer.
 # convenience:
 npm run verify:sample     # runs against the committed fixture
 ```
-Exit code `0` = both checks pass, non-zero = failure.
+Exit code `0` = all active checks pass, non-zero = failure.
+
+---
+
+## Signer pinning (`--signer`)
+
+`--signer <value>` adds an identity assertion on top of the signature check.
+`<value>` is **either**:
+
+- the full ML-DSA-65 public-key hex (3904 chars), **or**
+- its SHA-256 fingerprint (64 hex chars), optionally `sha256:`-prefixed.
+
+The published identity lives in [`.gridera/signer.json`](../../.gridera/signer.json)
+(`fingerprintSha256`). The matcher is **fail-closed**: a bundle with no signer,
+a missing pin, or a pin of unrecognized shape → mismatch, never a silent pass.
+The comparison is constant-time.
+
+Regenerate the identity file after a key rotation:
+```bash
+tsx packages/pqc-engine/scripts/publish-signer.ts   # reads PLATFORM_PQC_PUBLIC_KEY
+```
 
 ---
 
@@ -134,6 +178,7 @@ re-implement JSON canonicalization or hashing independently.
 
 **In v1 (this release):**
 - ML-DSA-65 CBOM signature verification (delegated to `@taurus/pqc-engine`).
+- Optional **`--signer` pin** — assert the bundle signer is GRIDERA's published identity (fail-closed).
 - Local `cbomSha256` recomputation + equality with `anchor.json`.
 - Live Hedera **public mirror-node** resolution (injectable fetch → offline-testable).
 - Non-zero exit + clear message on any failure; badge JSON on success.
@@ -175,6 +220,10 @@ configuration. The test API (`test()` + `assert`) ports to vitest verbatim
 (`test`/`it` + `expect`) if the dir is later folded into the workspace.
 ```
 
-The three cases: **(a)** happy path (real ML-DSA-65 round-trip + stubbed
+Seven cases: **(a)** happy path (real ML-DSA-65 round-trip + stubbed
 mirror-node match → pass), **(b)** tampered CBOM (`verifyCBOM` false → fail),
-**(c)** anchor mismatch (stub mirror returns the wrong hash → fail).
+**(c)** anchor mismatch (stub mirror returns the wrong hash → fail),
+**(d)** signer pin via full public-key hex (match → pass), **(e)** signer pin
+via SHA-256 fingerprint (match → pass), **(f)** signer pin mismatch (valid
+signature but wrong identity → fail), **(g)** `signerMatches` fail-closed on
+empty/garbage input.

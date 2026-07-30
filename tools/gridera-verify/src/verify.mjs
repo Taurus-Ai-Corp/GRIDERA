@@ -16,6 +16,7 @@
 // `canonicalBytes` = `TextEncoder().encode(JSON.stringify(cbom))`), rather than
 // the pretty-printed file bytes. `hashPayload(x)` === sha256(utf8(JSON.stringify(x))).
 
+import { createHash, timingSafeEqual } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -34,6 +35,40 @@ const MIRROR_HOSTS = {
  */
 export function computeCbomSha256(signed) {
   return hashPayload(signed.cbom)
+}
+
+/** Constant-time hex-string compare; false (not throw) on length mismatch. */
+function timingSafeEqualHex(a, b) {
+  if (a.length !== b.length) return false
+  return timingSafeEqual(Buffer.from(a, 'hex'), Buffer.from(b, 'hex'))
+}
+
+/**
+ * Does the bundle's signer public key match the pinned GRIDERA identity?
+ *
+ * `--signer` accepts either form (issue #46):
+ *   - the full ML-DSA-65 public-key hex (3904 chars), OR
+ *   - its SHA-256 fingerprint (64 hex chars), with optional `sha256:` prefix.
+ *
+ * FAIL-CLOSED: a missing/empty bundle key, a missing pin, or a pin whose shape
+ * is neither a 64-hex fingerprint nor a full public key → `false`. A pin is an
+ * assertion; when in doubt we do NOT assert a match.
+ *
+ * (This is the security-critical matcher. If you want a stricter policy —
+ * e.g. reject the full-pubkey form and require fingerprints only — this is the
+ * single place to change it.)
+ */
+export function signerMatches(bundlePublicKeyHex, pin) {
+  if (typeof bundlePublicKeyHex !== 'string' || bundlePublicKeyHex.length === 0) return false
+  if (typeof pin !== 'string' || pin.length === 0) return false
+  const pub = bundlePublicKeyHex.trim().toLowerCase()
+  let p = pin.trim().toLowerCase()
+  if (p.startsWith('sha256:')) p = p.slice('sha256:'.length)
+  if (!/^[0-9a-f]+$/.test(p) || !/^[0-9a-f]+$/.test(pub)) return false
+  if (p.length === 64) {
+    return timingSafeEqualHex(p, createHash('sha256').update(pub).digest('hex'))
+  }
+  return timingSafeEqualHex(p, pub)
 }
 
 /** Public Hedera mirror-node REST URL for a single topic message. */
@@ -61,11 +96,18 @@ function makeBadge(ok) {
  * @param {string}   opts.bundleDir   directory containing cbom.signed.json + anchor.json
  * @param {string}  [opts.network]    hedera network (default 'testnet')
  * @param {Function}[opts.fetchImpl]  injectable fetch(url) -> Response-like (for offline tests)
+ * @param {string}  [opts.signer]     optional pinned signer (full pubkey hex or sha256 fingerprint)
  * @returns {Promise<{ok:boolean, checks:object, badge:object, message:string, exitCode:number}>}
  */
-export async function verifyBundle({ bundleDir, network = 'testnet', fetchImpl = defaultFetch }) {
+export async function verifyBundle({
+  bundleDir,
+  network = 'testnet',
+  fetchImpl = defaultFetch,
+  signer = null,
+}) {
   const checks = {
     signature: { ok: false, message: '' },
+    signer: { ok: true, applicable: false, message: 'signer not pinned (no --signer)' },
     anchorHash: { ok: false, message: '', expected: null, actual: null },
     mirror: { ok: false, message: '', url: null },
   }
@@ -90,6 +132,16 @@ export async function verifyBundle({ bundleDir, network = 'testnet', fetchImpl =
   } catch (err) {
     checks.signature.ok = false
     checks.signature.message = `Signature verification threw: ${err.message}`
+  }
+
+  // --- 1b. signer pin check (only when --signer is supplied) ---
+  if (signer) {
+    const bundleKey = signed?.signature?.publicKey
+    checks.signer.applicable = true
+    checks.signer.ok = signerMatches(bundleKey, signer)
+    checks.signer.message = checks.signer.ok
+      ? `signer matches pinned identity (${short(signer)})`
+      : `signer MISMATCH — bundle signer ${short(bundleKey)} does not match pinned ${short(signer)}`
   }
 
   // --- 2a. local anchor hash check ---
@@ -128,7 +180,11 @@ export async function verifyBundle({ bundleDir, network = 'testnet', fetchImpl =
 
 function finalize({ checks, loadError }) {
   const ok =
-    !loadError && checks.signature.ok && checks.anchorHash.ok && checks.mirror.ok
+    !loadError &&
+    checks.signature.ok &&
+    checks.signer.ok &&
+    checks.anchorHash.ok &&
+    checks.mirror.ok
   const badge = makeBadge(ok)
   const message = loadError
     ? loadError
@@ -137,6 +193,7 @@ function finalize({ checks, loadError }) {
       : 'gridera-verify: FAIL — ' +
         [
           !checks.signature.ok && 'signature',
+          !checks.signer.ok && 'signer-pin',
           !checks.anchorHash.ok && 'anchor-hash',
           !checks.mirror.ok && 'mirror-node',
         ]
@@ -154,11 +211,12 @@ function short(hex) {
 // --- CLI --------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const args = { bundleDir: '.gridera', network: 'testnet', drift: false }
+  const args = { bundleDir: '.gridera', network: 'testnet', drift: false, signer: null }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
     if (a === '--bundle-dir') args.bundleDir = argv[++i]
     else if (a === '--network') args.network = argv[++i]
+    else if (a === '--signer') args.signer = argv[++i]
     else if (a === '--drift') args.drift = true
   }
   return args
@@ -177,10 +235,17 @@ export async function runCli(argv) {
     )
   }
 
-  const result = await verifyBundle({ bundleDir: args.bundleDir, network: args.network })
+  const result = await verifyBundle({
+    bundleDir: args.bundleDir,
+    network: args.network,
+    signer: args.signer,
+  })
 
   console.log(`gridera-verify — bundle: ${args.bundleDir}  network: ${args.network}`)
   console.log(`  [${mark(result.checks.signature.ok)}] signature : ${result.checks.signature.message}`)
+  console.log(
+    `  [${result.checks.signer.applicable ? mark(result.checks.signer.ok) : 'SKIP'}] signer    : ${result.checks.signer.message}`,
+  )
   console.log(`  [${mark(result.checks.anchorHash.ok)}] anchor    : ${result.checks.anchorHash.message}`)
   console.log(`  [${mark(result.checks.mirror.ok)}] mirror    : ${result.checks.mirror.message}`)
   console.log('')

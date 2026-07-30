@@ -25,9 +25,10 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
-import { generateKeyPair, sign } from '@taurus/pqc-crypto'
+import { sign } from '@taurus/pqc-crypto'
 import { scanDomain } from '../src/scanner.js'
 import { cbomSha256, generateCBOM, signCBOM, verifyCBOM } from '../src/cbom.js'
+import { loadPlatformSigningKey } from '../src/platform-key.js'
 import { calculateQrsScore } from '../src/qrs-score.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -69,9 +70,12 @@ async function main() {
   }
   console.log('      VALID against bom-1.6.schema.json')
 
-  // 4. Sign CBOM (detached ML-DSA-65 envelope)
-  console.log('[4/6] Signing CBOM with ML-DSA-65 ...')
-  const keys = generateKeyPair()
+  // 4. Sign CBOM (detached ML-DSA-65 envelope) with the STABLE platform key
+  //    (issue #46) — no ephemeral key. Reads PLATFORM_PQC_{SECRET,PUBLIC}_KEY
+  //    from process.env (export them / source .env.local before running).
+  console.log('[4/6] Signing CBOM with the platform ML-DSA-65 key ...')
+  const keys = loadPlatformSigningKey()
+  console.log(`      signer fingerprint = ${keys.fingerprint}`)
   const signedCbom = signCBOM(cbom, keys.secretKey, keys.publicKey)
   if (!verifyCBOM(signedCbom)) throw new Error('CBOM signature failed self-verification')
   writeFileSync(join(outDir, 'cbom.signed.json'), JSON.stringify(signedCbom, null, 2))
@@ -118,7 +122,7 @@ async function main() {
     domain,
     cbomSha256: attestation.cbomSha256,
     attestationSha256: sha256(attestationJson),
-    signerPublicKeySha256: sha256(hex(keys.publicKey)),
+    signerPublicKeySha256: keys.fingerprint, // === sha256(publicKeyHex), pinnable identity
   }
   if (process.env['HEDERA_OPERATOR_ID'] && process.env['HEDERA_OPERATOR_KEY']) {
     console.log('[6/6] Anchoring to Hedera HCS ...')

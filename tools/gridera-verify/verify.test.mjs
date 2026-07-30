@@ -13,6 +13,7 @@
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -20,7 +21,7 @@ import { join } from 'node:path'
 import { generateCBOM, signCBOM } from '@taurus/pqc-engine'
 import { generateKeyPair } from '@taurus/pqc-crypto'
 
-import { verifyBundle, computeCbomSha256 } from './src/verify.mjs'
+import { verifyBundle, computeCbomSha256, signerMatches } from './src/verify.mjs'
 
 // --- helpers ---------------------------------------------------------------
 
@@ -149,4 +150,72 @@ test('(c) anchor mismatch: mirror-node message carries a different hash → fail
   } finally {
     rmSync(dir, { recursive: true, force: true })
   }
+})
+
+// --- (d) signer pin: full public-key hex matches → passes (issue #46) -------
+
+test('(d) signer pin: full public-key hex matches bundle signer → passes', async () => {
+  const { dir, bundleDir, signed, cbomSha256 } = buildBundle()
+  try {
+    const result = await verifyBundle({
+      bundleDir,
+      network: 'testnet',
+      fetchImpl: stubMirror(cbomSha256),
+      signer: signed.signature.publicKey, // full ML-DSA-65 pubkey hex
+    })
+    assert.equal(result.checks.signer.applicable, true, 'signer check is applicable when pinned')
+    assert.equal(result.checks.signer.ok, true, 'full-hex signer pin should match')
+    assert.equal(result.ok, true, 'overall passes when signer matches')
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+// --- (e) signer pin: sha256 fingerprint (with prefix) matches → passes ------
+
+test('(e) signer pin: sha256 fingerprint matches bundle signer → passes', async () => {
+  const { dir, bundleDir, signed, cbomSha256 } = buildBundle()
+  try {
+    const fp = createHash('sha256').update(signed.signature.publicKey).digest('hex')
+    const result = await verifyBundle({
+      bundleDir,
+      network: 'testnet',
+      fetchImpl: stubMirror(cbomSha256),
+      signer: `sha256:${fp}`,
+    })
+    assert.equal(result.checks.signer.ok, true, 'fingerprint signer pin should match')
+    assert.equal(result.ok, true, 'overall passes when fingerprint matches')
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+// --- (f) signer pin: wrong identity → fails despite a valid signature -------
+
+test('(f) signer pin: mismatched identity → fails even though signature is valid', async () => {
+  const { dir, bundleDir, cbomSha256 } = buildBundle()
+  try {
+    const result = await verifyBundle({
+      bundleDir,
+      network: 'testnet',
+      fetchImpl: stubMirror(cbomSha256),
+      signer: `sha256:${'0'.repeat(64)}`, // not our key
+    })
+    assert.equal(result.checks.signature.ok, true, 'signature itself is still valid')
+    assert.equal(result.checks.signer.ok, false, 'signer pin must not match')
+    assert.equal(result.ok, false, 'overall must FAIL on signer mismatch (fail-closed)')
+    assert.notEqual(result.exitCode, 0, 'must exit non-zero')
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+// --- (g) signerMatches unit: fail-closed on empty/garbage input -------------
+
+test('(g) signerMatches is fail-closed on empty/garbage input', () => {
+  assert.equal(signerMatches('', 'abc'), false, 'empty bundle key → false')
+  assert.equal(signerMatches('deadbeef', ''), false, 'empty pin → false')
+  assert.equal(signerMatches('deadbeef', 'not-hex!!'), false, 'non-hex pin → false')
+  assert.equal(signerMatches('deadbeef', 'deadbeef'), true, 'exact full-key match → true')
+  assert.equal(signerMatches('DEADBEEF', 'deadbeef'), true, 'case-insensitive full-key match')
 })
