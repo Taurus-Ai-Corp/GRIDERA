@@ -20,7 +20,7 @@
  *   (omit Hedera env vars to skip anchoring — everything else still runs)
  */
 import { createHash } from 'node:crypto'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Ajv from 'ajv'
@@ -39,7 +39,42 @@ const hex = (bytes: Uint8Array) =>
   Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
 const sha256 = (data: string) => createHash('sha256').update(data).digest('hex')
 
+const MIRROR_HOSTS: Record<string, string> = {
+  testnet: 'https://testnet.mirrornode.hedera.com',
+  mainnet: 'https://mainnet.mirrornode.hedera.com',
+  previewnet: 'https://previewnet.mirrornode.hedera.com',
+}
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/**
+ * Load <repoRoot>/.env.local in-process so PLATFORM_PQC_{SECRET,PUBLIC}_KEY and
+ * HEDERA_* creds are available without sourcing secrets in the shell. Minimal
+ * parser: last non-empty value per key wins (file has dup keys).
+ */
+function loadEnvLocal(): void {
+  const repoRoot = join(here, '../../..') // scripts → pqc-engine → packages → repo root
+  const path = join(repoRoot, '.env.local')
+  if (!existsSync(path)) return
+  for (const raw of readFileSync(path, 'utf8').split('\n')) {
+    const line = raw.trim()
+    if (!line || line.startsWith('#')) continue
+    const eq = line.indexOf('=')
+    if (eq === -1) continue
+    const key = line.slice(0, eq).trim()
+    let value = line.slice(eq + 1).trim()
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1)
+    }
+    if (value === '') continue
+    process.env[key] = value
+  }
+}
+
 async function main() {
+  loadEnvLocal()
   mkdirSync(outDir, { recursive: true })
 
   // 1. Live scan
@@ -131,8 +166,11 @@ async function main() {
     )
     const config = loadHederaConfig()
     const client = createHederaClient(config)
+    // Reuse the shared audit topic (PILOT0_TOPIC_ID or HEDERA_AUDIT_TOPIC_ID)
+    // rather than minting a throwaway topic per run.
     const topicId =
       process.env['PILOT0_TOPIC_ID'] ??
+      process.env['HEDERA_AUDIT_TOPIC_ID'] ??
       (await createTopic(client, 'GRIDERA pilot-0 DoD evidence (self-serve design partner #0)'))
     const message = JSON.stringify({
       type: 'PILOT0_SERVICE_RESIGN',
@@ -144,9 +182,46 @@ async function main() {
     client.close()
     summary['hcs'] = { network: config.network, topicId, txId, sequence }
     console.log(`      Anchored: topic ${topicId}, tx ${txId}, seq ${sequence}`)
+
+    // Resolve the network-assigned consensus timestamp from the public mirror
+    // node and write a gridera-verify-compatible anchor.json (same shape as the
+    // .gridera bundle) so this evidence self-verifies with the same tool.
+    const mirror = MIRROR_HOSTS[config.network] ?? MIRROR_HOSTS['testnet']
+    const url = `${mirror}/api/v1/topics/${topicId}/messages/${sequence}`
+    let consensusTimestamp: string | null = null
+    const deadline = Date.now() + 90_000
+    while (Date.now() < deadline) {
+      try {
+        const res = await fetch(url)
+        if (res.ok) {
+          const body = (await res.json()) as { consensus_timestamp?: string }
+          if (body?.consensus_timestamp) {
+            consensusTimestamp = body.consensus_timestamp
+            break
+          }
+        }
+      } catch {
+        /* transient — retry */
+      }
+      await sleep(3000)
+    }
+    if (!consensusTimestamp) {
+      throw new Error(
+        `Mirror-node did not index ${topicId}#${sequence} within 90s — cannot write anchor.json`,
+      )
+    }
+    const anchor = {
+      topicId,
+      sequenceNumber: sequence,
+      consensusTimestamp,
+      cbomSha256: attestation.cbomSha256, // canonical — matches gridera-verify's computeCbomSha256
+      network: config.network,
+    }
+    writeFileSync(join(outDir, 'anchor.json'), JSON.stringify(anchor, null, 2))
+    console.log(`      anchor.json written (consensusTimestamp ${consensusTimestamp})`)
   } else {
     summary['hcs'] = 'SKIPPED — no HEDERA_OPERATOR_ID/HEDERA_OPERATOR_KEY in env'
-    console.log('[6/6] SKIPPED HCS anchoring (no operator credentials in env)')
+    console.log('[6/6] SKIPPED HCS anchoring (no operator credentials in env) — anchor.json NOT written')
   }
 
   writeFileSync(join(outDir, 'run-summary.json'), JSON.stringify(summary, null, 2))

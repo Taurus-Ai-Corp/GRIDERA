@@ -1,7 +1,7 @@
 {
   "topicId": "0.0.9612022",
-  "sequenceNumber": 7,
-  "consensusTimestamp": "1785239024.079983290",
-  "cbomSha256": "53c84f9c598a9e8f0a416a63929871079e4364249f7d22d4de61d6f418e2267f",
+  "sequenceNumber": 13,
+  "consensusTimestamp": "1785392299.838648912",
+  "cbomSha256": "483eafebe3d4e9e0902c4956cbcef14b39efaeeda64466658b068c55e9789293",
   "network": "testnet"
 }

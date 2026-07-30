@@ -1,12 +1,12 @@
 {
   "domain": "q-grid.net",
-  "cbomSha256": "53c84f9c598a9e8f0a416a63929871079e4364249f7d22d4de61d6f418e2267f",
-  "attestationSha256": "ee9d2f774140ab763f879785848e8b52793e2fc20306a474ff7e65e0d3e99917",
-  "signerPublicKeySha256": "f89394c8b32f78993f1cb9a9f9c0ac85b2a337464bc764a5cec941a5870d122b",
+  "cbomSha256": "483eafebe3d4e9e0902c4956cbcef14b39efaeeda64466658b068c55e9789293",
+  "attestationSha256": "8cd8f4df2c98919a8a579a9b3c012d3f53798afe03fa46efe2b36a06b9b9b896",
+  "signerPublicKeySha256": "e074dce02c0ed362283599a17309395e8232a24f8f7e91ffed70a91b9eeda555",
   "hcs": {
     "network": "testnet",
     "topicId": "0.0.9612022",
-    "txId": "0.0.7231851@1785239017.350927775",
-    "sequence": 7
+    "txId": "0.0.7231851@1785392295.038160527",
+    "sequence": 13
   }
 }

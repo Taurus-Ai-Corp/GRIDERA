@@ -11,6 +11,14 @@ on:
 permissions:
   contents: read
 
+# The GRIDERA platform signer identity (sha256 of the ML-DSA-65 public key).
+# Committed evidence MUST be signed by this key. This literal is the trust
+# anchor — deliberately hardcoded here (not read from the bundle) so a PR that
+# swaps the bundle's signer would also have to visibly edit this workflow.
+# Matches .gridera/signer.json → fingerprintSha256.
+env:
+  GRIDERA_SIGNER: "sha256:e074dce02c0ed362283599a17309395e8232a24f8f7e91ffed70a91b9eeda555"
+
 jobs:
   gridera-verify:
     name: gridera-verify
@@ -47,7 +55,7 @@ jobs:
       - name: Verify repo evidence bundle (if present)
         run: |
           if [ -f .gridera/cbom.signed.json ]; then
-            node tools/gridera-verify/src/verify.mjs --bundle-dir .gridera --network testnet
+            node tools/gridera-verify/src/verify.mjs --bundle-dir .gridera --network testnet --signer "$GRIDERA_SIGNER"
           else
             echo "::notice::No root .gridera/ bundle yet — repo self-verification is a dogfood follow-on (see tools/gridera-verify/README.md)."
           fi
@@ -55,7 +63,7 @@ jobs:
       - name: Verify pilot-0 evidence bundle (if present)
         run: |
           if [ -f docs/evidence/pilot-0/cbom.signed.json ] && [ -f docs/evidence/pilot-0/anchor.json ]; then
-            node tools/gridera-verify/src/verify.mjs --bundle-dir docs/evidence/pilot-0 --network testnet
+            node tools/gridera-verify/src/verify.mjs --bundle-dir docs/evidence/pilot-0 --network testnet --signer "$GRIDERA_SIGNER"
           else
             echo "::notice::No pilot-0 evidence bundle present — skipping."
           fi
