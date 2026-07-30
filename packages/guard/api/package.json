@@ -20,7 +20,7 @@
     "@taurus/db": "workspace:*",
     "@taurus/pqc-crypto": "workspace:*",
     "@noble/post-quantum": "^0.2.1",
-    "@noble/hashes": "^1.7.0"
+    "@noble/hashes": "^2.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

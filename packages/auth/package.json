@@ -23,7 +23,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@noble/hashes": "^1.7.0",
+    "@noble/hashes": "^2.2.0",
     "@taurus/pqc-crypto": "workspace:*",
     "argon2": "^0.41.1",
     "otpauth": "^9.5.1"
