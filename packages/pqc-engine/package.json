@@ -17,6 +17,8 @@
     "test": "vitest run",
     "clean": "rm -rf dist",
     "pilot0:resign": "tsx scripts/pilot0-resign.ts",
+    "repo-bundle:gen": "tsx scripts/gen-repo-bundle.ts",
+    "signer:publish": "tsx scripts/publish-signer.ts",
     "cbom:verify": "tsx scripts/verify-cbom.ts"
   },
   "devDependencies": {
