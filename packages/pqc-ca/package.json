@@ -24,7 +24,7 @@
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
     "@types/node": "^25.5.0",
-    "typescript": "^5.8.0",
+    "typescript": "^7.0.2",
     "vitest": "^3.0.0"
   }
 }
