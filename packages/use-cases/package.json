@@ -14,7 +14,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@hiero-ledger/sdk": "^2.82.0",
+    "@hiero-ledger/sdk": "^2.86.2",
     "@taurus/hedera": "workspace:*",
     "@taurus/pqc-crypto": "workspace:*"
   },

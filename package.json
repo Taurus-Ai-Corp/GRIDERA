@@ -25,8 +25,8 @@
     "assert:test-scripts": "tsx scripts/assert-test-scripts.ts"
   },
   "devDependencies": {
-    "tsx": "^4.21.0",
-    "turbo": "^2.4.0",
+    "tsx": "^4.23.1",
+    "turbo": "^2.10.7",
     "typescript": "^5.8.0"
   }
 }
