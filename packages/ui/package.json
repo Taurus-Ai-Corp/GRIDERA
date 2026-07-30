@@ -27,6 +27,6 @@
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
     "@types/react": "^19",
-    "typescript": "^5.8.0"
+    "typescript": "^7.0.2"
   }
 }
