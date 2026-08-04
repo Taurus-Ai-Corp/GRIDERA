@@ -14,17 +14,17 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "fastify": "^5.3.0",
-    "@fastify/cors": "^11.0.0",
+    "fastify": "^5.11.0",
+    "@fastify/cors": "^11.3.0",
     "fastify-plugin": "^5.0.0",
     "@taurus/db": "workspace:*",
     "@taurus/pqc-crypto": "workspace:*",
-    "@noble/post-quantum": "^0.2.1",
+    "@noble/post-quantum": "^0.6.1",
     "@noble/hashes": "^1.7.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "@hiero-ledger/sdk": "^2.82.0",
+    "@hiero-ledger/sdk": "^2.86.2",
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",
     "vitest": "^3.0.0"

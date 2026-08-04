@@ -25,16 +25,16 @@
   "dependencies": {
     "@noble/hashes": "^1.7.0",
     "@taurus/pqc-crypto": "workspace:*",
-    "argon2": "^0.41.1",
+    "argon2": "^0.45.1",
     "otpauth": "^9.5.1"
   },
   "peerDependencies": {
-    "next": "^16.2.1"
+    "next": "^16.2.12"
   },
   "devDependencies": {
     "@taurus/tsconfig": "workspace:*",
     "@types/node": "^25.5.0",
-    "next": "^16.2.1",
+    "next": "^16.2.12",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }
