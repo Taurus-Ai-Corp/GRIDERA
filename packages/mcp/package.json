@@ -17,8 +17,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "@hiero-ledger/sdk": "^2.82.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@hiero-ledger/sdk": "^2.86.2",
     "@noble/hashes": "^1.7.0",
     "@taurus/hedera": "workspace:*",
     "@taurus/pqc-crypto": "workspace:*"
